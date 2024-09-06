@@ -1,58 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Stack {
-    // Private array to store stack elements
-    constructor() {
-        this.items = [];
-        // Initialize the array as empty 
-        //when a new stack is created
-    }
-    // Method to push an 
-    // element onto the stack
-    push(element) {
-        this
-            .items.push(element);
-    }
-    // Method to pop an 
-    // element from the stack
-    pop() {
-        return this
-            .items.pop();
-    }
-    // Method to peek the top element
-    // of the stack without removing it
-    peek() {
-        return this
-            .items[this.items.length - 1];
-    }
-    // Method to check
-    // if the stack is empty
-    isEmpty() {
-        return this
-            .items.length === 0;
-    }
-    // Method to get 
-    // the size of the stack
-    size() {
-        return this
-            .items.length;
-    }
-    // Method to
-    // clear the stack
-    clear() {
-        this.items = [];
-    }
-    print() {
-        console.log(this.items);
-    }
-}
 const ExpressionToRPN = (Expr) => {
     const exprs = Expr.split("");
     let current = "";
-    const StackRpn = new Stack;
+    const StackRpn = [];
     let priority = 0;
     for (const expr of exprs) {
         priority = getP(expr);
+        if (priority === -2) {
+            console.log("Invalid expression");
+            break;
+        }
         if (priority === 0) {
             current += expr;
         }
@@ -61,8 +19,8 @@ const ExpressionToRPN = (Expr) => {
         }
         if (priority > 1) {
             current += ' ';
-            while (!StackRpn.isEmpty()) {
-                if (getP(StackRpn.peek()) >= priority) {
+            while (!(StackRpn.length === 0)) {
+                if (getP(StackRpn[StackRpn.length - 1]) >= priority) {
                     current += StackRpn.pop();
                 }
                 else {
@@ -73,21 +31,20 @@ const ExpressionToRPN = (Expr) => {
         }
         if (priority === -1) {
             current += ' ';
-            while (getP(StackRpn.peek()) != 1) {
+            while (getP(StackRpn[StackRpn.length - 1]) != 1) {
                 current += StackRpn.pop();
             }
             StackRpn.pop();
         }
     }
-    while (!StackRpn.isEmpty()) {
+    while (!(StackRpn.length === 0)) {
         current += StackRpn.pop();
     }
     return current;
 };
 const RPNToAnswer = (Rpn) => {
-    const rpns = Rpn.split("");
     let operand = "";
-    const StackAns = new Stack;
+    const StackAns = [];
     for (let i = 0; i < Rpn.length; i++) {
         if (Rpn[i] === ' ') {
             continue;
@@ -128,10 +85,11 @@ const getP = (token) => {
             return 1;
         case ')':
             return -1;
-        default:
+        case '0' || '1' || '2' || '3' || '4' || '5' || '6' || '7' || '8' || '9' || ' ':
             return 0;
+        default:
+            return -2;
     }
 };
-const MyStr = "(2+2)*2";
-console.log(ExpressionToRPN(MyStr));
+const MyStr = "(f+2)*2";
 console.log(RPNToAnswer(ExpressionToRPN(MyStr)));

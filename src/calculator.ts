@@ -1,67 +1,17 @@
-class Stack<T> {
-    private items: T[];
-    // Private array to store stack elements
-
-    constructor() {
-        this.items = [];
-        // Initialize the array as empty 
-        //when a new stack is created
-    }
-
-    // Method to push an 
-    // element onto the stack
-    push(element: T): void {
-        this
-            .items.push(element);
-    }
-
-    // Method to pop an 
-    // element from the stack
-    pop(): T | undefined {
-        return this
-            .items.pop();
-    }
-
-    // Method to peek the top element
-    // of the stack without removing it
-    peek(): T {
-        return this
-            .items[this.items.length - 1];
-    }
-
-    // Method to check
-    // if the stack is empty
-    isEmpty(): boolean {
-        return this
-            .items.length === 0;
-    }
-
-    // Method to get 
-    // the size of the stack
-    size(): number {
-        return this
-            .items.length;
-    }
-
-    // Method to
-    // clear the stack
-    clear(): void {
-        this.items = [];
-    }
-
-    print(): void {
-        console.log(this.items);
-    }
-}
-
 const ExpressionToRPN = (Expr:string): string => {
     const exprs: string[] = Expr.split("");
     let current: string = "";
-    const StackRpn = new Stack<string>;
+    const StackRpn: string[] = [];
 
     let priority: number = 0;
     for (const expr of exprs) {
         priority = getP(expr);
+
+        if (priority === -2)
+        {
+            console.log("Invalid expression");
+            break;
+        }
 
         if (priority === 0)
         {
@@ -77,9 +27,9 @@ const ExpressionToRPN = (Expr:string): string => {
         {
             current += ' ';
 
-            while (!StackRpn.isEmpty())
+            while (!(StackRpn.length === 0))
             {
-                if(getP(StackRpn.peek()) >= priority) 
+                if(getP(StackRpn[StackRpn.length - 1]) >= priority) 
                 {
                     current += StackRpn.pop();
                 }
@@ -97,7 +47,7 @@ const ExpressionToRPN = (Expr:string): string => {
         {
             current += ' ';
 
-            while(getP(StackRpn.peek()) != 1)
+            while(getP(StackRpn[StackRpn.length - 1]) != 1)
             {
                 current += StackRpn.pop();
             }
@@ -106,7 +56,7 @@ const ExpressionToRPN = (Expr:string): string => {
         }
     }
 
-    while (!StackRpn.isEmpty())
+    while (!(StackRpn.length === 0))
         {
             current += StackRpn.pop();
         }
@@ -116,9 +66,8 @@ const ExpressionToRPN = (Expr:string): string => {
 
 const RPNToAnswer = (Rpn:string): number =>
 {
-    const rpns: string[] = Rpn.split("");
     let operand: string = "";
-    const StackAns = new Stack<number>;
+    const StackAns: number[] = [];
 
     for (let i = 0; i < Rpn.length; i++) 
     {
@@ -177,11 +126,12 @@ const getP = (token:string): number => {
             return 1;
         case ')':
             return -1;
-        default: 
-            return 0; 
+        case '0' || '1' || '2' || '3' || '4' || '5' || '6' || '7' || '8' || '9' || ' ': 
+            return 0;
+        default:
+            return -2;
      }      
 };
 
-const MyStr: string = "(2+2)*2";
-console.log(ExpressionToRPN(MyStr));
+const MyStr: string = "(f+2)*2";
 console.log(RPNToAnswer(ExpressionToRPN(MyStr)));
