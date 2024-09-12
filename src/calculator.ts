@@ -1,17 +1,19 @@
 const ExpressionToRPN = (Expr:string): string => {
     const exprs: string[] = Expr.split("");
+    console.log(exprs);
     let current: string = "";
     const StackRpn: string[] = [];
 
     let priority: number = 0;
     for (const expr of exprs) {
         priority = getP(expr);
+        console.log(expr, priority);
 
-        if (priority === -2)
-        {
-            console.log("Invalid expression");
-            break;
-        }
+        //if (priority === -2)
+        //{
+            //console.log("Invalid expression");
+            //break;
+        //}
 
         if (priority === 0)
         {
@@ -118,20 +120,44 @@ const RPNToAnswer = (Rpn:string): number =>
 const getP = (token:string): number => {
     switch ( token ) 
     {
-        case '*' || '/':
+        case '*':
             return 3;
-        case '+' || '-':
+        case '/':
+            return 3;
+        case '+':
+            return 2;
+        case '-':
             return 2;
         case '(':
             return 1;
         case ')':
             return -1;
-        case '0' || '1' || '2' || '3' || '4' || '5' || '6' || '7' || '8' || '9' || ' ': 
+        case ' ': 
+            return 0;
+        case '0':
+            return 0;
+        case '1':
+            return 0;
+        case '2':
+            return 0;
+        case '3':
+            return 0;
+        case '4':
+            return 0;
+        case '5':
+            return 0;
+        case '6':
+            return 0;
+        case '7':
+            return 0;
+        case '8':
+            return 0;
+        case '9':
             return 0;
         default:
             return -2;
-     }      
+    }      
 };
 
-const MyStr: string = "(f+2)*2";
+const MyStr: string = "- (- (* (/ 15 (- 7 2)) 3) (* (* (+ 2 (+ 1 1)) (/ 15 (- 7 (+ 200 1)))) 3)) (* (+ 2 (+ 1 1)) (- (+ (- (* (/ 15 (- 7 2)) 3) (+ 2 (+ 1 1))) (* (/ 15 (- 7 2)) 3)) (+ 2 (+ 1 1))))";
 console.log(RPNToAnswer(ExpressionToRPN(MyStr)));
