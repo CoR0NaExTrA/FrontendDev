@@ -9,11 +9,11 @@ const ExpressionToRPN = (Expr:string): string => {
         priority = getP(expr);
         console.log(expr, priority);
 
-        //if (priority === -2)
-        //{
-            //console.log("Invalid expression");
-            //break;
-        //}
+        if (priority === -2)
+        {
+            console.log("Invalid expression");
+            break;
+        }
 
         if (priority === 0)
         {
@@ -135,23 +135,14 @@ const getP = (token:string): number => {
         case ' ': 
             return 0;
         case '0':
-            return 0;
         case '1':
-            return 0;
         case '2':
-            return 0;
         case '3':
-            return 0;
         case '4':
-            return 0;
         case '5':
-            return 0;
         case '6':
-            return 0;
         case '7':
-            return 0;
         case '8':
-            return 0;
         case '9':
             return 0;
         default:
