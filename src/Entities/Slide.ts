@@ -40,12 +40,24 @@ const AddObjectToSlide = (newObj: Text | Picture, slide: Slide) => {
     };
 };
 
-const EditPositionObject = () => {
-
+const EditPositionObject = (newPosX: number, newPosY: number, slide: Slide) => {
+    return {
+        ...slide,
+        pos: {
+            x: newPosX,
+            y: newPosY
+        }
+    };
 };
 
-const EditSizeObject = () => {
-
+const EditSizeObject = (newWidth: number, newHeigth: number, slide: Slide) => {
+    return {
+        ...slide,
+        pos: {
+            width: newWidth,
+            heigth: newHeigth
+        }
+    };    
 };
 
 const EditTextValue = (newValue: string, slideObj: SlideObj) => {
@@ -59,8 +71,11 @@ const EditTextValue = (newValue: string, slideObj: SlideObj) => {
     };
 };
 
-const EditBackgroundSlide = () => {
-
+const EditBackgroundSlide = (newBackground: Color | Image, slide: Slide) => {
+    return {
+        ...slide, 
+        bg: newBackground
+    };
 };
 
 export const Slide = {
