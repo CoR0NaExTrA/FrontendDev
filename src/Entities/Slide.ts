@@ -47,15 +47,18 @@ type Picture = SlideObj & {
     src: string;
 };
 
-const EditPositionObject = (newPosX: number, newPosY: number, element: Text | Image) => {
+const EditPositionObject = (newPos: number, element: SlideObject) => {
     return {
         ...element,
-        pos: ,
+        pos: newPos,
     }
 };
 
-const EditSizeObject = (newWidth: number, newHeigth: number, slide: Slide) => {
-    
+const EditSizeObject = (newSize: number, element: SlideObject) => {
+    return {
+        ...element,
+        pos: newSize,
+    }
 };
 
 const EditBackgroundSlide = (newBackground: Color | Image, slide: Slide) => {
@@ -112,5 +115,7 @@ const RemoveObjectToSlide = (id: string, slide: Slide) => {
 };
 
 export const Slide = {
-    AddObjectToSlide, EditBackgroundSlide, RemoveObjectToSlide, EditPositionObject, EditSizeObject
+    AddObjectToSlide, EditBackgroundSlide, RemoveObjectToSlide,
+    EditPositionObject, EditSizeObject, EditFontFamily,
+    EditFontSize, EditValueText
 };
