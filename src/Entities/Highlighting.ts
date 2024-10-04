@@ -1,7 +1,5 @@
+import { Slide, SlideObject } from "./Slide";
+
 export type Highlighting = {
-
-};
-
-export const Highlighting = {
-    
+    selectedObject : Slide[] | SlideObject;
 };
