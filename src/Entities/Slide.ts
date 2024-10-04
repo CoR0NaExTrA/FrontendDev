@@ -1,7 +1,11 @@
-export type Slide = {
-    id: string;
-    listObject: (Text | Picture)[]; 
-    bg: SlideBackground;
+export type Position = {
+    x: number;
+    y: number;
+};
+
+export type Size = {
+    width: number;
+    heigth: number;
 };
 
 type Color = {
@@ -15,19 +19,18 @@ type Image = {
 };
 
 export type SlideBackground = Image | Color;
-export type SlideObject = Text | Picture;
+export type SlideElement = Text | Picture;
+
+export type Slide = {
+    id: string;
+    listObject: SlideElement[]; 
+    bg: SlideBackground;
+};
 
 type SlideObj = {
     id: string;
-    pos: {
-        x: number;
-        y: number;
-    };
-
-    size: {
-        width: number;
-        heigth: number;
-    };
+    pos: Position;
+    size: Size;
 };
 
 enum FontFormat {
@@ -47,21 +50,21 @@ type Picture = SlideObj & {
     src: string;
 };
 
-const EditPositionObject = (newPos: number, element: SlideObject) => {
+const EditPositionObject = (newPos: Position, element: SlideElement) => {
     return {
         ...element,
         pos: newPos,
     }
 };
 
-const EditSizeObject = (newSize: number, element: SlideObject) => {
+const EditSizeObject = (newSize: Size, element: SlideElement) => {
     return {
         ...element,
         pos: newSize,
     }
 };
 
-const EditBackgroundSlide = (newBackground: Color | Image, slide: Slide) => {
+const EditBackgroundSlide = (newBackground: SlideBackground, slide: Slide) => {
     return {
         ...slide, 
         bg: newBackground
@@ -89,7 +92,7 @@ const EditFontFamily = (newFontFamily: number, textElement: Text) => {
     }
 };
 
-const AddObjectToSlide = (newObject: Text | Picture, slide: Slide) => {
+const AddObjectToSlide = (newObject: SlideElement, slide: Slide) => {
     return {
         ...slide,
         object: newObject

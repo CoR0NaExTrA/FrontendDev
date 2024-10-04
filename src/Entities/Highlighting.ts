@@ -1,5 +1,5 @@
-import { Slide, SlideObject } from "./Slide";
+import { Slide, SlideElement } from "./Slide";
 
 export type Highlighting = {
-    selectedObject : Slide[] | SlideObject;
+    selectedObject : Slide[] | SlideElement[];
 };
