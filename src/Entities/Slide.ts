@@ -1,124 +1,100 @@
-export type Position = {
-    x: number;
-    y: number;
-};
+import { Color, Id, Image, Point, Size, Text } from "./BaseTypes";
+import { uuid } from 'uuidv4'
 
-export type Size = {
-    width: number;
-    heigth: number;
-};
-
-type Color = {
-    type: "color";
-    color: string;
-};
-
-type Image = {
+type BackgroundImage = {
     type: "image";
-    src: string;
+    url: string; 
 };
 
-export type SlideBackground = Image | Color;
-export type SlideElement = Text | Picture;
+type BackgroundColor = {
+    type: "color";
+    color: Color;
+};
+
+export type BackgroundSlide = BackgroundImage | BackgroundColor;
+export type ElementSlide = Text | Image;
 
 export type Slide = {
-    id: string;
-    listObject: SlideElement[]; 
-    bg: SlideBackground;
+    id :Id;
+    listObjects: ElementSlide[];
+    background: BackgroundSlide;
 };
 
-type SlideObj = {
-    id: string;
-    pos: Position;
-    size: Size;
-};
+const CreateSlide = () : Slide => ({
+    id: uuid(),
+    listObjects: [],
+    background: {type: "color", color: "#000000"},
+});
 
-enum FontFormat {
-    bold,
-    italic,
-    underlined,
-}
-
-type Text = SlideObj & {
-    fontSize: number;
-    fontFamily: string;
-    fontFormat: FontFormat; 
-    value: string;
-};
-
-type Picture = SlideObj & {
-    src: string;
-};
-
-const EditPositionObject = (newPos: Position, element: SlideElement) => {
+const EditBackground = (newBackground: BackgroundSlide, slide: Slide) : Slide => {
     return {
-        ...element,
-        pos: newPos,
+        ...slide,
+        background: newBackground,
     }
 };
 
-const EditSizeObject = (newSize: Size, element: SlideElement) => {
+const AddObject = (newObject: ElementSlide, slide: Slide) : Slide => {
     return {
-        ...element,
-        pos: newSize,
+        ...slide,
+        listObjects: [...slide.listObjects, newObject],
     }
 };
 
-const EditBackgroundSlide = (newBackground: SlideBackground, slide: Slide) => {
+const EditTextValue = (newValue: string, textObj: Text) : Text => {
     return {
-        ...slide, 
-        bg: newBackground
+        ...textObj,
+        value: newValue,
     }
 };
 
-const EditValueText = (newValue: string, textElement: Text) => {
-    return {
-        ...textElement,
-        value: newValue
+const EditTextFontSize = (newFontSize: number, textObj: Text) : Text => {
+    if (newFontSize <= 0) {
+        return {
+            ...textObj
+        };
     }
-};
 
-const EditFontSize = (newFontSize: number, textElement: Text) => {
     return {
-        ...textElement,
+        ...textObj,
         fontSize: newFontSize
     }
 };
 
-const EditFontFamily = (newFontFamily: number, textElement: Text) => {
+const EditElementPosition = (newPosition: Point, elem: ElementSlide) : ElementSlide => {
     return {
-        ...textElement,
-        fontSize: newFontFamily
+        ...elem,
+        pos: newPosition
     }
 };
-
-const AddObjectToSlide = (newObject: SlideElement, slide: Slide) => {
+  
+const EditElementSize = (newSize: Size, elem: ElementSlide) : ElementSlide => {
     return {
-        ...slide,
-        object: newObject
-    }
+        ...elem,
+        size: newSize,
+    };
 };
 
-const RemoveObjectToSlide = (id: string, slide: Slide) => {
-    const index = slide.listObject.findIndex(c => c.id == id);
+const RemoveObject = (slide: Slide, id: Id) : Slide => {
+    const index = slide.listObjects.findIndex(c => c.id == id);
 
     if (index == -1)
     {
         return slide;
     }
 
-    const newListObject = [...slide.listObject];
-    newListObject.splice(index, 1);
+    const newListObjects = [...slide.listObjects];
+    newListObjects.splice(index, 1);
 
 
     return {
         ...slide,
-        newListObject
+        listObjects: newListObjects
     }
 };
 
-export const Slide = {
-    AddObjectToSlide, EditBackgroundSlide, RemoveObjectToSlide,
-    EditPositionObject, EditSizeObject, EditFontFamily,
-    EditFontSize, EditValueText
+export {
+    CreateSlide, EditBackground, 
+    AddObject, EditTextValue,
+    EditTextFontSize, EditElementPosition,
+    EditElementSize, RemoveObject,
 };

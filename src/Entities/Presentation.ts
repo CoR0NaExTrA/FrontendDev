@@ -1,26 +1,38 @@
+import { Id } from "./BaseTypes";
 import { Slide } from "./Slide";
 
-
-type Presentation = {
+export type Presentation = {
     name: string;
     listSlides: Slide[];
 };
 
-const EditName = (newName: string, pres: Presentation) =>
-{
+const CreatePresentation = () => ({
+    name: "New Presentation",
+    listSlides: [],
+});
+
+const EditName = (newName: string, pres: Presentation) : Presentation => {
+    if (newName.trim() == "") {
+        return {
+            ...pres,
+            name: "New Presentation"
+        }
+    }
+    
     return {
-        ...pres,
+        ...pres, 
         name: newName
     }
 };
 
-const AddSlide = (newSlide: Slide, pres: Presentation) => {
+const AddSlide = (newSlide: Slide, pres: Presentation) : Presentation => {
     return {
         ...pres,
         listSlides: [...pres.listSlides, newSlide]
     }
-}; 
-const RemoveSlide = (id: string, pres: Presentation) => {
+};
+
+const RemoveSlide = (id: Id, pres: Presentation) => {
     const index = pres.listSlides.findIndex(c => c.id == id);
     
     if (index === -1) {
@@ -36,8 +48,22 @@ const RemoveSlide = (id: string, pres: Presentation) => {
     }
 };
 
-export const Presentation = 
-{
-    EditName, AddSlide, RemoveSlide
-};
+const MoveSlides = (SlideToMoveId: Id, pres: Presentation, posToMove: number): Presentation => {
+    if (posToMove < 0) {
+      return pres;
+    }
+  
+    const slideToMove = pres.listSlides.filter((slide) => SlideToMoveId.includes(slide.id));
+    const remainingSlide =  pres.listSlides.filter((slide) => !SlideToMoveId.includes(slide.id));
+    const newSlides = [...remainingSlide.slice(0, posToMove), ...slideToMove, ...remainingSlide.slice(posToMove)];
+  
+    return {
+        ...pres,
+        listSlides: newSlides,
+    };
+  };
 
+export {
+    CreatePresentation, EditName,
+    AddSlide, RemoveSlide, MoveSlides
+};
