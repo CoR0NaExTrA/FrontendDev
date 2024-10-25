@@ -1,5 +1,5 @@
 import { Id } from "./BaseTypes";
-import { Slide } from "./Slide";
+import { Slide } from "./SlideType";
 
 export type Presentation = {
     name: string;

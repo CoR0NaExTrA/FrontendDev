@@ -1,9 +1,8 @@
 export type Id = string;
-export type Color = string;
 export type Point = { x: number; y: number };
 export type Size = { width: number; height: number };
 
-enum ObjectType {
+export enum ObjectType {
   Text,
   Image,
 };
@@ -32,7 +31,7 @@ export type Text = SlideObject & {
     fontSize: number;
     fontName: string;
     fontFormatting: FontFormatting;
-    fontColor: Color;
-    fontBgColor: Color;
+    fontColor: string;
+    fontBgColor: string;
     value: string;
 };

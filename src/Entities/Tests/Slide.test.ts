@@ -1,4 +1,4 @@
-import { CreateSlide, EditBackground, Slide, BackgroundSlide  } from "../Slide";
+import { CreateSlide, EditBackground, Slide, BackgroundSlide  } from "../SlideType";
 
 jest.mock("uuid", () => ({
     v4: jest.fn(() => "test-uuid"),
