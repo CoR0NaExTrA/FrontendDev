@@ -1,5 +1,4 @@
-import { ObjectType, FontFormatting } from "../BaseTypes";
-import { CreateSlide, EditBackground, Slide, BackgroundSlide, AddObject, ElementSlide  } from "../Slide";
+import { CreateSlide, EditBackground, Slide, BackgroundSlide  } from "../SlideType";
 
 jest.mock("uuid", () => ({
     v4: jest.fn(() => "test-uuid"),

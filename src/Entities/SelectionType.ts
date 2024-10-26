@@ -1,5 +1,5 @@
 import { Id } from "./BaseTypes";
 
-export type Selection = {
+export type SelectionType = {
     selectedObjectById: Id;
 };

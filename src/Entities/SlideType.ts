@@ -1,4 +1,4 @@
-import { Color, Id, Image, Point, Size, Text } from "./BaseTypes";
+import { Id, Image, Point, Size, Text } from "./BaseTypes";
 import { uuid } from 'uuidv4'
 
 type BackgroundImage = {
@@ -8,32 +8,32 @@ type BackgroundImage = {
 
 type BackgroundColor = {
     type: "color";
-    color: Color;
+    color: string;
 };
 
 export type BackgroundSlide = BackgroundImage | BackgroundColor;
 export type ElementSlide = Text | Image;
 
-export type Slide = {
+export type SlideType = {
     id :Id;
     listObjects: ElementSlide[];
     background: BackgroundSlide;
 };
 
-const CreateSlide = () : Slide => ({
+const CreateSlide = () : SlideType => ({
     id: uuid(),
     listObjects: [],
     background: {type: "color", color: "#000000"},
 });
 
-const EditBackground = (newBackground: BackgroundSlide, slide: Slide) : Slide => {
+const EditBackground = (newBackground: BackgroundSlide, slide: SlideType) : SlideType => {
     return {
         ...slide,
         background: newBackground,
     }
 };
 
-const AddObject = (newObject: ElementSlide, slide: Slide) : Slide => {
+const AddObject = (newObject: ElementSlide, slide: SlideType) : SlideType => {
     return {
         ...slide,
         listObjects: [...slide.listObjects, newObject],
@@ -74,7 +74,7 @@ const EditElementSize = (newSize: Size, elem: ElementSlide) : ElementSlide => {
     };
 };
 
-const RemoveObject = (slide: Slide, id: Id) : Slide => {
+const RemoveObject = (slide: SlideType, id: Id) : SlideType => {
     const index = slide.listObjects.findIndex(c => c.id == id);
 
     if (index == -1)
