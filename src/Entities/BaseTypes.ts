@@ -3,7 +3,7 @@ export type Color = string;
 export type Point = { x: number; y: number };
 export type Size = { width: number; height: number };
 
-enum ObjectType {
+export enum ObjectType {
   Text,
   Image,
 };
@@ -21,7 +21,7 @@ export type Image = SlideObject & {
     url: string;
 };
 
-enum FontFormatting {
+export enum FontFormatting {
     bold,
     italic,
     underlined,
@@ -30,7 +30,7 @@ enum FontFormatting {
 export type Text = SlideObject & {
     objectType: ObjectType.Text;
     fontSize: number;
-    fontName: string;
+    fontFamily: string;
     fontFormatting: FontFormatting;
     fontColor: Color;
     fontBgColor: Color;
