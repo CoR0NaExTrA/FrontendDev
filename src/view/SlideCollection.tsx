@@ -1,6 +1,8 @@
 import { SelectionType } from "../Entities/SelectionType"
 import { SlideType } from "../Entities/SlideType"
-import { Slide } from "./Slide"
+import { Slide } from "./Slide/Slide"
+import styles from "./SlideCollecion.module.css"
+
 
 type SlideCollectionProps = {
     slideList: SlideType[],
@@ -9,14 +11,15 @@ type SlideCollectionProps = {
 
 function SlideCollection({slideList, selection}: SlideCollectionProps) {
     return (
-        <div>
+        <div className={styles.slideList}>
             {slideList.map(slide => 
                 <div key={slide.id}>
                     <Slide 
                         slide={slide}
                         scale={0.2}
                         isSelected={slide.id == selection.selectedObjectById}
-                    ></Slide>    
+                        className={styles.item}
+                    />
                 </div>
             )}
         </div>

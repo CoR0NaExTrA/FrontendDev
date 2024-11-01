@@ -1,9 +1,9 @@
 import { Id } from "./BaseTypes";
-import { Slide } from "./SlideType";
+import { SlideType } from "./SlideType";
 
 export type Presentation = {
     name: string;
-    listSlides: Slide[];
+    listSlides: SlideType[];
 };
 
 const CreatePresentation = () => ({
@@ -25,7 +25,7 @@ const EditName = (newName: string, pres: Presentation) : Presentation => {
     }
 };
 
-const AddSlide = (newSlide: Slide, pres: Presentation) : Presentation => {
+const AddSlide = (newSlide: SlideType, pres: Presentation) : Presentation => {
     return {
         ...pres,
         listSlides: [...pres.listSlides, newSlide]

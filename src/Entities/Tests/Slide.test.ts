@@ -1,4 +1,5 @@
-import { CreateSlide, EditBackground, Slide, BackgroundSlide  } from "../SlideType";
+import { FontFormatting, ObjectType } from "../BaseTypes";
+import { CreateSlide, EditBackground, SlideType, BackgroundSlide, ElementSlide, AddObject  } from "../SlideType";
 
 jest.mock("uuid", () => ({
     v4: jest.fn(() => "test-uuid"),
@@ -15,7 +16,7 @@ describe("CreateSlide", () => {
 });
 
 describe("EditBackground", () => {
-    const slide: Slide = CreateSlide();
+    const slide: SlideType = CreateSlide();
 
     // Arrange
     // Act
@@ -46,7 +47,7 @@ describe("EditBackground", () => {
 });
 
 describe("AddObject", () => {
-    const slide: Slide = CreateSlide();
+    const slide: SlideType = CreateSlide();
 
     it("should add image to slide", () => {
         const newObject: ElementSlide = {

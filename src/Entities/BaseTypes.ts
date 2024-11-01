@@ -9,7 +9,6 @@ export enum ObjectType {
 
 type SlideObject = {
     id: Id;
-    layer: number;
     pos: Point;
     size: Size;
     objectType: ObjectType;
