@@ -20,7 +20,7 @@ function Slide({slide, scale = 1, isSelected, className}: SlideProps) {
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
     }
-
+    
     if (isSelected) {
         slideStyles.border = '3px solid #0b57d0'
     }

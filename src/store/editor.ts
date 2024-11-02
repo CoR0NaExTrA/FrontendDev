@@ -12,7 +12,7 @@ function setEditor(newEditor: EditorType) {
     _editor = newEditor
 }
 
-function dispatch(modifyFn: Function, payload?: Object): void {
+function dispatch(modifyFn: Function, payload?: Object, p0?: { id: string; listObjects: { id: string; pos: { x: number; y: number }; size: { width: number; height: number }; objectType: any; fontSize: number; fontFamily: string; fontFormatting: any; fontColor: string; fontBgColor: string; value: string }[]; background: { type: string; color: string } }): void {
     const newEditor = modifyFn(_editor, payload)
     setEditor(newEditor)
 

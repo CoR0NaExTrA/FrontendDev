@@ -1,5 +1,5 @@
 import { CSSProperties } from "react"
-import { Image } from "../Entities/BaseTypes"
+import { Image } from "../../Entities/BaseTypes"
 
 type ImageObjectProps = {
     imageObject: Image,
