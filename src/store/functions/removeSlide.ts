@@ -1,4 +1,4 @@
-import { EditorType } from "../Entities/SelectionType";
+import { EditorType } from "../../Entities/SelectionType";
 
 function removeSlide(editor: EditorType): EditorType {
     console.log('editor', editor)

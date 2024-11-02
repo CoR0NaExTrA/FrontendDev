@@ -17,16 +17,16 @@ export type ElementSlide = Text | Image;
 export type SlideType = {
     id :Id;
     listObjects: ElementSlide[];
-    background: BackgroundSlide;
+    background: string;
 };
 
 const CreateSlide = () : SlideType => ({
     id: uuid(),
     listObjects: [],
-    background: {type: "color", color: "#000000"},
+    background: "#000000",
 });
 
-const EditBackground = (newBackground: BackgroundSlide, slide: SlideType) : SlideType => {
+const EditBackground = (newBackground: string, slide: SlideType) : SlideType => {
     return {
         ...slide,
         background: newBackground,

@@ -1,4 +1,4 @@
-import { EditorType } from "../Entities/SelectionType"
+import { EditorType } from "../../Entities/SelectionType"
 
 
 function editName(editor: EditorType, newName: string): EditorType {

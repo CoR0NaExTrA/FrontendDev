@@ -1,7 +1,7 @@
 import { SelectionType } from "../Entities/SelectionType"
 import { SlideType } from "../Entities/SlideType"
 import { dispatch } from "../store/editor"
-import { setSelection } from "../store/setSelection"
+import { setSelection } from "../store/functions/setSelection"
 import { Slide } from "./Slide/Slide"
 import styles from "./SlideCollecion.module.css"
 
@@ -26,7 +26,7 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
                         slide={slide}
                         scale={0.2}
                         isSelected={slide.id == selection.selectedObjectById}
-                        className={styles.item}
+                        className={styles.item + ' ' + slide.background}
                     />
                 </div>
             )}

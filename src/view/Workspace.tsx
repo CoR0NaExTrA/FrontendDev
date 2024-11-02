@@ -9,7 +9,7 @@ type WorkspaceProps = {
 function Workspace({slide}: WorkspaceProps) {
     return (
         <div className={styles.workspace}>
-            <Slide slide={slide} isSelected={false} className={""}/>
+            <Slide slide={slide} isSelected={false} className={slide.background}/>
         </div>
     )
 }

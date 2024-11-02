@@ -9,12 +9,15 @@ type AppProps = {
 }
 
 function App({editor}: AppProps) {
+
+  const selectedObjectIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editor.selection.selectedObjectById)
+
   return (
       <>
         <TopPanel title={editor.presentation.name}></TopPanel>
         <div className={styles.container}>
           <SlideCollection slideList={editor.presentation.listSlides} selection={editor.selection} />
-          <Workspace slide={editor.presentation.listSlides[0]} />
+          <Workspace slide={editor.presentation.listSlides[selectedObjectIndex]} />
         </div>
       </>
   )

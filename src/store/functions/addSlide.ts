@@ -1,5 +1,5 @@
-import { EditorType } from "../Entities/SelectionType"
-import { SlideType } from "../Entities/SlideType"
+import { EditorType } from "../../Entities/SelectionType"
+import { SlideType } from "../../Entities/SlideType"
 
 
 function addSlide(editor: EditorType, newSlide: SlideType): EditorType {
