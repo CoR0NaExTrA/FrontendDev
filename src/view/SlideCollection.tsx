@@ -17,8 +17,6 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
             selectedObjectById: slideId,
         })
     }
-
-    console.log(slideList);
     
     return (
         <div className={styles.slideList}>

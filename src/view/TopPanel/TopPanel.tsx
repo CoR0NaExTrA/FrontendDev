@@ -1,5 +1,7 @@
+import { v4 as uuid } from "uuid";
 import { Button } from '../../components/Button'
 import { addSlide } from '../../store/addSlide'
+import { editBackground } from '../../store/editBackground'
 import { editName } from '../../store/editName'
 import { dispatch } from '../../store/editor'
 import { removeSlide } from '../../store/removeSlide'
@@ -13,6 +15,7 @@ function TopPanel({title}: TopPanelProps) {
 
     function onAddSlide() {
         dispatch(addSlide, {
+            id: uuid(),
             listObjects: [],
             background: {type: "color", color: "#000000"},
         })
@@ -27,7 +30,7 @@ function TopPanel({title}: TopPanelProps) {
     }
 
     function onEditBackground() {
-        dispatch(editBackground)
+        dispatch(editBackground, )
     }
 
     return (
