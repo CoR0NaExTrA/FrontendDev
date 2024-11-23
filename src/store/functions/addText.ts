@@ -3,7 +3,6 @@ import { EditorType } from "../../Entities/SelectionType"
 
 
 function addText(editor: EditorType, newText: Text): EditorType {
-    console.log("editor", editor)
     if (!editor.selection) {
         return editor
     }

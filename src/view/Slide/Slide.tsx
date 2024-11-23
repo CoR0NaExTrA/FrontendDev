@@ -19,6 +19,10 @@ function Slide({slide, scale = 1, isSelected, className}: SlideProps) {
     const slideStyles: CSSProperties = {
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
+        background: slide.background,
+        backgroundImage: slide.background,
+        backgroundSize: '100%',
+        backgroundRepeat: 'no-repeat',
     }
     
     if (isSelected) {
@@ -30,9 +34,9 @@ function Slide({slide, scale = 1, isSelected, className}: SlideProps) {
             {slide.listObjects.map((slideObject) => {
                 switch (slideObject.objectType) {
                     case ObjectType.Text:
-                        return <TextObject key={slideObject.id} textObject={slideObject} scale={scale}></TextObject>
+                        return <TextObject key={slideObject.id} textObject={slideObject} scale={scale} isSelected={true}/>
                     case ObjectType.Image:
-                        return <ImageObject key={slideObject.id} imageObject={slideObject} scale={scale}></ImageObject>
+                        return <ImageObject key={slideObject.id} imageObject={slideObject} scale={scale} />
                     default:
                         throw new Error(`Unknown slide type`)
                 }

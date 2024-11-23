@@ -9,6 +9,8 @@ import styles from './TopPanel.module.css'
 import { addText } from "../../store/functions/addText";
 import { FontFormatting, ObjectType } from "../../Entities/BaseTypes";
 import { addImage } from "../../store/functions/addImage";
+import { removeText } from "../../store/functions/removeText";
+import { removeImage } from "../../store/functions/removeImage";
 
 type TopPanelProps = {
     title: string
@@ -20,7 +22,7 @@ function TopPanel({title}: TopPanelProps) {
         dispatch(addSlide, {
             id: uuid(),
             listObjects: [],
-            background: {type: "color", color: "#000000"},
+            background: "#ffffff",
         })
     }
 
@@ -33,7 +35,7 @@ function TopPanel({title}: TopPanelProps) {
     }
 
     function onEditBackground() {
-        dispatch(editBackground, "#0000ff")
+        dispatch(editBackground, "#0000ef")
     }
 
     function onAddText() {
@@ -61,6 +63,14 @@ function TopPanel({title}: TopPanelProps) {
         })
     }
 
+    function onRemoveText() {
+        dispatch(removeText)
+    }
+
+    function onRemoveImage() {
+        dispatch(removeImage)
+    }
+
     return (
         <div className={styles.topPanel}>
             <input aria-label="name" type="text" defaultValue={title} className={styles.title} onChange={onTitleChange}/>
@@ -69,8 +79,8 @@ function TopPanel({title}: TopPanelProps) {
                 <Button text='Удалить слайд' onClick={onRemoveSlide} className={styles.button}  />
                 <Button text='Вставить текст' onClick={onAddText} className={styles.button}  />
                 <Button text='Вставить изображение' onClick={onAddImage} className={styles.button}  />
-                <Button text='Удалить текст' onClick={onRemoveSlide} className={styles.button}  />
-                <Button text='Удалить изображение' onClick={onRemoveSlide} className={styles.button}  />
+                <Button text='Удалить текст' onClick={onRemoveText} className={styles.button}  />
+                <Button text='Удалить изображение' onClick={onRemoveImage} className={styles.button}  />
                 <Button text='Изменить фон' onClick={onEditBackground} className={styles.button}  />
             </div>
         </div>

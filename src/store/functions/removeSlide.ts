@@ -1,8 +1,6 @@
 import { EditorType } from "../../Entities/SelectionType";
 
 function removeSlide(editor: EditorType): EditorType {
-    console.log('editor', editor)
-
     const removeSlideId = editor.selection.selectedObjectById
     const removeSlideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == removeSlideId)
 

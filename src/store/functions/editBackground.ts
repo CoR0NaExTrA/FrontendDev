@@ -2,7 +2,6 @@ import { EditorType } from "../../Entities/SelectionType"
 
 
 function editBackground(editor: EditorType, newBackground: string): EditorType {
-    console.log('editor', editor)
     if (!editor.selection) {
         return editor
     }
