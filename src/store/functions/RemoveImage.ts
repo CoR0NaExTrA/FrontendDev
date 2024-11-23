@@ -3,15 +3,14 @@ import { EditorType } from "../../Entities/SelectionType"
 
 
 function removeImage(editor: EditorType): EditorType {
-    console.log('editor', editor)
+    const slideId = editor.selection.selectedObjectById
+    const slideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == slideId)
 
-    const removeImageId = editor.selection.selectedObjectById
-    const removeImageIndex = editor.presentation.listSlides.findIndex(slide => slide.id == removeImageId)
+    const elementIndex = editor.presentation.listSlides[slideIndex].listObjects.findIndex(element => element.objectType == ObjectType.Image)
 
-    const imageIndex = editor.presentation.listSlides[removeImageIndex].listObjects.findIndex(object => object.objectType == ObjectType.Image)
-
-    const newSlides = editor.presentation.listSlides
-    newSlides[removeImageIndex].listObjects.splice(imageIndex, 1)
+    const newSlides = [...editor.presentation.listSlides]
+    newSlides[slideIndex].listObjects.splice(elementIndex, 1)
+    console.log(newSlides)
     
     return {
         ...editor,

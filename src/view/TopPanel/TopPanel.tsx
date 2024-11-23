@@ -35,7 +35,7 @@ function TopPanel({title}: TopPanelProps) {
     }
 
     function onEditBackground() {
-        dispatch(editBackground, "#0000ff")
+        dispatch(editBackground, "#0000ef")
     }
 
     function onAddText() {

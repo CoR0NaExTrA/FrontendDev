@@ -16,7 +16,7 @@ function ImageObject({imageObject, scale = 1}: ImageObjectProps) {
     }
 
     return (
-        <img style={imageObjectStyles} src={`data:image/jpeg;base64, ${imageObject.url}`}/>
+        <img style={imageObjectStyles} src={`data:image/jpeg;base64, ${imageObject.url}`} />
     )
 }
 

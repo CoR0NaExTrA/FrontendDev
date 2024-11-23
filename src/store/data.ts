@@ -1,3 +1,4 @@
+import { uuid } from "uuidv4"
 import { FontFormatting, ObjectType } from "../Entities/BaseTypes"
 import { Presentation } from "../Entities/Presentation"
 import { EditorType } from "../Entities/SelectionType"

@@ -3,15 +3,14 @@ import { EditorType } from "../../Entities/SelectionType"
 
 
 function removeText(editor: EditorType): EditorType {
-    console.log('editor', editor)
+    const slideId = editor.selection.selectedObjectById
+    const slideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == slideId)
 
-    const removeTextId = editor.selection.selectedObjectById
-    const removeTextIndex = editor.presentation.listSlides.findIndex(slide => slide.id == removeTextId)
+    const elementIndex = editor.presentation.listSlides[slideIndex].listObjects.findIndex(element => element.objectType == ObjectType.Text)
 
-    const textIndex = editor.presentation.listSlides[removeTextIndex].listObjects.findIndex(object => object.objectType == ObjectType.Text)
-
-    const newSlides = editor.presentation.listSlides
-    newSlides[removeTextIndex].listObjects.splice(textIndex, 1)
+    const newSlides = [...editor.presentation.listSlides]
+    newSlides[slideIndex].listObjects.splice(elementIndex, 1)
+    console.log(newSlides)
     
     return {
         ...editor,
