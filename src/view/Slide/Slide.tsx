@@ -30,7 +30,7 @@ function Slide({slide, scale = 1, isSelected, className}: SlideProps) {
     }
 
     return (
-        <div style={slideStyles} className={styles.slide + ' ' + className} >
+        <div style={slideStyles} className={styles.slide + ' ' + className}>
             {slide.listObjects.map((slideObject) => {
                 switch (slideObject.objectType) {
                     case ObjectType.Text:

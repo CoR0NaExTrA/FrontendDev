@@ -23,7 +23,7 @@ export type SlideType = {
 const CreateSlide = () : SlideType => ({
     id: uuid(),
     listObjects: [],
-    background: "#ffffff",
+    background: "#000000",
 });
 
 const EditBackground = (newBackground: string, slide: SlideType) : SlideType => {
@@ -92,55 +92,9 @@ const RemoveObject = (slide: SlideType, id: Id) : SlideType => {
     }
 };
 
-const MoveElementsDown = (elementsToMoveId: Id[], slide: SlideType): SlideType => {
-    const elementsCopy = [...slide.listObjects];
-    elementsToMoveId
-      .slice()
-      .reverse()
-      .forEach((id) => {
-        const index = elementsCopy.findIndex((element) => element.id === id);
-        if (index !== -1 && index < elementsCopy.length - 1) {
-          [elementsCopy[index], elementsCopy[index + 1]] = [elementsCopy[index + 1], elementsCopy[index]];
-        }
-      });
-    return { ...slide, listObjects: elementsCopy };
-  };
-  
-  const MoveElementsUp = (elementsToMoveId: Id[], slide: SlideType): SlideType => {
-    const elementsCopy = [...slide.listObjects];
-    elementsToMoveId.forEach((id) => {
-      const index = elementsCopy.findIndex((element) => element.id === id);
-      if (index > 0) {
-        [elementsCopy[index], elementsCopy[index - 1]] = [elementsCopy[index - 1], elementsCopy[index]];
-      }
-    });
-  
-    return { ...slide, listObjects: elementsCopy };
-  };
-  
-const MoveElementsToTop = (elementsToMoveId: Id[], slide: SlideType): SlideType => {
-    const elementsToMove = slide.listObjects.filter((object) => elementsToMoveId.includes(object.id));
-    const remainingElements = slide.listObjects.filter((object) => !elementsToMoveId.includes(object.id));
-    return {
-        ...slide,
-        listObjects: [...elementsToMove, ...remainingElements],
-    };
-  };
-  
-const MoveElementsToBottom = (elementsToMoveId: Id[], slide: SlideType): SlideType => {
-    const elementsToMove = slide.listObjects.filter((object) => elementsToMoveId.includes(object.id));
-    const remainingElements = slide.listObjects.filter((object) => !elementsToMoveId.includes(object.id));
-    return {
-      ...slide,
-      listObjects: [...remainingElements, ...elementsToMove],
-    };
-};
-
 export {
     CreateSlide, EditBackground, 
     AddObject, EditTextValue,
     EditTextFontSize, EditElementPosition,
     EditElementSize, RemoveObject,
-    MoveElementsToBottom, MoveElementsToTop,
-    MoveElementsUp, MoveElementsDown
 };

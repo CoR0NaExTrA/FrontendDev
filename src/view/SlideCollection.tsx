@@ -6,22 +6,48 @@ import { setSelection } from "../store/functions/setSelection"
 import { Slide } from "./Slide/Slide"
 import styles from "./SlideCollecion.module.css"
 
+
 type SlideCollectionProps = {
     slideList: SlideType[],
     selection: SelectionType,
 }
 
 function SlideCollection({slideList, selection}: SlideCollectionProps) {
+    const [slideCollecion, setSlideCollection] = useState(slideList)
+
+    useEffect(() => { setSlideCollection(slideList)
+      }, [slideList]);
+
+    const dragSlide = useRef<any>(null)
+    const dragOverSlide = useRef<any>(null)
+
+    const handleSort = () => {
+        let _slideCollecion = [...slideCollecion]
+
+        const draggedSlideContent = _slideCollecion.splice(dragSlide.current, 1)[0]
+        
+        _slideCollecion.splice(dragOverSlide.current, 0 , draggedSlideContent)
+
+        dragSlide.current = null
+        dragOverSlide.current = null
+
+        setSlideCollection(_slideCollecion)
+    }
+
     function onSlideClick(slideId: string) {
         dispatch(setSelection, {
             selectedObjectById: slideId,
         })
     }
-    
+
     return (
         <div className={styles.slideList}>
-            {slideList.map(slide => 
-                <div key={slide.id} onClick={() => {onSlideClick(slide.id)}}>
+            {slideCollecion.map((slide, index) => 
+                <div key={slide.id} onClick={() => {onSlideClick(slide.id)}}
+                onDragStart={() => dragSlide.current = index}
+                onDragEnter={() => dragOverSlide.current = index}
+                onDragEnd={handleSort}
+                draggable={slide.id == selection.selectedObjectById}>
                     <Slide 
                         slide={slide}
                         scale={0.2}

@@ -9,6 +9,7 @@ type AppProps = {
 }
 
 function App({editor}: AppProps) {
+
   const selectedObjectIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editor.selection.selectedObjectById)
 
   return (
