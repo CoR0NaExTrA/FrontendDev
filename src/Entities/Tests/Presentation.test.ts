@@ -21,13 +21,3 @@ describe("EditName", () => {
         expect(EditName("", pres)).toEqual(pres);
     });
 });
-
-describe("AddObject", () => {
-    it("", () => {
-
-    });
-
-    it("", () => {
-
-    });
-});

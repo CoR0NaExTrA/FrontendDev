@@ -3,9 +3,6 @@ import { EditorType } from "../../Entities/SelectionType"
 
 function addImage(editor: EditorType, newImage: Image): EditorType {
     console.log("editor", editor)
-    if (!editor.selection) {
-        return editor
-    }
 
     const addTextSlideId = editor.selection.selectedObjectById
     const addTextSlideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == addTextSlideId)

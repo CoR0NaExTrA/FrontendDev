@@ -3,9 +3,6 @@ import { EditorType } from "../../Entities/SelectionType"
 
 function editBackground(editor: EditorType, newBackground: string): EditorType {
     console.log('editor', editor)
-    if (!editor.selection) {
-        return editor
-    }
 
     const editBackgroundSlideId = editor.selection.selectedObjectById
     const editBackgroundSlideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editBackgroundSlideId)
