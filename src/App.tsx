@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styles from './App.module.css'
 import { EditorType } from "./Entities/SelectionType";
 import { SlideCollection } from "./view/SlideCollection";
@@ -9,6 +10,12 @@ type AppProps = {
 }
 
 function App({editor}: AppProps) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+        document.body.style.overflow = "scroll"
+    };
+  }, []);
 
   const selectedObjectIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editor.selection.selectedObjectById)
 

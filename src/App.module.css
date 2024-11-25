@@ -3,14 +3,15 @@
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
-    width: 100%;
-  }
+}
   
-  :root {
+:root {
     --topPanelHeight: 70px;
-  }
+    --titleHeight: 20px;
+    --colorPickerWidth: 100px;
+}
   
-  .container {
+.container {
     display: flex;
     height: calc(100vh - var(--topPanelHeight));
-  }
+}

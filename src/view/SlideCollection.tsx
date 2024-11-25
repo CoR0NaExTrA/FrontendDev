@@ -15,8 +15,9 @@ type SlideCollectionProps = {
 function SlideCollection({slideList, selection}: SlideCollectionProps) {
     const [slideCollecion, setSlideCollection] = useState(slideList)
 
-    useEffect(() => { setSlideCollection(slideList)
-      }, [slideList]);
+    useEffect(() => { 
+        setSlideCollection(slideList)
+    }, [slideList]);
 
     const dragSlide = useRef<any>(null)
     const dragOverSlide = useRef<any>(null)

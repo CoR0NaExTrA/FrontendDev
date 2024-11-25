@@ -8,11 +8,54 @@
 .title {
     background-color: transparent;
     border: none;
+    height: var(--titleHeight);
     font-size: 16px;
     width: 250px;
     margin: 0 0 10px 5px;
 }
 
+.container_buttons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: calc(var(--topPanelHeight) - var(--titleHeight));
+}
+
+.container_button_editBackground {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.color_picker {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+}
+
+.color_picker::before, .color_picker::after {
+    display: block;
+    content: "";
+    position: absolute;
+    height: 20px;
+    right: 35%;
+    border: 10px solid transparent;
+}
+
+.color_picker::before {
+    top: -40px;
+    border-bottom: 10px solid #00ff00;
+}
+
+.color_picker::after {
+    top: -38px;
+    border-bottom: 10px solid #ffffff;
+}
+
 .button {
     margin: 0 5px;
+}
+
+.button_with_dropdown {
+    position: relative;
 }
