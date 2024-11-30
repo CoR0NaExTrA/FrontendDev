@@ -21,14 +21,45 @@
     height: calc(var(--topPanelHeight) - var(--titleHeight));
 }
 
-.container_button_editBackground {
+.container_button_dropdown {
     position: relative;
     display: flex;
     flex-direction: column;
 }
 
-.color_picker {
+.file_upload {
     display: none;
+    position: absolute;
+    border: 1px solid #00ff00;
+    border-radius: 6px;
+    background-color: #00ff00;
+    padding: 5px;
+    top: calc(100% + 10px);
+    width: 150px;
+    max-width: 150px;
+}
+
+.file_upload::before, .file_upload::after {
+    display: block;
+    content: "";
+    position: absolute;
+    height: 20px;
+    right: 35%;
+    border: 10px solid transparent;
+}
+
+.file_upload::before {
+    top: -40px;
+    border-bottom: 10px solid #00ff00;
+}
+
+.file_upload::after {
+    top: -38px;
+    border-bottom: 10px solid #ffffff;
+}
+
+.color_picker {
+    display: var(--displayColorPicker);
     position: absolute;
     top: calc(100% + 10px);
 }

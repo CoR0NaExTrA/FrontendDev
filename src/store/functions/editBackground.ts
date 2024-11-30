@@ -6,7 +6,7 @@ function editBackground(editor: EditorType, newBackground: string): EditorType {
         return editor
     }
 
-    const editBackgroundSlideId = editor.selection.selectedObjectById
+    const editBackgroundSlideId = editor.selection.selectedSlideById
     const editBackgroundSlideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editBackgroundSlideId)
 
     const newSlides = [...editor.presentation.listSlides]

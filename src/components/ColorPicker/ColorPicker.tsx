@@ -1,4 +1,4 @@
-import styles from "../components/ColorPicker.module.css"
+import styles from "../ColorPicker/ColorPicker.module.css"
 
 type ColorPickerProps = {
     value: string,

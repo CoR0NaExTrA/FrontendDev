@@ -17,7 +17,7 @@ function App({editor}: AppProps) {
     };
   }, []);
 
-  const selectedObjectIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editor.selection.selectedObjectById)
+  const selectedObjectIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editor.selection.selectedSlideById)
 
   return (
       <>

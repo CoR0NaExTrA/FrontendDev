@@ -7,7 +7,7 @@ function addImage(editor: EditorType, newImage: Image): EditorType {
         return editor
     }
 
-    const addTextSlideId = editor.selection.selectedObjectById
+    const addTextSlideId = editor.selection.selectedSlideById
     const addTextSlideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == addTextSlideId)
 
     const newSlides = [...editor.presentation.listSlides]

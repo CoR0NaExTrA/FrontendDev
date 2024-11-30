@@ -9,6 +9,7 @@
     --topPanelHeight: 70px;
     --titleHeight: 20px;
     --colorPickerWidth: 100px;
+    --displayColorPicker: none;
 }
   
 .container {

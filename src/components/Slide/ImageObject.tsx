@@ -4,9 +4,11 @@ import { Image } from "../../Entities/BaseTypes"
 type ImageObjectProps = {
     imageObject: Image,
     scale?: number,
+    isSelected: boolean,
 }
 
-function ImageObject({imageObject, scale = 1}: ImageObjectProps) {
+function ImageObject({imageObject, scale = 1, isSelected}: ImageObjectProps) {
+
     const imageObjectStyles: CSSProperties = {
         position: 'absolute',
         top: `${imageObject.pos.y * scale}px`,
@@ -16,7 +18,7 @@ function ImageObject({imageObject, scale = 1}: ImageObjectProps) {
     }
 
     return (
-        <img style={imageObjectStyles} src={`data:image/jpeg;base64, ${imageObject.url}`} />
+        <img style={imageObjectStyles} src={imageObject.url} />
     )
 }
 

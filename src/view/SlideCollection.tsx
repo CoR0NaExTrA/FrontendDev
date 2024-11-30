@@ -3,7 +3,7 @@ import { SelectionType } from "../Entities/SelectionType"
 import { SlideType } from "../Entities/SlideType"
 import { dispatch } from "../store/editor"
 import { setSelection } from "../store/functions/setSelection"
-import { Slide } from "./Slide/Slide"
+import { Slide } from "../components/Slide/Slide"
 import styles from "./SlideCollecion.module.css"
 
 
@@ -37,7 +37,7 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
 
     function onSlideClick(slideId: string) {
         dispatch(setSelection, {
-            selectedObjectById: slideId,
+            selectedSlideById: slideId,
         })
     }
 
@@ -48,12 +48,13 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
                 onDragStart={() => dragSlide.current = index}
                 onDragEnter={() => dragOverSlide.current = index}
                 onDragEnd={handleSort}
-                draggable={slide.id == selection.selectedObjectById}>
+                draggable={slide.id == selection.selectedSlideById}>
                     <Slide 
                         slide={slide}
                         scale={0.2}
-                        isSelected={slide.id == selection.selectedObjectById}
+                        isSelected={slide.id == selection.selectedSlideById}
                         className={styles.item}
+                        selection={selection}
                     />
                 </div>
             )}

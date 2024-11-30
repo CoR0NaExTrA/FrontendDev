@@ -1,5 +1,5 @@
 import { SlideType } from "../Entities/SlideType"
-import { Slide } from "./Slide/Slide"
+import { Slide } from "../components/Slide/Slide"
 import styles from "./Workspace.module.css"
 
 type WorkspaceProps = {
