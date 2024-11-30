@@ -37,6 +37,7 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
 
     function onSlideClick(slideId: string) {
         dispatch(setSelection, {
+            selectedObjectById: selection.selectedObjectById,
             selectedSlideById: slideId,
         })
     }

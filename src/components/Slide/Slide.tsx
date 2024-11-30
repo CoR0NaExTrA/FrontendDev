@@ -38,6 +38,7 @@ function Slide({slide, scale = 1, isSelected, className, selection}: SlideProps)
     function onObjectClick(objectId: string) {
         dispatch(setSelection, {
             selectedObjectById: objectId,
+            selectedSlideById: selection.selectedSlideById,
         })
     }
 
@@ -48,13 +49,13 @@ function Slide({slide, scale = 1, isSelected, className, selection}: SlideProps)
                     case ObjectType.Text:
                         return (
                             <div key={slideObject.id} onClick={() => onObjectClick(slideObject.id)}>
-                                <TextObject textObject={slideObject} scale={scale} isSelected={slideObject.id == selection.selectedObjectById} containerRef={containerRef}/>
+                                <TextObject textObject={slideObject} scale={scale} containerRef={containerRef} isSelected={false}/>
                             </div>
                         )
                     case ObjectType.Image:
                         return (
                             <div key={slideObject.id} onClick={() => onObjectClick(slideObject.id)}>
-                                <ImageObject imageObject={slideObject} scale={scale} isSelected={slideObject.id == selection.selectedObjectById}/>
+                                <ImageObject imageObject={slideObject} scale={scale} isSelected={false}/>
                             </div>
                         )
                     default:

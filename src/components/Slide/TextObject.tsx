@@ -1,8 +1,6 @@
 import { Text } from "../../Entities/BaseTypes"
 import { CSSProperties, useState } from "react";
 import useDraggable from "../../hooks/useDrag";
-import { setSelection } from "../../store/functions/setSelection";
-import { dispatch } from "../../store/editor";
 
 type TextObjectProps = {
     textObject: Text,
@@ -14,10 +12,10 @@ function TextObject({textObject, scale = 1, isSelected, containerRef}: TextObjec
     const { position, handleMouseDown} = useDraggable(containerRef)
     const [text, setText] = useState(textObject.value);
 
-    const handleChange = (event: any) => {
-        setText(event.target.innerText); // Сохраняем новый текст в состояние
-        textObject.value = text
-    };
+    // const handleChange = (event: any) => {
+    //     setText(event.target.innerText); // Сохраняем новый текст в состояние
+    //     textObject.value = text
+    // };
 
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
@@ -33,7 +31,7 @@ function TextObject({textObject, scale = 1, isSelected, containerRef}: TextObjec
 
     return (
         <div>
-            <p contentEditable onInput={handleChange} suppressContentEditableWarning style={textObjectStyles} draggable={isSelected} onMouseDown={(e: React.MouseEvent<HTMLParagraphElement>) => handleMouseDown(e)}>
+            <p /*contentEditable onInput={handleChange}*/ suppressContentEditableWarning style={textObjectStyles} draggable={isSelected} onMouseDown={(e: React.MouseEvent<HTMLParagraphElement>) => handleMouseDown(e)}>
                 {text}
             </p>
         </div>
