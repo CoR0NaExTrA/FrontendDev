@@ -28,11 +28,10 @@
 }
 
 .file_upload {
-    display: none;
+    display: block;
     position: absolute;
     border: 1px solid #00ff00;
     border-radius: 6px;
-    background-color: #00ff00;
     padding: 5px;
     top: calc(100% + 10px);
     width: 150px;
@@ -59,7 +58,7 @@
 }
 
 .color_picker {
-    display: var(--displayColorPicker);
+    display: inline-flex;
     position: absolute;
     top: calc(100% + 10px);
 }

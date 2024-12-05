@@ -61,7 +61,6 @@ const presentation: Presentation = {
 const editor: EditorType = {
     presentation,
     selection: {
-        selectedObjectById: presentation.listSlides[0].listObjects[0].id,
         selectedSlideById: presentation.listSlides[0].id,
     }
 }

@@ -54,7 +54,6 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
                         scale={0.2}
                         isSelected={slide.id == selection.selectedSlideById}
                         className={styles.item}
-                        selection={selection}
                     />
                 </div>
             )}

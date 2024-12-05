@@ -10,7 +10,7 @@ import { addText } from "../../store/functions/addText";
 import { FontFormatting, ObjectType } from "../../Entities/BaseTypes";
 import { addImage } from "../../store/functions/addImage";
 import { removeText } from "../../store/functions/removeText";
-import { removeImage } from "../../store/functions/removeImage";
+import { removeImage } from "../../store/functions/RemoveImage";
 import { SetStateAction, useState } from "react";
 import { ColorPicker } from "../../components/ColorPicker/ColorPicker";
 import { FileUpload } from "../../components/DnD InsertImage/FileUpload";
