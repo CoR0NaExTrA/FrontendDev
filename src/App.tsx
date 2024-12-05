@@ -17,14 +17,14 @@ function App({editor}: AppProps) {
     };
   }, []);
 
-  const selectedObjectIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editor.selection.selectedSlideById)
+  const selectedSlideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == editor.selectionSlide.selectedSlideId)
 
   return (
       <>
         <TopPanel title={editor.presentation.name}></TopPanel>
         <div className={styles.container}>
-          <SlideCollection slideList={editor.presentation.listSlides} selection={editor.selection} />
-          <Workspace slide={editor.presentation.listSlides[selectedObjectIndex]} />
+          <SlideCollection slideList={editor.presentation.listSlides} selection={editor.selectionSlide} editor={editor}/>
+          <Workspace slide={editor.presentation.listSlides[selectedSlideIndex]} selection={editor.selectionObject}/>
         </div>
       </>
   )

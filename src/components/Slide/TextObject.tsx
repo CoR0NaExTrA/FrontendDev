@@ -5,9 +5,10 @@ type TextObjectProps = {
     textObject: Text,
     scale?: number,
     isSelected: boolean,
+    isSlideCollection: boolean,
     containerRef: any,
 }
-function TextObject({textObject, scale = 1, isSelected, containerRef}: TextObjectProps) {  
+function TextObject({textObject, scale = 1, isSelected, isSlideCollection, containerRef}: TextObjectProps) {  
     const [text, setText] = useState(textObject.value)
     const [position, setPosition] = useState(textObject.pos)
     const [size, setSize] = useState(textObject.size)
@@ -144,7 +145,7 @@ function TextObject({textObject, scale = 1, isSelected, containerRef}: TextObjec
             <p style={contentStyles} draggable={isSelected}>
                 {text}
             </p>
-            {isSelected &&
+            {(isSelected && !isSlideCollection) &&
                 handles.map((handle) => (
                     <div
                         key={handle.direction}

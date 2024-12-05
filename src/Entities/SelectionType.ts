@@ -1,11 +1,23 @@
 import { Id } from "./BaseTypes";
 import { Presentation } from "./Presentation";
 
-export type SelectionType = {
-    selectedSlideById: Id;
-};
+export enum SelectionType {
+    Slide,
+    Object
+}
+
+export type SelectionSlide = {
+    type: SelectionType.Slide;
+    selectedSlideId: Id;
+}
+
+export type SelectionObject = {
+    type: SelectionType.Object;
+    selectedObjectId: Id;
+}
 
 export type EditorType = {
     presentation: Presentation,
-    selection: SelectionType,
+    selectionSlide: SelectionSlide,
+    selectionObject: SelectionObject,
 }

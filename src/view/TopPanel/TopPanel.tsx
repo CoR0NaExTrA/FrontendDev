@@ -88,15 +88,15 @@ function TopPanel({title}: TopPanelProps) {
     function onAddText() {
         dispatch(addText, {
             id: uuid(),
-            pos: {x: 10, y: 10},
-            size: {width: 10, height: 10},
+            pos: {x: 50, y: 50},
+            size: {width: 100, height: 100},
             objectType: ObjectType.Text,
             fontSize: 100,
             fontFamily: 'Roboto',
             fontFormatting: FontFormatting.bold,
             fontColor: '#ffffff',
             fontBgColor: '#000000',
-            value: 'Пока',
+            value: '',
         })
     }
 

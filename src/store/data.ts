@@ -1,7 +1,6 @@
-import { uuid } from "uuidv4"
 import { FontFormatting, ObjectType } from "../Entities/BaseTypes"
 import { Presentation } from "../Entities/Presentation"
-import { EditorType } from "../Entities/SelectionType"
+import { EditorType, SelectionType } from "../Entities/SelectionType"
 import { BackgroundType, SlideType } from "../Entities/SlideType"
 
 
@@ -11,7 +10,7 @@ const slide1: SlideType = {
         {
             id: 'slide-object-1',
             pos: {x: 10, y: 10},
-            size: {width: 100, height: 20},
+            size: {width: 100, height: 100},
             objectType: ObjectType.Text,
             fontSize: 100,
             fontFamily: 'Roboto',
@@ -37,7 +36,7 @@ const slide2: SlideType = {
         {
             id: 'Slide-object-1',
             pos: {x: 10, y: 10},
-            size: {width: 10, height: 10},
+            size: {width: 100, height: 100},
             objectType: ObjectType.Text,
             fontSize: 100,
             fontFamily: 'Roboto',
@@ -60,8 +59,13 @@ const presentation: Presentation = {
 
 const editor: EditorType = {
     presentation,
-    selection: {
-        selectedSlideById: presentation.listSlides[0].id,
+    selectionSlide: {
+        type: SelectionType.Slide,
+        selectedSlideId: presentation.listSlides[0].id,
+    },
+    selectionObject: {
+        type: SelectionType.Object,
+        selectedObjectId: ''
     }
 }
 

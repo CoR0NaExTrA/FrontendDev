@@ -1,18 +1,19 @@
-import { DragEvent, useEffect, useRef, useState } from "react"
-import { SelectionType } from "../Entities/SelectionType"
+import { useEffect, useRef, useState } from "react"
+import { EditorType, SelectionSlide, SelectionType } from "../Entities/SelectionType"
 import { SlideType } from "../Entities/SlideType"
 import { dispatch } from "../store/editor"
-import { setSelection } from "../store/functions/setSelection"
+import { setSelectionSlide } from "../store/functions/setSelectionSlide"
 import { Slide } from "../components/Slide/Slide"
 import styles from "./SlideCollecion.module.css"
 
 
 type SlideCollectionProps = {
     slideList: SlideType[],
-    selection: SelectionType,
+    selection: SelectionSlide,
+    editor: EditorType,
 }
 
-function SlideCollection({slideList, selection}: SlideCollectionProps) {
+function SlideCollection({slideList, selection, editor}: SlideCollectionProps) {
     const [slideCollecion, setSlideCollection] = useState(slideList)
 
     useEffect(() => { 
@@ -36,8 +37,9 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
     }
 
     function onSlideClick(slideId: string) {
-        dispatch(setSelection, {
-            selectedSlideById: slideId,
+        dispatch(setSelectionSlide, {
+            type: SelectionType.Slide,
+            selectedSlideId: slideId,
         })
     }
 
@@ -48,12 +50,14 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
                 onDragStart={() => dragSlide.current = index}
                 onDragEnter={() => dragOverSlide.current = index}
                 onDragEnd={handleSort}
-                draggable={slide.id == selection.selectedSlideById}>
+                draggable={slide.id == selection.selectedSlideId}>
                     <Slide 
                         slide={slide}
                         scale={0.2}
-                        isSelected={slide.id == selection.selectedSlideById}
+                        isSelected={slide.id == selection.selectedSlideId}
+                        isSlideCollection={true}
                         className={styles.item}
+                        selection={editor.selectionObject}
                     />
                 </div>
             )}

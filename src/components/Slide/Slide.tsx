@@ -4,6 +4,9 @@ import { ObjectType } from "../../Entities/BaseTypes"
 import { BackgroundType, SlideType } from "../../Entities/SlideType"
 import { ImageObject } from "./ImageObject"
 import styles from "./Slide.module.css"
+import { setSelectionObject } from "../../store/functions/setSelectionObject"
+import { dispatch } from "../../store/editor"
+import { SelectionObject, SelectionType } from "../../Entities/SelectionType"
 
 const SLIDE_WIDTH = 935
 const SLIDE_HEIGHT = 525
@@ -12,10 +15,12 @@ type SlideProps = {
     slide: SlideType,
     scale?: number,
     isSelected: boolean,
+    isSlideCollection: boolean,
     className: string,
+    selection: SelectionObject,
 }
 
-function Slide({slide, scale = 1, isSelected, className}: SlideProps) {
+function Slide({slide, scale = 1, isSelected, isSlideCollection, className, selection}: SlideProps) {
     const containerRef = useRef(null);
     
     const slideStyles: CSSProperties = {
@@ -37,14 +42,31 @@ function Slide({slide, scale = 1, isSelected, className}: SlideProps) {
             break;
     }
 
+    function onObjectClick(slideId: string) {
+        dispatch(setSelectionObject, {
+            type: SelectionType.Slide,
+            selectedObjectId: slideId,
+        })
+    }
+
     return (
         <div ref={containerRef} style={slideStyles} className={styles.slide + ' ' + className}>
             {slide.listObjects.map((slideObject) => {
                 switch (slideObject.objectType) {
                     case ObjectType.Text:
-                        return <TextObject key={slideObject.id} textObject={slideObject} scale={scale} containerRef={containerRef} isSelected={true}/>
+                        return ( 
+                            <div key={slideObject.id} onClick={() => {onObjectClick(slide.id)}}>
+                                <TextObject textObject={slideObject} scale={scale} 
+                                containerRef={containerRef} isSelected={slideObject.id == selection.selectedObjectId} isSlideCollection={isSlideCollection}/> 
+                            </div>
+                        )
                     case ObjectType.Image:
-                        return <ImageObject key={slideObject.id} imageObject={slideObject} scale={scale} containerRef={containerRef} isSelected={true}/>
+                        return ( 
+                            <div key={slideObject.id} onClick={() => {onObjectClick(slide.id)}}>
+                                <ImageObject imageObject={slideObject} scale={scale} 
+                                containerRef={containerRef} isSelected={slideObject.id == selection.selectedObjectId} isSlideCollection={isSlideCollection}/> 
+                            </div> 
+                        )
                     default:
                         throw new Error(`Unknown slide type`)
                 }
