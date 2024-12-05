@@ -1,12 +1,9 @@
 import { CSSProperties, useRef } from "react"
 import { TextObject } from "./TextObject"
 import { ObjectType } from "../../Entities/BaseTypes"
-import { SlideType } from "../../Entities/SlideType"
+import { BackgroundType, SlideType } from "../../Entities/SlideType"
 import { ImageObject } from "./ImageObject"
 import styles from "./Slide.module.css"
-import { SelectionType } from "../../Entities/SelectionType"
-import { dispatch } from "../../store/editor"
-import { setSelection } from "../../store/functions/setSelection"
 
 const SLIDE_WIDTH = 935
 const SLIDE_HEIGHT = 525
@@ -16,30 +13,28 @@ type SlideProps = {
     scale?: number,
     isSelected: boolean,
     className: string,
-    selection: SelectionType,
 }
 
-function Slide({slide, scale = 1, isSelected, className, selection}: SlideProps) {
+function Slide({slide, scale = 1, isSelected, className}: SlideProps) {
     const containerRef = useRef(null);
     
     const slideStyles: CSSProperties = {
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
-        background: slide.background,
-        backgroundImage: slide.background,
-        backgroundSize: '100%',
-        backgroundRepeat: 'no-repeat',
-    }
-    
-    if (isSelected) {
-        slideStyles.border = '3px solid #0b57d0'
+        border: isSelected ? '3px solid #0b57d0' : "1px solid #E5E4E2",
+        boxShadow: !isSelected ? '3px 3px #E5E4E2': 'none'
     }
 
-    function onObjectClick(objectId: string) {
-        dispatch(setSelection, {
-            selectedObjectById: objectId,
-            selectedSlideById: selection.selectedSlideById,
-        })
+    switch (slide.background.type) {
+        case BackgroundType.Color:
+            slideStyles.backgroundColor = slide.background.color
+            break;
+        case BackgroundType.Image:
+            slideStyles.backgroundImage = `url(${slide.background.url})`
+            slideStyles.backgroundRepeat = 'no-repeat'
+            slideStyles.backgroundSize = 'cover'
+            slideStyles.backgroundPosition = 'center'
+            break;
     }
 
     return (
@@ -47,17 +42,9 @@ function Slide({slide, scale = 1, isSelected, className, selection}: SlideProps)
             {slide.listObjects.map((slideObject) => {
                 switch (slideObject.objectType) {
                     case ObjectType.Text:
-                        return (
-                            <div key={slideObject.id} onClick={() => onObjectClick(slideObject.id)}>
-                                <TextObject textObject={slideObject} scale={scale} containerRef={containerRef} isSelected={false}/>
-                            </div>
-                        )
+                        return <TextObject key={slideObject.id} textObject={slideObject} scale={scale} containerRef={containerRef} isSelected={true}/>
                     case ObjectType.Image:
-                        return (
-                            <div key={slideObject.id} onClick={() => onObjectClick(slideObject.id)}>
-                                <ImageObject imageObject={slideObject} scale={scale} isSelected={false}/>
-                            </div>
-                        )
+                        return <ImageObject key={slideObject.id} imageObject={slideObject} scale={scale} containerRef={containerRef} isSelected={true}/>
                     default:
                         throw new Error(`Unknown slide type`)
                 }

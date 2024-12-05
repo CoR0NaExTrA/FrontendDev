@@ -2,7 +2,6 @@ import { Id } from "./BaseTypes";
 import { Presentation } from "./Presentation";
 
 export type SelectionType = {
-    selectedObjectById: Id;
     selectedSlideById: Id;
 };
 

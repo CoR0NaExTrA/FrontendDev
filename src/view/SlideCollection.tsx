@@ -37,7 +37,6 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
 
     function onSlideClick(slideId: string) {
         dispatch(setSelection, {
-            selectedObjectById: selection.selectedObjectById,
             selectedSlideById: slideId,
         })
     }
@@ -55,7 +54,6 @@ function SlideCollection({slideList, selection}: SlideCollectionProps) {
                         scale={0.2}
                         isSelected={slide.id == selection.selectedSlideById}
                         className={styles.item}
-                        selection={selection}
                     />
                 </div>
             )}

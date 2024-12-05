@@ -1,13 +1,18 @@
 import { Id, Image, Point, Size, Text } from "./BaseTypes";
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from "uuid";
 
-type BackgroundImage = {
-    type: "image";
+export enum BackgroundType {
+    Image,
+    Color
+}
+
+export type BackgroundImage = {
+    type: BackgroundType.Image;
     url: string; 
 };
 
-type BackgroundColor = {
-    type: "color";
+export type BackgroundColor = {
+    type: BackgroundType.Color;
     color: string;
 };
 
@@ -17,16 +22,16 @@ export type ElementSlide = Text | Image;
 export type SlideType = {
     id :Id;
     listObjects: ElementSlide[];
-    background: string;
+    background: BackgroundSlide;
 };
 
 const CreateSlide = () : SlideType => ({
     id: uuid(),
     listObjects: [],
-    background: "#000000",
+    background: {type: BackgroundType.Color, color: "#000000", },
 });
 
-const EditBackground = (newBackground: string, slide: SlideType) : SlideType => {
+const EditBackground = (newBackground: BackgroundSlide, slide: SlideType) : SlideType => {
     return {
         ...slide,
         background: newBackground,
