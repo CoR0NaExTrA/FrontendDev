@@ -1,7 +1,8 @@
 import { EditorType } from "../../Entities/SelectionType"
+import { BackgroundSlide } from "../../Entities/SlideType"
 
 
-function editBackground(editor: EditorType, newBackground: string): EditorType {
+function editBackground(editor: EditorType, newBackground: BackgroundSlide): EditorType {
     if (!editor.selection) {
         return editor
     }

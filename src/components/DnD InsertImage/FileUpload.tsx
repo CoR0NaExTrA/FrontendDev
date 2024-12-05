@@ -1,11 +1,14 @@
 import { useState } from "react"
+import styles from "../DnD InsertImage/FileUpload.module.css"
 
 type FileUploadProps = {
     onBase64: (base64: string) => void,
     className: string,
+    onClick: () => void,
+    onReset: () => void,
 }
 
-function FileUpload({onBase64, className}: FileUploadProps) {
+function FileUpload({onBase64, className, onClick, onReset}: FileUploadProps) {
     const [error, setError] = useState('')
 
     const handleDrop = (event: any) => {
@@ -19,7 +22,7 @@ function FileUpload({onBase64, className}: FileUploadProps) {
             }
             const reader = new FileReader();
             reader.onload = () => {
-                const base64 = reader.result // Сохраняем результат в Base64
+                const base64: string = reader.result // Сохраняем результат в Base64
                 onBase64(base64)
             };
             reader.onerror = () => {
@@ -44,10 +47,12 @@ function FileUpload({onBase64, className}: FileUploadProps) {
                     textAlign: 'center',
                     backgroundColor: '#f9f9f9',
                 }}
+                onClick={onClick}
             >
                 Перетащите сюда изображение
             </div>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            <button onClick={onReset} className={styles.reset_button}>Убрать</button>
         </div>
     );
 }

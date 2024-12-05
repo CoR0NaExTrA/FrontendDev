@@ -14,6 +14,7 @@ import { removeImage } from "../../store/functions/RemoveImage";
 import { SetStateAction, useState } from "react";
 import { ColorPicker } from "../../components/ColorPicker/ColorPicker";
 import { FileUpload } from "../../components/DnD InsertImage/FileUpload";
+import { BackgroundType } from "../../Entities/SlideType";
 
 type TopPanelProps = {
     title: string
@@ -23,7 +24,9 @@ function TopPanel({title}: TopPanelProps) {
 
     const [color, setColor] = useState("#ffffff")
     const [image, setImage] = useState('')
-    const [isHovered, setIsHovered] = useState(false)
+    const [isHoveredImage, setIsHoveredImage] = useState(false)
+    const [isHoveredBackground, setIsHoveredBackground] = useState(false)
+    const [isStuck, setIsStuck] = useState(false)
 
     const handleInput = (e: { target: { value: SetStateAction<string>; }; }) => {
         setColor(e.target.value)
@@ -33,13 +36,34 @@ function TopPanel({title}: TopPanelProps) {
         setImage(base64)
     }
 
-    const handleMouseEnter = () => {
-        setIsHovered(true);
+    const handleMouseEnterImage = () => {
+        setIsHoveredImage(true)
     };
     
-    const handleMouseLeave = () => {
-        setIsHovered(false);
+    const handleMouseLeaveImage = () => {
+        setIsHoveredImage(false)
+
+        if (isStuck) {
+            return
+        }
     };
+
+    const handleClick = () => {
+        setIsStuck(true)
+    }
+    
+      const handleReset = () => {
+        setIsStuck(false)
+        setIsHoveredImage(false)
+    }
+
+    const handleMouseEnterBackground = () => {
+        setIsHoveredBackground(true)
+    }
+    
+    const handleMouseLeaveBackground = () => {
+        setIsHoveredBackground(false)
+    }
 
     function onAddSlide() {
         dispatch(addSlide, {
@@ -58,7 +82,7 @@ function TopPanel({title}: TopPanelProps) {
     }
 
     function onEditBackground() {
-        dispatch(editBackground, color)
+        dispatch(editBackground, {type: BackgroundType.Color, color: color})
     }
 
     function onAddText() {
@@ -101,15 +125,15 @@ function TopPanel({title}: TopPanelProps) {
                 <Button text='Добавить слайд' onClick={onAddSlide} className={styles.button}  />
                 <Button text='Удалить слайд' onClick={onRemoveSlide} className={styles.button}  />
                 <Button text='Вставить текст' onClick={onAddText} className={styles.button}  />
-                <div className={styles.container_button_dropdown}>
+                <div onMouseEnter={handleMouseEnterImage} onMouseLeave={handleMouseLeaveImage} className={styles.container_button_dropdown}>
                     <Button text='Вставить изображение' onClick={onAddImage} className={`${styles.container} ${styles.button_with_dropdown}`}  />
-                    <FileUpload onBase64={handleBase64} className={styles.file_upload}/>
+                    {(isHoveredImage || isStuck) && (<FileUpload onClick={handleClick} onReset={handleReset} onBase64={handleBase64} className={styles.file_upload}/>)}
                 </div>
                 <Button text='Удалить текст' onClick={onRemoveText} className={styles.button}  />
                 <Button text='Удалить изображение' onClick={onRemoveImage} className={styles.button}  />
-                <div className={styles.container_button_dropdown}>
+                <div onMouseEnter={handleMouseEnterBackground} onMouseLeave={handleMouseLeaveBackground} className={styles.container_button_dropdown}>
                     <Button text='Изменить фон' onClick={onEditBackground} className={`${styles.container} ${styles.button_with_dropdown}`}  />
-                    <ColorPicker value={color} onChange={handleInput} className={styles.color_picker}/>
+                    {isHoveredBackground && (<ColorPicker value={color} onChange={handleInput} className={styles.color_picker}/>)}
                 </div>
 
             </div>
