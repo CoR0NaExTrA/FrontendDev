@@ -1,16 +1,16 @@
-import { ObjectType } from "../../Entities/BaseTypes"
+import { Point } from "../../Entities/BaseTypes"
 import { EditorType } from "../../Entities/SelectionType"
 
 
-function removeText(editor: EditorType): EditorType {
+function updatePosition(editor: EditorType, newPosition: Point): EditorType {
     const slideId = editor.selectionSlide.selectedSlideId
     const slideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == slideId)
-    
-    const elementIndex = editor.presentation.listSlides[slideIndex].listObjects.findIndex(element => element.id == editor.selectionObject.selectedObjectId && element.objectType == ObjectType.Text)
+
+    const elementIndex = editor.presentation.listSlides[slideIndex].listObjects.findIndex(element => element.id == editor.selectionObject.selectedObjectId)
 
     const newSlides = [...editor.presentation.listSlides]
-    newSlides[slideIndex].listObjects.splice(elementIndex, 1)
-    console.log(newSlides)
+    newSlides[slideIndex].listObjects[elementIndex].pos = newPosition
+    console.log(editor)
     
     return {
         ...editor,
@@ -22,5 +22,5 @@ function removeText(editor: EditorType): EditorType {
 }
 
 export {
-    removeText,
+    updatePosition,
 }

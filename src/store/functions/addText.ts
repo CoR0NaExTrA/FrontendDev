@@ -3,11 +3,7 @@ import { EditorType } from "../../Entities/SelectionType"
 
 
 function addText(editor: EditorType, newText: Text): EditorType {
-    if (!editor.selection) {
-        return editor
-    }
-
-    const addTextSlideId = editor.selection.selectedSlideById
+    const addTextSlideId = editor.selectionSlide.selectedSlideId
     const addTextSlideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == addTextSlideId)
 
     const newSlides = [...editor.presentation.listSlides]

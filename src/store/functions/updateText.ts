@@ -1,17 +1,15 @@
 import { ObjectType } from "../../Entities/BaseTypes"
 import { EditorType } from "../../Entities/SelectionType"
+import { ElementSlide } from "../../Entities/SlideType"
 
 
-function removeText(editor: EditorType): EditorType {
+function updateText(editor: EditorType, newText: string): EditorType {
     const slideId = editor.selectionSlide.selectedSlideId
     const slideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == slideId)
-    
-    const elementIndex = editor.presentation.listSlides[slideIndex].listObjects.findIndex(element => element.id == editor.selectionObject.selectedObjectId && element.objectType == ObjectType.Text)
+
+    const elementIndex = editor.presentation.listSlides[slideIndex].listObjects.findIndex(element => element.id === editor.selectionObject.selectedObjectId)
 
     const newSlides = [...editor.presentation.listSlides]
-    newSlides[slideIndex].listObjects.splice(elementIndex, 1)
-    console.log(newSlides)
-    
     return {
         ...editor,
         presentation: {
@@ -22,5 +20,5 @@ function removeText(editor: EditorType): EditorType {
 }
 
 export {
-    removeText,
+    updateText,
 }

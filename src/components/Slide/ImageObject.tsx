@@ -10,8 +10,6 @@ type ImageObjectProps = {
 }
 
 function ImageObject({imageObject, scale = 1, isSelected, isSlideCollection, containerRef}: ImageObjectProps) {
-
-    console.log(isSelected)
     const [position, setPosition] = useState(imageObject.pos)
     const [size, setSize] = useState(imageObject.size)
     const [dragging, setDragging] = useState(false)

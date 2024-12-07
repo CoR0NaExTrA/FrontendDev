@@ -21,7 +21,7 @@ type SlideProps = {
 }
 
 function Slide({slide, scale = 1, isSelected, isSlideCollection, className, selection}: SlideProps) {
-    const containerRef = useRef(null);
+    const containerRef = useRef(null)
     
     const slideStyles: CSSProperties = {
         width: `${SLIDE_WIDTH * scale}px`,
@@ -55,14 +55,14 @@ function Slide({slide, scale = 1, isSelected, isSlideCollection, className, sele
                 switch (slideObject.objectType) {
                     case ObjectType.Text:
                         return ( 
-                            <div key={slideObject.id} onClick={() => {onObjectClick(slide.id)}}>
+                            <div key={slideObject.id} onClick={() => {onObjectClick(slideObject.id)}}>
                                 <TextObject textObject={slideObject} scale={scale} 
                                 containerRef={containerRef} isSelected={slideObject.id == selection.selectedObjectId} isSlideCollection={isSlideCollection}/> 
                             </div>
                         )
                     case ObjectType.Image:
                         return ( 
-                            <div key={slideObject.id} onClick={() => {onObjectClick(slide.id)}}>
+                            <div key={slideObject.id} onClick={() => {onObjectClick(slideObject.id)}}>
                                 <ImageObject imageObject={slideObject} scale={scale} 
                                 containerRef={containerRef} isSelected={slideObject.id == selection.selectedObjectId} isSlideCollection={isSlideCollection}/> 
                             </div> 

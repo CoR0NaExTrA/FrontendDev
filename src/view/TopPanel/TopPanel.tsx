@@ -10,7 +10,7 @@ import { addText } from "../../store/functions/addText";
 import { FontFormatting, ObjectType } from "../../Entities/BaseTypes";
 import { addImage } from "../../store/functions/addImage";
 import { removeText } from "../../store/functions/removeText";
-import { removeImage } from "../../store/functions/RemoveImage";
+import { removeImage } from "../../store/functions/removeImage";
 import { SetStateAction, useState } from "react";
 import { ColorPicker } from "../../components/ColorPicker/ColorPicker";
 import { FileUpload } from "../../components/DnD InsertImage/FileUpload";
@@ -21,7 +21,6 @@ type TopPanelProps = {
 }
 
 function TopPanel({title}: TopPanelProps) {
-
     const [color, setColor] = useState("#ffffff")
     const [image, setImage] = useState('')
     const [isHoveredImage, setIsHoveredImage] = useState(false)

@@ -46,7 +46,7 @@ const slide2: SlideType = {
             value: 'Второй слайд',
         }
     ],
-    background: {type: BackgroundType.Image, url: "https://otvet.imgsmail.ru/download/298943830_f56089f5a51dd573d84a3548a8f25a0e_800.jpg"},
+    background: {type: BackgroundType.Image, url: "https://steamuserimages-a.akamaihd.net/ugc/1814394706265968553/AECBD1F2AAF1E294DB373DD4C5FB5689FE299F78/"},
 }
 
 const presentation: Presentation = {
