@@ -19,6 +19,8 @@ function dispatch(modifyFn: Function, payload?: any): void {
     if (_handler) {
         _handler()
     }
+
+    localStorage.setItem('editorState', JSON.stringify(newEditor));
 }
 
 function addEditorChangeHandler(handler: Function): void {

@@ -28,7 +28,7 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
     }
 
     function onUpdateText(text: string) {
-        dispatch(updateText, currentText)
+        dispatch(updateText, text)
     }
 
     const handleMouseDownMove = (e: React.MouseEvent) => {
@@ -159,6 +159,8 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
     const contentStyles: CSSProperties = {
         margin: 0,
         fontSize: `${(Math.min(size.width, size.height) / 2) * scale}px`,
+        fontFamily: textObject.fontFamily,
+        color: textObject.fontColor,
         textAlign: "center",
         lineHeight: 1,
         whiteSpace: "nowrap",
@@ -197,6 +199,9 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
                         ...contentStyles,
                         outline: "none",
                         cursor: "text",
+                        background: "none",
+                        fontFamily: textObject.fontFamily,
+                        color: textObject.fontColor,
                     }}
                     onBlur={handleBlur}
                     onKeyDown={handleKeyDown}

@@ -1,5 +1,5 @@
 import { Text } from "../../Entities/BaseTypes"
-import { EditorType } from "../../Entities/SelectionType"
+import { EditorType, SelectionType } from "../../Entities/SelectionType"
 
 
 function addText(editor: EditorType, newText: Text): EditorType {
@@ -15,6 +15,10 @@ function addText(editor: EditorType, newText: Text): EditorType {
         presentation: {
             ...editor.presentation,
             listSlides: newSlides,
+        },
+        selectionObject: {
+            type: SelectionType.Object,
+            selectedObjectId: newText.id
         }
     }
 }

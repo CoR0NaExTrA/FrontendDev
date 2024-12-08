@@ -15,6 +15,8 @@ import { SetStateAction, useState } from "react";
 import { ColorPicker } from "../../components/ColorPicker/ColorPicker";
 import { FileUpload } from "../../components/DnD InsertImage/FileUpload";
 import { BackgroundType } from "../../Entities/SlideType";
+import { ExportButton } from "../../components/buttons/Export and Import/ExportButton";
+import { ImportButton } from "../../components/buttons/Export and Import/ImportButton";
 
 type TopPanelProps = {
     title: string
@@ -25,7 +27,8 @@ function TopPanel({title}: TopPanelProps) {
     const [image, setImage] = useState('')
     const [isHoveredImage, setIsHoveredImage] = useState(false)
     const [isHoveredBackground, setIsHoveredBackground] = useState(false)
-    const [isStuck, setIsStuck] = useState(false)
+    const [isStuckImage, setIsStuckImage] = useState(false)
+    const [isStuckBackground, setIsStuckBackground] = useState(false)
 
     const handleInput = (e: { target: { value: SetStateAction<string>; }; }) => {
         setColor(e.target.value)
@@ -42,18 +45,27 @@ function TopPanel({title}: TopPanelProps) {
     const handleMouseLeaveImage = () => {
         setIsHoveredImage(false)
 
-        if (isStuck) {
+        if (isStuckImage) {
             return
         }
     };
 
-    const handleClick = () => {
-        setIsStuck(true)
+    const handleClickImage = () => {
+        setIsStuckImage(true)
     }
     
-      const handleReset = () => {
-        setIsStuck(false)
+    const handleResetImage = () => {
+        setIsStuckImage(false)
         setIsHoveredImage(false)
+    }
+
+    const handleClickBackground = () => {
+        setIsStuckBackground(true)
+    }
+    
+    const handleResetBackground = () => {
+        setIsStuckBackground(false)
+        setIsHoveredBackground(false)
     }
 
     const handleMouseEnterBackground = () => {
@@ -62,22 +74,31 @@ function TopPanel({title}: TopPanelProps) {
     
     const handleMouseLeaveBackground = () => {
         setIsHoveredBackground(false)
+
+        if (isStuckBackground) {
+            return
+        }
+    }
+
+    const handleImport = (data: any) => {
+        localStorage.setItem("editorState", JSON.stringify(data))
+        alert("Документ импортирован.")
+    }
+
+    const onTitleChange: React.ChangeEventHandler = (event) => {
+        dispatch(editName, (event.target as HTMLInputElement).value)
     }
 
     function onAddSlide() {
         dispatch(addSlide, {
             id: uuid(),
             listObjects: [],
-            background: "#ffffff",
+            background: {type: BackgroundType.Color, color: "ffffff"},
         })
     }
 
     function onRemoveSlide() {
         dispatch(removeSlide)
-    }
-
-    const onTitleChange: React.ChangeEventHandler = (event) => {
-        dispatch(editName, (event.target as HTMLInputElement).value)
     }
 
     function onEditBackground() {
@@ -92,7 +113,7 @@ function TopPanel({title}: TopPanelProps) {
             objectType: ObjectType.Text,
             fontSize: 100,
             fontFamily: 'Roboto',
-            fontFormatting: FontFormatting.bold,
+            fontFormatting: FontFormatting.italic,
             fontColor: '#ffffff',
             fontBgColor: '#000000',
             value: '',
@@ -126,15 +147,16 @@ function TopPanel({title}: TopPanelProps) {
                 <Button text='Вставить текст' onClick={onAddText} className={styles.button}  />
                 <div onMouseEnter={handleMouseEnterImage} onMouseLeave={handleMouseLeaveImage} className={styles.container_button_dropdown}>
                     <Button text='Вставить изображение' onClick={onAddImage} className={`${styles.container} ${styles.button_with_dropdown}`}  />
-                    {(isHoveredImage || isStuck) && (<FileUpload onClick={handleClick} onReset={handleReset} onBase64={handleBase64} className={styles.file_upload}/>)}
+                    {(isHoveredImage || isStuckImage) && (<FileUpload onClick={handleClickImage} onReset={handleResetImage} onBase64={handleBase64} className={styles.file_upload}/>)}
                 </div>
                 <Button text='Удалить текст' onClick={onRemoveText} className={styles.button}  />
                 <Button text='Удалить изображение' onClick={onRemoveImage} className={styles.button}  />
                 <div onMouseEnter={handleMouseEnterBackground} onMouseLeave={handleMouseLeaveBackground} className={styles.container_button_dropdown}>
                     <Button text='Изменить фон' onClick={onEditBackground} className={`${styles.container} ${styles.button_with_dropdown}`}  />
-                    {isHoveredBackground && (<ColorPicker value={color} onChange={handleInput} className={styles.color_picker}/>)}
+                    {(isHoveredBackground || isStuckBackground) && (<ColorPicker onClick={handleClickBackground} onReset={handleResetBackground} value={color} onChange={handleInput} className={styles.color_picker}/>)}
                 </div>
-
+                <ImportButton className={styles.button} onImport={handleImport}/>
+                <ExportButton className={styles.button}/>
             </div>
         </div>
     )

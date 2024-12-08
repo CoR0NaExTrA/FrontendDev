@@ -14,8 +14,8 @@ const slide1: SlideType = {
             objectType: ObjectType.Text,
             fontSize: 100,
             fontFamily: 'Roboto',
-            fontFormatting: FontFormatting.bold,
-            fontColor: '#000000',
+            fontFormatting: FontFormatting.italic,
+            fontColor: '#0000ff',
             fontBgColor: '#ffffff',
             value: 'Привет!',
         },
@@ -40,8 +40,8 @@ const slide2: SlideType = {
             objectType: ObjectType.Text,
             fontSize: 100,
             fontFamily: 'Roboto',
-            fontFormatting: FontFormatting.bold,
-            fontColor: '#ffffff',
+            fontFormatting: FontFormatting.italic,
+            fontColor: '#00ff00',
             fontBgColor: '#000000',
             value: 'Второй слайд',
         }
@@ -57,7 +57,9 @@ const presentation: Presentation = {
     ],
 }
 
-const editor: EditorType = {
+const savedEditorState = localStorage.getItem('editorState');
+
+const editor: EditorType = savedEditorState ? JSON.parse(savedEditorState) : {
     presentation,
     selectionSlide: {
         type: SelectionType.Slide,
@@ -67,7 +69,7 @@ const editor: EditorType = {
         type: SelectionType.Object,
         selectedObjectId: ''
     }
-}
+};
 
 export {
     editor,
