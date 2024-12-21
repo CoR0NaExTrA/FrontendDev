@@ -1,14 +1,14 @@
-import styles from "./Button.module.css"
+import { ReactNode } from "react"
 
 type ButtonProps = {
-    text: string,
+    text: ReactNode,
     onClick: () => void,
     className: string,
 }
 
 function Button({text, onClick, className}: ButtonProps) {
     return (
-        <button className={`${styles.button} ${className}`} onClick={onClick}>{text}</button>
+        <button className={className} onClick={onClick}>{text}</button>
     )
 }
 

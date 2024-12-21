@@ -1,4 +1,4 @@
-import { EditorType } from '../Entities/SelectionType.ts'
+import { EditorType } from '../store/SelectionType'
 import {editor} from './data.ts'
 
 let _editor = editor

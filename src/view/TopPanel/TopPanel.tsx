@@ -1,34 +1,38 @@
 import { v4 as uuid } from "uuid";
 import { Button } from '../../components/buttons/Button'
-import { addSlide } from '../../store/functions/addSlide'
-import { editBackground } from '../../store/functions/editBackground'
-import { editName } from '../../store/functions/editName'
-import { dispatch } from '../../store/editor'
-import { removeSlide } from '../../store/functions/removeSlide'
 import styles from './TopPanel.module.css'
-import { addText } from "../../store/functions/addText";
-import { FontFormatting, ObjectType } from "../../Entities/BaseTypes";
-import { addImage } from "../../store/functions/addImage";
-import { removeText } from "../../store/functions/removeText";
-import { removeImage } from "../../store/functions/removeImage";
-import { SetStateAction, useState } from "react";
-import { ColorPicker } from "../../components/ColorPicker/ColorPicker";
-import { FileUpload } from "../../components/DnD InsertImage/FileUpload";
-import { BackgroundType } from "../../Entities/SlideType";
-import { ExportButton } from "../../components/buttons/Export and Import/ExportButton";
-import { ImportButton } from "../../components/buttons/Export and Import/ImportButton";
+import { SetStateAction, useContext, useEffect, useRef, useState } from "react"
+import { ColorPicker } from "../../components/ColorPicker/ColorPicker"
+import { FileUpload } from "../../components/DnD InsertImage/FileUpload"
+import { ExportButton } from "../../components/buttons/Export and Import/ExportButton"
+import { ImportButton } from "../../components/buttons/Export and Import/ImportButton"
+import { useAppSelector } from "../hooks/useAppSelector"
+import { useAppActions } from "../hooks/useAppActions"
+import { FontFormatting, ObjectType } from '../../store/BaseTypes'
+import { BackgroundType } from '../../store/SlideType'
+import { HistoryContext } from "../hooks/HistoryContext";
+import { exportPresentationToPDF } from "../../store/functions/exportPDF";
+import { FaPlus, FaT, FaTrash, FaArrowRotateLeft, FaArrowRotateRight, FaDownload, FaFileImage, FaPalette } from 'react-icons/fa6';
 
-type TopPanelProps = {
-    title: string
-}
+function TopPanel() {
+    const presentation = useAppSelector((editor => editor.presentation))
+    const title = useAppSelector((editor => editor.presentation.name))
+    const {addSlide, removeSlide, addText, removeText, addImage, removeImage, editBackground, editName, setEditor } = useAppActions()
+    const history = useContext(HistoryContext)
 
-function TopPanel({title}: TopPanelProps) {
     const [color, setColor] = useState("#ffffff")
     const [image, setImage] = useState('')
     const [isHoveredImage, setIsHoveredImage] = useState(false)
     const [isHoveredBackground, setIsHoveredBackground] = useState(false)
     const [isStuckImage, setIsStuckImage] = useState(false)
     const [isStuckBackground, setIsStuckBackground] = useState(false)
+    const topPanelRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (topPanelRef.current) {
+            topPanelRef.current.focus();
+        }
+    }, []);
 
     const handleInput = (e: { target: { value: SetStateAction<string>; }; }) => {
         setColor(e.target.value)
@@ -38,17 +42,10 @@ function TopPanel({title}: TopPanelProps) {
         setImage(base64)
     }
 
-    const handleMouseEnterImage = () => {
+    const handleContextMenuImage = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault()
         setIsHoveredImage(true)
-    };
-    
-    const handleMouseLeaveImage = () => {
-        setIsHoveredImage(false)
-
-        if (isStuckImage) {
-            return
-        }
-    };
+    }
 
     const handleClickImage = () => {
         setIsStuckImage(true)
@@ -68,16 +65,9 @@ function TopPanel({title}: TopPanelProps) {
         setIsHoveredBackground(false)
     }
 
-    const handleMouseEnterBackground = () => {
+    const handleContextMenuBackground = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault()
         setIsHoveredBackground(true)
-    }
-    
-    const handleMouseLeaveBackground = () => {
-        setIsHoveredBackground(false)
-
-        if (isStuckBackground) {
-            return
-        }
     }
 
     const handleImport = (data: any) => {
@@ -86,42 +76,59 @@ function TopPanel({title}: TopPanelProps) {
     }
 
     const onTitleChange: React.ChangeEventHandler = (event) => {
-        dispatch(editName, (event.target as HTMLInputElement).value)
+        editName((event.target as HTMLInputElement).value)
     }
 
-    function onAddSlide() {
-        dispatch(addSlide, {
-            id: uuid(),
-            listObjects: [],
-            background: {type: BackgroundType.Color, color: "ffffff"},
-        })
+    function handleExportToPDF() {
+        if (!presentation.name || presentation.name.trim() === "") {
+            alert("Имя презентации не указано. Используется имя по умолчанию: 'presentation'.");
+        }
+        
+        exportPresentationToPDF(presentation);
     }
 
-    function onRemoveSlide() {
-        dispatch(removeSlide)
+    function onUndo() {
+        const newEditor = history.undo()
+        if (newEditor) {
+            setEditor(newEditor)
+        }
     }
 
-    function onEditBackground() {
-        dispatch(editBackground, {type: BackgroundType.Color, color: color})
+    function onRedo() {
+        const newEditor = history.redo()
+        if (newEditor) {
+            setEditor(newEditor)
+        }
     }
+
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (event.ctrlKey && event.code === "KeyZ") {
+            event.preventDefault();
+            onUndo();
+        }
+        if (event.ctrlKey && event.code === "KeyY") {
+            event.preventDefault();
+            onRedo();
+        }
+    };
 
     function onAddText() {
-        dispatch(addText, {
+        addText({
             id: uuid(),
-            pos: {x: 50, y: 50},
+            pos: {x: 10, y: 10},
             size: {width: 100, height: 100},
             objectType: ObjectType.Text,
             fontSize: 100,
             fontFamily: 'Roboto',
             fontFormatting: FontFormatting.italic,
-            fontColor: '#ffffff',
-            fontBgColor: '#000000',
+            fontColor: '#0000ff',
+            fontBgColor: '#ffffff',
             value: '',
         })
     }
 
     function onAddImage() {
-        dispatch(addImage, {
+        addImage({
             id: uuid(),
             pos: {x: 400, y: 70},
             size: {width: 200, height: 200},
@@ -130,33 +137,35 @@ function TopPanel({title}: TopPanelProps) {
         })
     }
 
-    function onRemoveText() {
-        dispatch(removeText)
-    }
-
-    function onRemoveImage() {
-        dispatch(removeImage)
+    function onEditBackground() {
+        editBackground({
+            type: BackgroundType.Color,
+            color: color,
+        })
     }
 
     return (
-        <div className={styles.topPanel}>
+        <div ref={topPanelRef} className={styles.topPanel} tabIndex={0} onKeyDown={handleKeyDown}>
             <input aria-label="name" type="text" defaultValue={title} className={styles.title} onChange={onTitleChange}/>
             <div className={styles.container_buttons}>
-                <Button text='Добавить слайд' onClick={onAddSlide} className={styles.button}  />
-                <Button text='Удалить слайд' onClick={onRemoveSlide} className={styles.button}  />
-                <Button text='Вставить текст' onClick={onAddText} className={styles.button}  />
-                <div onMouseEnter={handleMouseEnterImage} onMouseLeave={handleMouseLeaveImage} className={styles.container_button_dropdown}>
-                    <Button text='Вставить изображение' onClick={onAddImage} className={`${styles.container} ${styles.button_with_dropdown}`}  />
+                <Button text={<FaPlus />} onClick={addSlide} className={styles.button}  />
+                <Button text={<FaTrash />} onClick={removeSlide} className={styles.button}  />
+                <Button text={<FaT />} onClick={onAddText} className={styles.button}  />
+                <div onContextMenu={(e) => handleContextMenuImage(e)} className={styles.container_button_dropdown}>
+                    <Button text={<FaFileImage size={20}/>} onClick={onAddImage} className={`${styles.container} ${styles.button_with_dropdown}`}  />
                     {(isHoveredImage || isStuckImage) && (<FileUpload onClick={handleClickImage} onReset={handleResetImage} onBase64={handleBase64} className={styles.file_upload}/>)}
                 </div>
-                <Button text='Удалить текст' onClick={onRemoveText} className={styles.button}  />
-                <Button text='Удалить изображение' onClick={onRemoveImage} className={styles.button}  />
-                <div onMouseEnter={handleMouseEnterBackground} onMouseLeave={handleMouseLeaveBackground} className={styles.container_button_dropdown}>
-                    <Button text='Изменить фон' onClick={onEditBackground} className={`${styles.container} ${styles.button_with_dropdown}`}  />
+                <Button text='Удалить текст' onClick={removeText} className={styles.button}  />
+                <Button text='Удалить изображение' onClick={removeImage} className={styles.button}  />
+                <div onContextMenu={(e) => handleContextMenuBackground(e)} className={styles.container_button_dropdown}>
+                    <Button text={<FaPalette size={20}/>} onClick={onEditBackground} className={`${styles.container} ${styles.button_with_dropdown}`}  />
                     {(isHoveredBackground || isStuckBackground) && (<ColorPicker onClick={handleClickBackground} onReset={handleResetBackground} value={color} onChange={handleInput} className={styles.color_picker}/>)}
                 </div>
-                <ImportButton className={styles.button} onImport={handleImport}/>
+                <ImportButton className={`${styles.button} ${styles.button_with_dropdown}`} onImport={handleImport}/>
                 <ExportButton className={styles.button}/>
+                <Button text={<FaArrowRotateLeft />} onClick={onUndo} className={styles.button}  />
+                <Button text={<FaArrowRotateRight />} onClick={onRedo} className={styles.button}  />
+                <Button text={<FaDownload />} onClick={handleExportToPDF} className={styles.button}  />
             </div>
         </div>
     )

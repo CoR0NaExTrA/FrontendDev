@@ -1,17 +1,15 @@
-import { SelectionObject } from "../Entities/SelectionType"
-import { SlideType } from "../Entities/SlideType"
 import { Slide } from "../components/Slide/Slide"
+import { SlideType } from "../store/SlideType"
+import { useAppSelector } from "./hooks/useAppSelector"
 import styles from "./Workspace.module.css"
 
-type WorkspaceProps = {
-    slide: SlideType,
-    selection: SelectionObject,
-}
+function Workspace() {
+    const editor = useAppSelector((editor => editor))
+    const selectedSlide: SlideType = editor.presentation.listSlides.find(slide => slide.id == editor.selectionSlide.selectedSlideId) || editor.presentation.listSlides[0]
 
-function Workspace({slide, selection}: WorkspaceProps) {
     return (
         <div className={styles.workspace}>
-            <Slide slide={slide} isSelected={false} isSlideCollection={false} className={''} selection={selection}/>
+            <Slide slide={selectedSlide} isSlideCollection={false} className={''}/>
         </div>
     )
 }

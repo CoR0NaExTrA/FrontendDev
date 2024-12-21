@@ -1,4 +1,4 @@
-import { EditorType, SelectionSlide } from "../../Entities/SelectionType"
+import { EditorType, SelectionSlide } from "../../store/SelectionType"
 
 
 function setSelectionSlide(editor: EditorType, newSelectionSlide: SelectionSlide): EditorType {

@@ -1,12 +1,12 @@
-import { CSSProperties, useRef } from "react"
+import React, { CSSProperties, useRef } from "react"
 import { TextObject } from "./TextObject"
-import { ObjectType } from "../../Entities/BaseTypes"
-import { BackgroundType, SlideType } from "../../Entities/SlideType"
+import { ObjectType } from "../../store/BaseTypes"
+import { BackgroundType, SlideType } from "../../store/SlideType"
 import { ImageObject } from "./ImageObject"
 import styles from "./Slide.module.css"
-import { setSelectionObject } from "../../store/functions/setSelectionObject"
-import { dispatch } from "../../store/editor"
-import { SelectionObject, SelectionType } from "../../Entities/SelectionType"
+import { SelectionType } from "../../store/SelectionType"
+import { useAppSelector } from "../../view/hooks/useAppSelector"
+import { useAppActions } from "../../view/hooks/useAppActions"
 
 const SLIDE_WIDTH = 935
 const SLIDE_HEIGHT = 525
@@ -14,19 +14,21 @@ const SLIDE_HEIGHT = 525
 type SlideProps = {
     slide: SlideType,
     scale?: number,
-    isSelected: boolean,
     isSlideCollection: boolean,
     className: string,
-    selection: SelectionObject,
 }
 
-function Slide({slide, scale = 1, isSelected, isSlideCollection, className, selection}: SlideProps) {
+function Slide({slide, scale = 1, isSlideCollection, className}: SlideProps) {
+    const selectionSlide = useAppSelector((editor => editor.selectionSlide))
+    const isSelected = slide.id == selectionSlide.selectedSlideId
+    const {setSelectionObject} = useAppActions()
+
     const containerRef = useRef(null)
     
     const slideStyles: CSSProperties = {
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
-        border: isSelected ? '3px solid #0b57d0' : "1px solid #E5E4E2",
+        border: "1px solid #E5E4E2",
         boxShadow: !isSelected ? '3px 3px #E5E4E2': 'none'
     }
 
@@ -42,29 +44,37 @@ function Slide({slide, scale = 1, isSelected, isSlideCollection, className, sele
             break;
     }
 
-    function onObjectClick(slideId: string) {
-        dispatch(setSelectionObject, {
-            type: SelectionType.Slide,
-            selectedObjectId: slideId,
+    function onObjectClick(objectId: string, e: React.MouseEvent) {
+        e.stopPropagation()
+        setSelectionObject({
+            type: SelectionType.Object,
+            selectedObjectId: objectId,
+        })
+    }
+
+    function onSlideClick() {
+        setSelectionObject({
+            type: SelectionType.Object,
+            selectedObjectId: '',
         })
     }
 
     return (
-        <div ref={containerRef} style={slideStyles} className={styles.slide + ' ' + className}>
+        <div ref={containerRef} style={slideStyles} className={styles.slide + ' ' + className} onClick={onSlideClick}>
             {slide.listObjects.map((slideObject) => {
                 switch (slideObject.objectType) {
                     case ObjectType.Text:
                         return ( 
-                            <div key={slideObject.id} onClick={() => {onObjectClick(slideObject.id)}}>
+                            <div key={slideObject.id} onClick={(e) => {onObjectClick(slideObject.id, e)}}>
                                 <TextObject textObject={slideObject} scale={scale} 
-                                containerRef={containerRef} isSelected={slideObject.id == selection.selectedObjectId} isSlideCollection={isSlideCollection}/> 
+                                containerRef={containerRef} isSlideCollection={isSlideCollection}/> 
                             </div>
                         )
                     case ObjectType.Image:
                         return ( 
-                            <div key={slideObject.id} onClick={() => {onObjectClick(slideObject.id)}}>
+                            <div key={slideObject.id} onClick={(e) => {onObjectClick(slideObject.id, e)}}>
                                 <ImageObject imageObject={slideObject} scale={scale} 
-                                containerRef={containerRef} isSelected={slideObject.id == selection.selectedObjectId} isSlideCollection={isSlideCollection}/> 
+                                containerRef={containerRef} isSlideCollection={isSlideCollection}/> 
                             </div> 
                         )
                     default:

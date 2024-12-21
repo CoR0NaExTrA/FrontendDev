@@ -1,18 +1,31 @@
 import { CSSProperties, useState } from "react"
-import { Image } from "../../Entities/BaseTypes"
+import { Image, Point, Size } from "../../store/BaseTypes"
+import { useAppSelector } from "../../view/hooks/useAppSelector"
+import { useAppActions } from "../../view/hooks/useAppActions"
 
 type ImageObjectProps = {
     imageObject: Image,
     scale?: number,
     containerRef: any,
-    isSelected: boolean,
     isSlideCollection: boolean,
 }
 
-function ImageObject({imageObject, scale = 1, isSelected, isSlideCollection, containerRef}: ImageObjectProps) {
-    const [position, setPosition] = useState(imageObject.pos)
-    const [size, setSize] = useState(imageObject.size)
+function ImageObject({imageObject, scale = 1, isSlideCollection, containerRef}: ImageObjectProps) {
+    const selectionObject = useAppSelector((editor => editor.selectionObject))
+    const {updatePosition, updateSize, updateText} = useAppActions()
+    const isSelected = imageObject.id == selectionObject.selectedObjectId
+
+    let position = imageObject.pos
+    let size = imageObject.size
     const [dragging, setDragging] = useState(false)
+
+    function onUpdatePosition(position: Point) {
+        updatePosition(position)
+    }
+
+    function onUpdateSize(size: Size) {
+        updateSize(size)
+    }
 
     const handleMouseDownMove = (e: React.MouseEvent) => {
         if (!containerRef.current) return
@@ -29,10 +42,11 @@ function ImageObject({imageObject, scale = 1, isSelected, isSlideCollection, con
             const deltaX = (event.clientX - startX) / scale
             const deltaY = (event.clientY - startY) / scale
 
-            setPosition({
+            position = {
                 x: Math.max(0, Math.min(containerRect.width - size.width, initialX + deltaX)),
                 y: Math.max(0, Math.min(containerRect.height - size.height, initialY + deltaY)),
-            })
+            }
+            onUpdatePosition(position)
         };
 
         const handleMouseUp = () => {
@@ -84,8 +98,9 @@ function ImageObject({imageObject, scale = 1, isSelected, isSlideCollection, con
                 newY = initialY + deltaY
             }
 
-            setSize({ width: newWidth, height: newHeight })
-            setPosition({ x: newX, y: newY })
+            size = { width: newWidth, height: newHeight }
+            position = { x: newX, y: newY }
+            onUpdateSize(size)
         };
 
         const handleMouseUp = () => {
@@ -105,7 +120,7 @@ function ImageObject({imageObject, scale = 1, isSelected, isSlideCollection, con
         height: `${size.height * scale}px`,
         cursor: dragging ? "grabbing" : "grab",
         border: isSelected ? "1px solid #0b57d0" : "none",
-        boxSizing: "border-box", // Учитываем рамку в размерах
+        boxSizing: "border-box",
         overflow: "hidden",
         display: "flex",
         alignItems: "center",

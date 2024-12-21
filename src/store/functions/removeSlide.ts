@@ -1,12 +1,6 @@
-import { v4 as uuid } from "uuid";
-import { EditorType } from "../../Entities/SelectionType";
-import { BackgroundType, SlideType } from "../../Entities/SlideType";
+import { EditorType } from "../../store/SelectionType";
+import { CreateSlide } from "../../store/SlideType";
 
-const CreateSlide = () : SlideType => ({
-    id: uuid(),
-    listObjects: [],
-    background: {type: BackgroundType.Color, color: "#000000", },
-});
 
 function removeSlide(editor: EditorType): EditorType {
     const removeSlideId = editor.selectionSlide.selectedSlideId

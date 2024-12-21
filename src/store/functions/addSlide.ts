@@ -1,9 +1,10 @@
-import { EditorType } from "../../Entities/SelectionType"
-import { SlideType } from "../../Entities/SlideType"
+import { EditorType } from "../../store/SelectionType"
+import { CreateSlide, SlideType } from "../../store/SlideType"
 
 
-function addSlide(editor: EditorType, newSlide: SlideType): EditorType {
+function addSlide(editor: EditorType): EditorType {
     const selectedSlideId = editor.selectionSlide.selectedSlideId;
+    const newSlide = CreateSlide()
 
     const selectedIndex = editor.presentation.listSlides.findIndex(
         (slide) => slide.id === selectedSlideId

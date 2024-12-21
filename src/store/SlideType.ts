@@ -28,7 +28,7 @@ export type SlideType = {
 const CreateSlide = () : SlideType => ({
     id: uuid(),
     listObjects: [],
-    background: {type: BackgroundType.Color, color: "#000000", },
+    background: {type: BackgroundType.Color, color: "#ffffff", },
 });
 
 const EditBackground = (newBackground: BackgroundSlide, slide: SlideType) : SlideType => {

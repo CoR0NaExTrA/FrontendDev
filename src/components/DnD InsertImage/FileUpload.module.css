@@ -4,4 +4,10 @@
     font-size: 12px;
     display: flex;
     justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Плавное изменение */
+}
+
+.reset_button:hover {
+    background-color: #f0f0f0; /* Подсветка при наведении */
 }

@@ -1,5 +1,5 @@
-import { Size } from "../../Entities/BaseTypes"
-import { EditorType } from "../../Entities/SelectionType"
+import { Size } from "../../store/BaseTypes"
+import { EditorType } from "../../store/SelectionType"
 
 
 function updateSize(editor: EditorType, newSize: Size): EditorType {

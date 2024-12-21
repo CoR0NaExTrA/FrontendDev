@@ -7,7 +7,7 @@ export enum ObjectType {
   Image,
 };
 
-type SlideObject = {
+export type SlideObject = {
     id: Id;
     pos: Point;
     size: Size;

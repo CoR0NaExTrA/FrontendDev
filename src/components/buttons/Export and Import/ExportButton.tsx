@@ -1,5 +1,6 @@
 import { useRef } from "react"
 import styles from "../Button.module.css"
+import { FaFileExport } from "react-icons/fa6";
 
 type ExportButtonProps = {
     className: string,
@@ -29,7 +30,7 @@ function ExportButton({className}: ExportButtonProps) {
 
     return (
         <>
-            <button className={`${className} ${styles.button}`} onClick={handleExport}>Экспортировать документ</button>
+            <button className={`${className} ${styles.button}`} onClick={handleExport}>{<FaFileExport />}</button>
             <a ref={downloadRef} style={{ display: "none" }}>Скачать</a>
         </>
     )

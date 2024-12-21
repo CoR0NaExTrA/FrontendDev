@@ -1,5 +1,5 @@
-import { Image } from "../../Entities/BaseTypes"
-import { EditorType, SelectionType } from "../../Entities/SelectionType"
+import { Image } from "../../store/BaseTypes"
+import { EditorType, SelectionType } from "../../store/SelectionType"
 
 function addImage(editor: EditorType, newImage: Image): EditorType {
     const addTextSlideId = editor.selectionSlide.selectedSlideId

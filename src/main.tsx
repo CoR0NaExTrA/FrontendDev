@@ -1,17 +1,16 @@
-import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import {addEditorChangeHandler, getEditor} from "./store/editor.ts";
+import { Provider } from 'react-redux'
+import { store } from './store/redux/store.ts'
+import { StrictMode } from 'react'
+import { initHistory } from './utils/History.ts'
 
 const root = createRoot(document.getElementById('root')!)
-function render() {
-    root.render(
-        <StrictMode>
-            <App editor={getEditor()}/>
-        </StrictMode>,
-    )
-}
-
-addEditorChangeHandler(render)
-render()
+root.render(
+    <StrictMode>
+        <Provider store={store}>
+            <App history={initHistory(store)}/>
+        </Provider>
+    </StrictMode>,
+)

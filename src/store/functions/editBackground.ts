@@ -1,5 +1,5 @@
-import { EditorType } from "../../Entities/SelectionType"
-import { BackgroundSlide } from "../../Entities/SlideType"
+import { EditorType } from "../../store/SelectionType"
+import { BackgroundSlide } from "../../store/SlideType"
 
 
 function editBackground(editor: EditorType, newBackground: BackgroundSlide): EditorType {

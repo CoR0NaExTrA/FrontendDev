@@ -1,5 +1,5 @@
-import { ObjectType } from "../../Entities/BaseTypes"
-import { EditorType } from "../../Entities/SelectionType"
+import { ObjectType } from "../../store/BaseTypes"
+import { EditorType } from "../../store/SelectionType"
 
 
 function removeImage(editor: EditorType): EditorType {

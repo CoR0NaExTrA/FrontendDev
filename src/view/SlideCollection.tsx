@@ -1,24 +1,28 @@
 import { useEffect, useRef, useState } from "react"
-import { EditorType, SelectionSlide, SelectionType } from "../Entities/SelectionType"
-import { SlideType } from "../Entities/SlideType"
-import { dispatch } from "../store/editor"
-import { setSelectionSlide } from "../store/functions/setSelectionSlide"
+import { SelectionType } from "../store/SelectionType"
 import { Slide } from "../components/Slide/Slide"
 import styles from "./SlideCollecion.module.css"
+import { useAppSelector } from "./hooks/useAppSelector"
+import { useAppActions } from "./hooks/useAppActions"
 
-
-type SlideCollectionProps = {
-    slideList: SlideType[],
-    selection: SelectionSlide,
-    editor: EditorType,
+function getSlideWrapperClassName(slideId: string, selectedSlideId: string | undefined): string {
+    let className = styles.slideWrapper
+    if (slideId === selectedSlideId) {
+        className = `${className} ${styles.selectedSlide}`
+    }
+    return className
 }
 
-function SlideCollection({slideList, selection, editor}: SlideCollectionProps) {
-    const [slideCollecion, setSlideCollection] = useState(slideList)
+function SlideCollection() {
+    const editor = useAppSelector((editor => editor))
+    const selectionSlide = editor.selectionSlide
+    const {setSelectionSlide} = useAppActions()
 
-    useEffect(() => { 
-        setSlideCollection(slideList)
-    }, [slideList]);
+    const [slideCollecion, setSlideCollection] = useState(editor.presentation.listSlides)
+
+    useEffect(() => {
+        setSlideCollection(editor.presentation.listSlides)
+    }, [editor.presentation.listSlides]);
 
     const dragSlide = useRef<any>(null)
     const dragOverSlide = useRef<any>(null)
@@ -37,7 +41,7 @@ function SlideCollection({slideList, selection, editor}: SlideCollectionProps) {
     }
 
     function onSlideClick(slideId: string) {
-        dispatch(setSelectionSlide, {
+        setSelectionSlide({
             type: SelectionType.Slide,
             selectedSlideId: slideId,
         })
@@ -50,14 +54,12 @@ function SlideCollection({slideList, selection, editor}: SlideCollectionProps) {
                 onDragStart={() => dragSlide.current = index}
                 onDragEnter={() => dragOverSlide.current = index}
                 onDragEnd={handleSort}
-                draggable={slide.id == selection.selectedSlideId}>
+                draggable={slide.id == selectionSlide.selectedSlideId} className={getSlideWrapperClassName(slide.id, selectionSlide?.selectedSlideId)}>
                     <Slide 
                         slide={slide}
                         scale={0.2}
-                        isSelected={slide.id == selection.selectedSlideId}
                         isSlideCollection={true}
-                        className={styles.item}
-                        selection={editor.selectionObject}
+                        className={styles.slide}
                     />
                 </div>
             )}

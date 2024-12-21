@@ -1,5 +1,5 @@
 import { FontFormatting, ObjectType } from "../BaseTypes";
-import { CreateSlide, EditBackground, SlideType, BackgroundSlide, ElementSlide, AddObject  } from "../SlideType";
+import { CreateSlide, EditBackground, SlideType, BackgroundSlide, ElementSlide, AddObject, BackgroundType  } from "../SlideType";
 
 jest.mock("uuid", () => ({
     v4: jest.fn(() => "test-uuid"),
@@ -23,7 +23,7 @@ describe("EditBackground", () => {
     // Assert
 
     it("Edit background to color", () => {
-        const newBackground: BackgroundSlide = { type: "color", color: "#ff00ff" };
+        const newBackground: BackgroundSlide = { type: BackgroundType.Color, color: "#ff00ff" };
 
         expect(EditBackground(newBackground, slide)).toEqual({
             id: "test-uuid",
@@ -34,7 +34,7 @@ describe("EditBackground", () => {
 
     it("Edit background to image", () => {
         const newBackground: BackgroundSlide = {
-            type: "image",
+            type: BackgroundType.Image,
             url: "https://polygon.readthedocs.io/en/latest/_images/github_logo.png",
         };
 
@@ -75,7 +75,7 @@ describe("AddObject", () => {
             objectType: ObjectType.Text,
             fontSize: 14,
             fontFamily: "Times New Roman",
-            fontFormatting: FontFormatting.bold,
+            fontFormatting: FontFormatting.italic,
             fontColor: "#ffffff",
             fontBgColor: "#ffffff",
             value: "Text",
@@ -99,7 +99,7 @@ describe("EditTextValue", () => {
             objectType: ObjectType.Text,
             fontSize: 14,
             fontFamily: "Times New Roman",
-            fontFormatting: FontFormatting.bold,
+            fontFormatting: FontFormatting.italic,
             fontColor: "#ffffff",
             fontBgColor: "#ffffff",
             value: "Text",

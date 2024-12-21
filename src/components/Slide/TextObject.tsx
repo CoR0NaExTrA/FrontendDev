@@ -1,34 +1,36 @@
-import { Point, Size, Text } from "../../Entities/BaseTypes"
-import { CSSProperties, useState } from "react";
+import { Point, Size, Text } from "../../store/BaseTypes"
+import { CSSProperties, useEffect, useState } from "react";
 import { dispatch } from "../../store/editor";
-import { updatePosition } from "../../store/functions/updatePosition";
-import { updateSize } from "../../store/functions/updateSize";
-import { updateText } from "../../store/functions/updateText";
+import { useAppSelector } from "../../view/hooks/useAppSelector";
+import { useAppActions } from "../../view/hooks/useAppActions";
 
 type TextObjectProps = {
     textObject: Text,
     scale?: number,
-    isSelected: boolean,
     isSlideCollection: boolean,
     containerRef: any,
 }
-function TextObject({textObject, scale = 1, isSelected, isSlideCollection, containerRef}: TextObjectProps) {  
-    const [position, setPosition] = useState(textObject.pos)
-    const [size, setSize] = useState(textObject.size)
+function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: TextObjectProps) {
+    const selectionObject = useAppSelector((editor => editor.selectionObject))
+    const {updatePosition, updateSize, updateText} = useAppActions()
+    const isSelected = textObject.id == selectionObject.selectedObjectId
+
+    let position = textObject.pos
+    let size = textObject.size
     const [dragging, setDragging] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
-    const [currentText, setCurrentText] = useState(textObject.value)
+    let currentText = textObject.value
 
     function onUpdatePosition(position: Point) {
-        dispatch(updatePosition, position)
+        updatePosition(position)
     }
 
     function onUpdateSize(size: Size) {
-        dispatch(updateSize, size)
+        updateSize(size)
     }
 
     function onUpdateText(text: string) {
-        dispatch(updateText, text)
+        updateText(text)
     }
 
     const handleMouseDownMove = (e: React.MouseEvent) => {
@@ -46,10 +48,11 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
             const deltaX = (event.clientX - startX) / scale
             const deltaY = (event.clientY - startY) / scale
 
-            setPosition({
+            position = {
                 x: Math.max(0, Math.min(containerRect.width - size.width, initialX + deltaX)),
                 y: Math.max(0, Math.min(containerRect.height - size.height, initialY + deltaY)),
-            })
+            }
+            onUpdatePosition(position)
         }
 
         const handleMouseUp = () => {
@@ -57,7 +60,6 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
             document.removeEventListener("mouseup", handleMouseUp)
 
             setDragging(false)
-            onUpdatePosition(position)
         }
 
         setDragging(true)
@@ -70,6 +72,7 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
         e.stopPropagation()
         if (!containerRef.current || isEditing) return
 
+        const containerRect = containerRef.current.getBoundingClientRect()
         const startX = e.clientX
         const startY = e.clientY
 
@@ -102,15 +105,14 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
                 newY = initialY + deltaY
             }
 
-            setSize({ width: newWidth, height: newHeight })
-            setPosition({ x: newX, y: newY })
+            size = { width: newWidth, height: newHeight }
+            position = { x: newX, y: newY }
+            onUpdateSize(size)
         }
 
         const handleMouseUp = () => {
             document.removeEventListener("mousemove", handleMouseMove)
             document.removeEventListener("mouseup", handleMouseUp)
-
-            onUpdateSize(size)
         }
 
         document.addEventListener("mousemove", handleMouseMove)
@@ -135,7 +137,7 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
         margin: 0,
-        transform: `translate(${position.x}px, ${position.y}px)`,
+        transform: `translate(${position.x * scale}px, ${position.y * scale}px)`,
         width: `${size.width * scale}px`,
         height: `${size.height * scale}px`,
         border: isSelected ? "1px solid #0b57d0" : "none",
@@ -158,7 +160,7 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
 
     const contentStyles: CSSProperties = {
         margin: 0,
-        fontSize: `${(Math.min(size.width, size.height) / 2) * scale}px`,
+        fontSize: `${textObject.fontSize * scale}px`,
         fontFamily: textObject.fontFamily,
         color: textObject.fontColor,
         textAlign: "center",
@@ -192,9 +194,7 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
     return (
         <div style={textObjectStyles} onMouseDown={(!isSlideCollection && isSelected) ? handleMouseDownMove: handleSaveText} onDoubleClick={handleDoubleClick}>
             {(isEditing && !isSlideCollection) ? (
-                <div
-                    contentEditable
-                    suppressContentEditableWarning
+                <div contentEditable suppressContentEditableWarning
                     style={{
                         ...contentStyles,
                         outline: "none",
@@ -202,10 +202,7 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
                         background: "none",
                         fontFamily: textObject.fontFamily,
                         color: textObject.fontColor,
-                    }}
-                    onBlur={handleBlur}
-                    onKeyDown={handleKeyDown}
-                    onInput={(e) => setCurrentText(e.currentTarget.textContent || "")}
+                    }} onBlur={handleBlur} onKeyDown={handleKeyDown} onInput={(e) => currentText = e.currentTarget.textContent || ""}
                 >
                     {currentText}
                 </div>
@@ -214,11 +211,7 @@ function TextObject({textObject, scale = 1, isSelected, isSlideCollection, conta
             )}
             {(isSelected && !isSlideCollection) &&
                 handles.map((handle) => (
-                    <div
-                        key={handle.direction}
-                        style={{ ...handleStyles, ...handle.style }}
-                        onMouseDown={(e) => handleMouseDownResize(e, handle.direction)}
-                    ></div>
+                    <div key={handle.direction} style={{ ...handleStyles, ...handle.style }} onMouseDown={(e) => handleMouseDownResize(e, handle.direction)}></div>
                 ))}
         </div>
     )

@@ -1,7 +1,7 @@
-import { FontFormatting, ObjectType } from "../Entities/BaseTypes"
-import { Presentation } from "../Entities/Presentation"
-import { EditorType, SelectionType } from "../Entities/SelectionType"
-import { BackgroundType, SlideType } from "../Entities/SlideType"
+import { FontFormatting, ObjectType } from "./BaseTypes"
+import { Presentation } from "./Presentation"
+import { EditorType, SelectionType } from "./SelectionType"
+import { BackgroundType, SlideType } from "./SlideType"
 
 
 const slide1: SlideType = {

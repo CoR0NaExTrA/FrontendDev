@@ -1,24 +1,39 @@
 .topPanel {
     width: 100vw;
-    height: var(--topPanelHeight);
     background-color: #A9A9A9;
     padding: 10px;
+    display: flex;
+    flex-direction: column; /* Размещает элементы в колонку */
+    gap: 10px; /* Расстояние между строками */
 }
 
 .title {
     background-color: transparent;
-    border: none;
     height: var(--titleHeight);
+    border: none;
+    border-radius: 5px;
     font-size: 16px;
-    width: 250px;
-    margin: 0 0 10px 5px;
+    width: 50%; /* Растягивает на всю ширину панели */
+    margin: 0 auto;
+    text-align: left; /* Выравнивание названия по левому краю */
+    max-width: 600px; /* Ограничивает ширину названия */
+    overflow: hidden; /* Обрезает слишком длинное название */
+    text-overflow: ellipsis; /* Добавляет троеточие, если название не помещается */
+    white-space: nowrap; /* Не переносит текст */
+}
+
+.title:focus {
+    outline: none;
+    border: 1px solid #00bcd4;
 }
 
 .container_buttons {
     display: flex;
-    justify-content: flex-start;
+    flex-wrap: wrap; /* Позволяет кнопкам переноситься на следующую строку */
+    justify-content: flex-start; /* Выравнивание кнопок по началу строки */
     align-items: center;
-    height: calc(var(--topPanelHeight) - var(--titleHeight));
+    gap: 8px; /* Отступы между кнопками */
+    width: 100%; /* Контейнер занимает всю ширину панели */
 }
 
 .container_button_dropdown {
@@ -27,66 +42,62 @@
     flex-direction: column;
 }
 
-.file_upload {
-    display: block;
-    position: absolute;
-    border: 1px solid #00ff00;
-    border-radius: 6px;
-    padding: 5px;
-    top: calc(100% + 10px);
-    width: 150px;
-    max-width: 150px;
-}
-
-.file_upload::before, .file_upload::after {
-    display: block;
-    content: "";
-    position: absolute;
-    height: 20px;
-    right: 35%;
-    border: 10px solid transparent;
-}
-
-.file_upload::before {
-    top: -40px;
-    border-bottom: 10px solid #00ff00;
-}
-
-.file_upload::after {
-    top: -38px;
-    border-bottom: 10px solid #ffffff;
-}
-
+.file_upload,
 .color_picker {
-    display: flex;
-    flex-direction: column;
+    display: block;
     position: absolute;
-    top: calc(100% + 10px);
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px;
+    top: calc(100% + 20px);
+    width: 180px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
-.color_picker::before, .color_picker::after {
-    display: block;
+.file_upload::before,
+.color_picker::before {
     content: "";
     position: absolute;
-    height: 20px;
-    right: 50%;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
     border: 10px solid transparent;
-}
-
-.color_picker::before {
-    top: -40px;
-    border-bottom: 10px solid #00ff00;
-}
-
-.color_picker::after {
-    top: -38px;
-    border-bottom: 10px solid #ffffff;
+    border-bottom-color: #ffffff;
 }
 
 .button {
-    margin: 0 5px;
+    background: #0b57d0;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background: #005bb5; /* Более темный оттенок */
 }
 
 .button_with_dropdown {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0b57d0;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:disabled {
+    background: #999999;
+    cursor: not-allowed;
 }

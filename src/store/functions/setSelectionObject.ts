@@ -1,4 +1,4 @@
-import { EditorType, SelectionObject } from "../../Entities/SelectionType"
+import { EditorType, SelectionObject } from "../../store/SelectionType"
 
 
 function setSelectionObject(editor: EditorType, newSelectionObject: SelectionObject): EditorType {

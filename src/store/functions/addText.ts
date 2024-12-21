@@ -1,5 +1,5 @@
-import { Text } from "../../Entities/BaseTypes"
-import { EditorType, SelectionType } from "../../Entities/SelectionType"
+import { Text } from "../../store/BaseTypes"
+import { EditorType, SelectionType } from "../../store/SelectionType"
 
 
 function addText(editor: EditorType, newText: Text): EditorType {

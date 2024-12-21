@@ -1,9 +1,9 @@
-import React, { useState } from "react"
-import AJV from "ajv"
-import styles from "../Button.module.css"
-import { FontFormatting, ObjectType } from "../../../store/BaseTypes"
-import { BackgroundType } from "../../../store/SlideType"
-import { FaFileImport } from "react-icons/fa6";
+import { legacy_createStore as createStore } from "redux";
+import { EditorReducer } from "./EditorReducer";
+import { EditorType } from "../SelectionType";
+import { FontFormatting, ObjectType } from "../BaseTypes";
+import { BackgroundType } from "../SlideType";
+import AJV from "ajv";
 
 const schema = {
   type: "object",
@@ -120,67 +120,57 @@ const schema = {
 const ajv = new AJV()
 const validate = ajv.compile(schema)
 
-type ImportButtonProps = {
-    onImport: (data: any) => void,
-    className: string,
-}
-
-function ImportButton({ onImport, className}: ImportButtonProps) {
-    const [file, setFile] = useState<File | null>(null)
-    const [isClick, setIsClick] = useState(false)
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = event.target.files?.[0] || null
-        setFile(selectedFile);
+const validateEditorData = (data: any): boolean => {
+    const isValid = validate(data);
+    if (!isValid) {
+        console.warn("Ошибки валидации:", validate.errors);
     }
+    return isValid;
+};
 
-    const handleImport = () => {
-        if (!file) {
-            alert("Файл не выбран.")
-            return
+const saveStateToLocalStorage = (state: EditorType) => {
+    try {
+        const serializedState = JSON.stringify(state);
+        localStorage.setItem("editorState", serializedState);
+    } catch (err) {
+        console.error("Ошибка сохранения состояния в localStorage", err);
+    }
+};
+
+const loadStateFromLocalStorage = (): EditorType | undefined => {
+    try {
+        const serializedState = localStorage.getItem("editorState");
+        if (!serializedState) return undefined;
+
+        const parsedState = JSON.parse(serializedState);
+
+        if (!validateEditorData(parsedState)) {
+            console.warn("Некорректные данные в localStorage. Загружается состояние по умолчанию.");
+            return undefined; // Если данные некорректны, вернуть `undefined`
         }
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            try {
-                const data = JSON.parse(reader.result as string)
-
-                const valid = validate(data)
-                if (!valid) {
-                    alert("Неверный формат документа. Ошибки валидации:")
-                    console.log(validate.errors)
-                    return
-                }
-
-                onImport(data);
-            } catch (error) {
-                alert("Ошибка импорта: " + (error as Error).message)
-            }
-        }
-
-        setIsClick(false)
-        reader.readAsText(file)
+        return parsedState as EditorType;
+    } catch (err) {
+        console.error("Ошибка загрузки состояния из localStorage", err);
+        return undefined;
     }
+};
 
-    return (
-        <div>
-            <input
-                type="file"
-                accept="application/json"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                id="file-input"
-            />
+const preloadedState = loadStateFromLocalStorage();
 
-            <button className={`${className} ${styles.button}`} onClick={() => document.getElementById("file-input")?.click()}>
-                {<FaFileImport size={20}/>}
-            </button>
+const saveStateEnhancer = (createStore: any) => (...args: any) => {
+    const store = createStore(...args);
 
-            <button className={styles.button} style={{position: "absolute", top: "10%", display: isClick ? "block": "none"}} onClick={handleImport}>Загрузить</button>
-        </div>
-    )
-}
+    store.subscribe(() => {
+        saveStateToLocalStorage(store.getState());
+    });
+
+    return store;
+};
+
+const store = createStore(EditorReducer, preloadedState, saveStateEnhancer)
 
 export {
-    ImportButton
+    store
 }
+
