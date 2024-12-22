@@ -1,5 +1,5 @@
 .slideList {
-    overflow: auto;
+    overflow-x: scroll;
     display: flex;
     flex-direction: column; /* Вертикальный список */
     padding: 10px;

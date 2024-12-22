@@ -1,6 +1,5 @@
-import { Point, Size, Text } from "../../store/BaseTypes"
-import { CSSProperties, useEffect, useState } from "react";
-import { dispatch } from "../../store/editor";
+import { FontFormatting, Point, Size, Text } from "../../store/BaseTypes"
+import { CSSProperties, useState } from "react";
 import { useAppSelector } from "../../view/hooks/useAppSelector";
 import { useAppActions } from "../../view/hooks/useAppActions";
 
@@ -72,7 +71,6 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
         e.stopPropagation()
         if (!containerRef.current || isEditing) return
 
-        const containerRect = containerRef.current.getBoundingClientRect()
         const startX = e.clientX
         const startY = e.clientY
 
@@ -142,7 +140,7 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
         height: `${size.height * scale}px`,
         border: isSelected ? "1px solid #0b57d0" : "none",
         boxSizing: "border-box",
-        overflow: "hidden",
+        overflow: "clip",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -162,10 +160,13 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
         margin: 0,
         fontSize: `${textObject.fontSize * scale}px`,
         fontFamily: textObject.fontFamily,
+        fontStyle: (textObject.fontFormatting === FontFormatting.italic) ? textObject.fontFormatting : 'normal',
+        fontWeight: (textObject.fontFormatting === FontFormatting.bold) ? textObject.fontFormatting : 'normal',
+        textDecoration: (textObject.fontFormatting === FontFormatting.underline) ? textObject.fontFormatting : 'none',
         color: textObject.fontColor,
         textAlign: "center",
         lineHeight: 1,
-        whiteSpace: "nowrap",
+        whiteSpace: "wrap",
         overflow: "hidden",
     }
 

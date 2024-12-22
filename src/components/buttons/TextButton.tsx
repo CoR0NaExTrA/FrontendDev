@@ -1,61 +1,58 @@
-import { v4 as uuid } from "uuid";
-import { useState } from 'react';
-import { FaTextSlash, FaT, FaArrowUp, FaArrowDown } from "react-icons/fa6";
-import { RiTextBlock } from "react-icons/ri";
+import { FaT, FaArrowUp, FaArrowDown, FaBold, FaN , FaItalic, FaUnderline } from "react-icons/fa6";
 import { useAppActions } from '../../view/hooks/useAppActions';
-import { FontFormatting, ObjectType } from '../../store/BaseTypes';
+import { FontFormatting } from "../../store/BaseTypes";
 
-const fontFamilies = [
-    'Arial',
-    'Verdana',
-    'Times New Roman',
-    'Georgia',
-    'Courier New',
-    'Roboto',
-    'Comic Sans MS',
-];
+type TextToolbarProps = {
+    currentFontSize: number;
+    currentFontFamily: string;
+}
 
-function TextButton() {
-    const [fontSize, setFontSize] = useState(14)
-    const {addText, updateFontColor, updateFontFamily, updateFontSize} = useAppActions()
-    const [selectedFont, setSelectedFont] = useState<string>(fontFamilies[0]);
-    
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedFont(event.target.value);
-        console.log(`Выбран шрифт: ${event.target.value}`);
-    };
+function TextButton({currentFontSize, currentFontFamily}: TextToolbarProps) {
+    const availableFonts: string[] = [
+        "Georgia",
+        "Comic Sans MS",
+        "Roboto",
+        "Times New Roman",
+        "Arial",
+    ];
 
-    function onAddText() {
-        addText({
-            id: uuid(),
-            pos: {x: 10, y: 10},
-            size: {width: 100, height: 100},
-            objectType: ObjectType.Text,
-            fontSize: 100,
-            fontFamily: 'Roboto',
-            fontFormatting: FontFormatting.italic,
-            fontColor: '#0000ff',
-            fontBgColor: '#ffffff',
-            value: '',
-        })
-    }
+    const { updateFontFamily, updateFontSize, updateFontFormatting } = useAppActions()
 
     function onUpdateFontSizeUp() {
-        updateFontSize(fontSize + 1)
-        setFontSize(fontSize + 1)
+        updateFontSize(currentFontSize + 1)
     }
 
     function onUpdateFontSizeDown() {
-        updateFontSize(fontSize - 1)
-        setFontSize(fontSize - 1)
+        updateFontSize(currentFontSize - 1)
+    }
+
+    function onFontFamilyChange(value: string) {
+        updateFontFamily(value)
+    }
+
+    function onFontFormattingChange(value: FontFormatting) {
+        console.log(value)
+        updateFontFormatting(value)
     }
 
     return (
         <div>
-            <button onClick={onAddText}>{<RiTextBlock />}</button>
-            <button>{<FaTextSlash />}</button>
             <button onClick={onUpdateFontSizeUp}>{<FaT />}{<FaArrowUp size={10}/>}</button>
             <button onClick={onUpdateFontSizeDown}>{<FaT />}{<FaArrowDown size={10}/>}</button>
+            <select
+                value={currentFontFamily}
+                onChange={(e) => onFontFamilyChange(e.target.value)}
+            >
+                {availableFonts.map((font) => (
+                    <option key={font} value={font}>
+                        {font}
+                    </option>
+                ))}
+            </select>
+            <button onClick={() => onFontFormattingChange(FontFormatting.normal)}>{<FaN />}</button>
+            <button onClick={() => onFontFormattingChange(FontFormatting.bold)}>{<FaBold />}</button>
+            <button onClick={() => onFontFormattingChange(FontFormatting.italic)}>{<FaItalic />}</button>
+            <button onClick={() => onFontFormattingChange(FontFormatting.underline)}>{<FaUnderline />}</button>
         </div>
     )
 }

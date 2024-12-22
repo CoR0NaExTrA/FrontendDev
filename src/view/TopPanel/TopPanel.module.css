@@ -1,10 +1,23 @@
 .topPanel {
     width: 100vw;
-    background-color: #A9A9A9;
+    background-color: #f9fafb;
     padding: 10px;
     display: flex;
     flex-direction: column; /* Размещает элементы в колонку */
     gap: 10px; /* Расстояние между строками */
+}
+
+.logo {
+    width: 2%;
+    height: 2%;
+    margin: 5px;
+}
+
+.container_menu {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .title {
@@ -13,8 +26,8 @@
     border: none;
     border-radius: 5px;
     font-size: 16px;
-    width: 50%; /* Растягивает на всю ширину панели */
-    margin: 0 auto;
+    width: 10%; /* Растягивает на всю ширину панели */
+    margin: 0;
     text-align: left; /* Выравнивание названия по левому краю */
     max-width: 600px; /* Ограничивает ширину названия */
     overflow: hidden; /* Обрезает слишком длинное название */

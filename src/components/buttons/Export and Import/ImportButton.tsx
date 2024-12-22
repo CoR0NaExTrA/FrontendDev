@@ -46,7 +46,7 @@ const schema = {
                       value: { type: "string" }, // Для текстового объекта, обязательное поле
                       fontSize: { type: "number" }, // Размер шрифта
                       fontFamily: { type: "string" }, // Семейство шрифта
-                      fontFormatting: { enum: [FontFormatting.italic, FontFormatting.normal, FontFormatting.underlined]}, // Форматирование шрифта (например, bold, italic)
+                      fontFormatting: { enum: [FontFormatting.normal, FontFormatting.bold, FontFormatting.italic, FontFormatting.underline]}, // Форматирование шрифта (например, bold, italic)
                       fontColor: { type: "string" }, // Цвет шрифта
                       fontBgColor: { type: "string" }, // Цвет фона текста
                     },

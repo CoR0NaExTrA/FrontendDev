@@ -1,4 +1,4 @@
-import { Image, Point, Size, Text } from "../BaseTypes";
+import { FontFormatting, Image, Point, Size, Text } from "../BaseTypes";
 import { BackgroundSlide } from "../SlideType";
 import { ActionType } from "./Actions";
 
@@ -48,6 +48,13 @@ function updateFontSize(size: number) {
     }
 }
 
+function updateFontFormatting(format: FontFormatting) {
+    return {
+        type: ActionType.Update_Font_Formatting_Action,
+        payload: format,
+    }
+}
+
 function addImage(image: Image) {
     return {
         type: ActionType.Add_Image,
@@ -94,6 +101,7 @@ export {
     addText, removeText,
     addImage, removeImage,
     updateFontColor, updateFontFamily,
-    updateFontSize, editBackground, 
-    updatePosition, updateSize, updateText
+    updateFontSize, updateFontFormatting, 
+    editBackground, updatePosition, 
+    updateSize, updateText
 }

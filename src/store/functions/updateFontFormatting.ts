@@ -1,7 +1,7 @@
 import { EditorType } from "../SelectionType";
-import { ObjectType, Text } from "../BaseTypes"
+import { FontFormatting, ObjectType, Text } from "../BaseTypes"
 
-function updateFontSize(editor: EditorType, newTextSize: number): EditorType {
+function updateFontFormatting(editor: EditorType, newTextFormat: FontFormatting): EditorType {
     const slideId = editor.selectionSlide.selectedSlideId
     const slideIndex = editor.presentation.listSlides.findIndex(slide => slide.id == slideId)
 
@@ -16,7 +16,7 @@ function updateFontSize(editor: EditorType, newTextSize: number): EditorType {
     const textElement = element as Text; 
     const updatedTextElement: Text = {
         ...textElement,
-        fontSize: newTextSize,
+        fontFormatting: newTextFormat,
     };
 
     const newSlides = [...editor.presentation.listSlides]
@@ -37,5 +37,5 @@ function updateFontSize(editor: EditorType, newTextSize: number): EditorType {
 }
 
 export {
-    updateFontSize
+    updateFontFormatting
 }

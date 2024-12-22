@@ -20,9 +20,10 @@ export type Image = SlideObject & {
 };
 
 export enum FontFormatting {
-    normal,
-    italic,
-    underlined,
+    normal = 'normal',
+    bold = 'bold',
+    italic = 'italic',
+    underline = 'underline',
 }
   
 export type Text = SlideObject & {

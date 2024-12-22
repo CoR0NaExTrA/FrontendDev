@@ -1,0 +1,23 @@
+.container_main {
+    display: flex;
+    flex-direction: column;
+}
+
+.container_menus {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.title {
+    background: none;
+    height: var(--titleHeight);
+    border: 1px solid transparent;
+    border-radius: 4px !important;
+    padding: 1px 6px;
+    font-size: 18px;
+    width: 167px;
+    margin: 0;
+    min-width: 1px;
+    overflow: hidden; /* Обрезает слишком длинное название */
+    text-overflow: ellipsis; /* Добавляет троеточие, если название не помещается */
+}

@@ -18,6 +18,7 @@ import { editName } from "../functions/editName";
 import { updateFontColor } from "../functions/updateFontColor";
 import { updateFontSize } from "../functions/updateFontSize";
 import { updateFontFamily } from "../functions/updateFontFamily";
+import { updateFontFormatting } from "../functions/updateFontFormatting";
 
 function EditorReducer(editor: EditorType = defaultEditor, action: EditorAction): EditorType {
     switch (action.type) {
@@ -39,6 +40,8 @@ function EditorReducer(editor: EditorType = defaultEditor, action: EditorAction)
             return updateFontFamily(editor, action.payload);
         case ActionType.Update_Font_Size_Action:
             return updateFontSize(editor, action.payload);
+        case ActionType.Update_Font_Formatting_Action:
+            return updateFontFormatting(editor, action.payload);
         case ActionType.Edit_Background:
             return editBackground(editor, action.payload);
         case ActionType.Edit_Name:

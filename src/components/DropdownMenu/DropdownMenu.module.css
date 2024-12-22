@@ -1,0 +1,46 @@
+/* Стили для контейнера и кнопки */
+.dropdown_container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown_button {
+    margin-bottom: -4px;
+    margin-top: 8px;
+    padding: 2px 7px;
+    border: none;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.dropdown_button:hover {
+    background-color: #ddd;
+}
+
+/* Стили для выпадающего меню */
+.dropdown_menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    font-size: 13px;
+}
+
+.dropdown_item {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dropdown_item:hover {
+    background-color: #f1f1f1;
+}

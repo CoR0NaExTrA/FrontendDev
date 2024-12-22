@@ -1,4 +1,4 @@
-import { Image, Point, Size, Text } from "../BaseTypes"
+import { FontFormatting, Image, Point, Size, Text } from "../BaseTypes"
 import { EditorType, SelectionObject, SelectionSlide } from "../SelectionType"
 import { BackgroundSlide, SlideType } from "../SlideType"
 
@@ -11,6 +11,7 @@ export enum ActionType {
     Update_Font_Color_Action = 'updateFontColor',
     Update_Font_Family_Action = 'updateFontFamily',
     Update_Font_Size_Action = 'updateFontSize',
+    Update_Font_Formatting_Action = 'updateFontFormatting',
     Remove_Image = 'removeImage',
     Edit_Background = 'editBackground',
     Edit_Name = 'editName',
@@ -58,6 +59,11 @@ type UpdateFontFamilyAction = {
 type UpdateFontSizeAction = {
     type: ActionType.Update_Font_Size_Action,
     payload: number,
+}
+
+type UpdateFontFormattingAction = {
+    type: ActionType.Update_Font_Formatting_Action,
+    payload: FontFormatting,
 }
 
 type RemoveImageAction = {
@@ -113,6 +119,6 @@ export type EditorAction =
     AddSlideAction | RemoveSlideAction | AddTextAction | 
     AddImageAction | RemoveTextAction | RemoveImageAction | 
     UpdateFontColorAction | UpdateFontFamilyAction | UpdateFontSizeAction |
-    EditBackgroundAction | EditNameAction | UpdatePosition | 
-    UpdateSize | UpdateText | UpdateSlides | 
+    UpdateFontFormattingAction | EditBackgroundAction | EditNameAction | 
+    UpdatePosition | UpdateSize | UpdateText | UpdateSlides | 
     SetSelectionActionSlide | SetSelectionActionObject | SetEditorAction
