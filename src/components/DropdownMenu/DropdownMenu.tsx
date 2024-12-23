@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, ReactNode } from 'react'
 import styles from './DropdownMenu.module.css'
 
 type MenuItem = {
-    label: string;
+    label: ReactNode;
     onClick: () => void;
 };
 
 type DropdownMenuProps = {
     items: MenuItem[];
-    label: string;
+    label: ReactNode;
 };
 
 const DropdownMenu = ({ items, label }: DropdownMenuProps) => {

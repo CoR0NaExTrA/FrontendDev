@@ -1,5 +1,5 @@
 import React from "react"
-import { HistoryType } from "../../utils/History"
+import { HistoryType } from "../utils/History"
 
 const defaultHistory: HistoryType = {
     undo: () => undefined,

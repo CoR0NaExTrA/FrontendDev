@@ -1,5 +1,5 @@
 import { FaT, FaArrowUp, FaArrowDown, FaBold, FaN , FaItalic, FaUnderline } from "react-icons/fa6";
-import { useAppActions } from '../../view/hooks/useAppActions';
+import { useAppActions } from '../../hooks/useAppActions';
 import { FontFormatting } from "../../store/BaseTypes";
 
 type TextToolbarProps = {

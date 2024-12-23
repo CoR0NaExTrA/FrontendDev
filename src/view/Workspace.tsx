@@ -1,6 +1,6 @@
 import { Slide } from "../components/Slide/Slide"
 import { SlideType } from "../store/SlideType"
-import { useAppSelector } from "./hooks/useAppSelector"
+import { useAppSelector } from "./../hooks/useAppSelector"
 import styles from "./Workspace.module.css"
 
 function Workspace() {

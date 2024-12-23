@@ -1,7 +1,7 @@
 import { FontFormatting, Point, Size, Text } from "../../store/BaseTypes"
 import { CSSProperties, useState } from "react";
-import { useAppSelector } from "../../view/hooks/useAppSelector";
-import { useAppActions } from "../../view/hooks/useAppActions";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { useAppActions } from "../../hooks/useAppActions";
 
 type TextObjectProps = {
     textObject: Text,

@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react"
 import { SelectionType } from "../store/SelectionType"
 import { Slide } from "../components/Slide/Slide"
 import styles from "./SlideCollecion.module.css"
-import { useAppSelector } from "./hooks/useAppSelector"
-import { useAppActions } from "./hooks/useAppActions"
+import { useAppSelector } from "./../hooks/useAppSelector"
+import { useAppActions } from "./../hooks/useAppActions"
+import { SlideType } from "../store/SlideType"
 
 function getSlideWrapperClassName(slideId: string, selectedSlideId: string | undefined): string {
     let className = styles.slideWrapper
@@ -18,7 +19,7 @@ function SlideCollection() {
     const selectionSlide = editor.selectionSlide
     const {setSelectionSlide} = useAppActions()
 
-    const [slideCollecion, setSlideCollection] = useState(editor.presentation.listSlides)
+    const [slideCollection, setSlideCollection] = useState(editor.presentation.listSlides)
 
     useEffect(() => {
         setSlideCollection(editor.presentation.listSlides)
@@ -28,16 +29,16 @@ function SlideCollection() {
     const dragOverSlide = useRef<any>(null)
 
     const handleSort = () => {
-        let _slideCollecion = [...slideCollecion]
+        let _slideCollection = [...slideCollection]
 
-        const draggedSlideContent = _slideCollecion.splice(dragSlide.current, 1)[0]
+        const draggedSlideContent = _slideCollection.splice(dragSlide.current, 1)[0]
         
-        _slideCollecion.splice(dragOverSlide.current, 0 , draggedSlideContent)
+        _slideCollection.splice(dragOverSlide.current, 0 , draggedSlideContent)
 
         dragSlide.current = null
         dragOverSlide.current = null
 
-        setSlideCollection(_slideCollecion)
+        setSlideCollection(_slideCollection)
     }
 
     function onSlideClick(slideId: string) {
@@ -49,7 +50,7 @@ function SlideCollection() {
 
     return (
         <div className={styles.slideList}>
-            {slideCollecion.map((slide, index) => 
+            {slideCollection.map((slide: SlideType, index: number) => 
                 <div key={slide.id} onClick={() => {onSlideClick(slide.id)}}
                 onDragStart={() => dragSlide.current = index}
                 onDragEnter={() => dragOverSlide.current = index}

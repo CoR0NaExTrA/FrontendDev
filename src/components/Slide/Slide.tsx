@@ -5,8 +5,8 @@ import { BackgroundType, SlideType } from "../../store/SlideType"
 import { ImageObject } from "./ImageObject"
 import styles from "./Slide.module.css"
 import { SelectionType } from "../../store/SelectionType"
-import { useAppSelector } from "../../view/hooks/useAppSelector"
-import { useAppActions } from "../../view/hooks/useAppActions"
+import { useAppSelector } from "../../hooks/useAppSelector"
+import { useAppActions } from "../../hooks/useAppActions"
 
 const SLIDE_WIDTH = 935
 const SLIDE_HEIGHT = 525

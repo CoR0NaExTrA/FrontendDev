@@ -1,8 +1,9 @@
 import { v4 as uuid } from "uuid";
-import { FontFormatting, ObjectType } from "../store/BaseTypes";
-import { BackgroundType } from "../store/SlideType";
+import { FontFormatting, Image, Text, ObjectType } from "../store/BaseTypes";
+import { BackgroundSlide, BackgroundType } from "../store/SlideType";
 import { SetStateAction } from "react";
 import { EditorType } from "../store/SelectionType";
+import { HistoryType } from "./History";
 
 export const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>, editName: (name: string) => void) => {
     editName(event.target.value);
@@ -17,7 +18,7 @@ export const handleRemoveSlide = (removeSlide: () => void) => {
     removeSlide();
 };
 
-export const handleAddText = (addText: (text: any) => void) => {
+export const handleAddText = (addText: (text: Text) => void) => {
     addText({
         id: uuid(),
         pos: {x: 10, y: 10},
@@ -32,7 +33,7 @@ export const handleAddText = (addText: (text: any) => void) => {
     });
 };
 
-export const handleAddImage = (addImage: (image: any) => void, image: string) => {
+export const handleAddImage = (addImage: (image: Image) => void, image: string) => {
     addImage({
         id: uuid(),
         pos: {x: 400, y: 70},
@@ -51,7 +52,7 @@ export const handleRemoveImage = (removeImage: () => void) => {
 };
 
 // Функции для работы с фоном
-export const handleEditBackground = (editBackground: (background: any) => void, color: string) => {
+export const handleEditBackground = (editBackground: (background: BackgroundSlide) => void, color: string) => {
     editBackground({
         type: BackgroundType.Color,
         color: color,
@@ -95,15 +96,14 @@ export const handleExportToPDF = (presentation: any, exportPresentationToPDF: (p
     exportPresentationToPDF(presentation);
 };
 
-// Обработчики для Undo и Redo
-export const handleUndo = (history: any, setEditor: any) => {
+export const handleUndo = (history: HistoryType, setEditor: any) => {
     const newEditor = history.undo();
     if (newEditor) {
         setEditor(newEditor);
     }
 };
 
-export const handleRedo = (history: any, setEditor: any) => {
+export const handleRedo = (history: HistoryType, setEditor: any) => {
     const newEditor = history.redo();
     if (newEditor) {
         setEditor(newEditor);
@@ -120,3 +120,21 @@ export const getSelectedObject = (editor: EditorType) => {
         (object) => object.id === editor.selectionObject.selectedObjectId
     );
 }
+
+export const handleUploadFromComputer = (addImage: (image: Image) => void) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e: any) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64Image = reader.result as string;
+                handleAddImage(addImage, base64Image);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+};

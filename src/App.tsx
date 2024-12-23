@@ -4,7 +4,7 @@ import { SlideCollection } from "./view/SlideCollection";
 import { TopPanel } from './view/TopPanel/TopPanel';
 import { Workspace } from "./view/Workspace";
 import { HistoryType } from './utils/History';
-import { HistoryContext } from './view/hooks/HistoryContext';
+import { HistoryContext } from './hooks/HistoryContext';
 import 'font-awesome/css/font-awesome.min.css';
 
 type AppProps = {

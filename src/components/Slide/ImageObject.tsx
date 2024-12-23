@@ -1,7 +1,7 @@
 import { CSSProperties, useState } from "react"
 import { Image, Point, Size } from "../../store/BaseTypes"
-import { useAppSelector } from "../../view/hooks/useAppSelector"
-import { useAppActions } from "../../view/hooks/useAppActions"
+import { useAppSelector } from "../../hooks/useAppSelector"
+import { useAppActions } from "../../hooks/useAppActions"
 
 type ImageObjectProps = {
     imageObject: Image,

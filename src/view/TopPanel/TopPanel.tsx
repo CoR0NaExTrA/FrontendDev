@@ -6,8 +6,8 @@ import { FileUpload } from "../../components/DnD InsertImage/FileUpload"
 import { Toolbar } from './Toolbar';
 import { ExportButton } from "../../components/buttons/Export and Import/ExportButton"
 import { ImportButton } from "../../components/buttons/Export and Import/ImportButton"
-import { useAppActions } from "../hooks/useAppActions"
-import { HistoryContext } from "../hooks/HistoryContext";
+import { useAppActions } from "../../hooks/useAppActions"
+import { HistoryContext } from "../../hooks/HistoryContext";
 import { FaT, FaFileImage, FaPalette } from 'react-icons/fa6';
 import { handleAddText, handleAddImage, handleRemoveText, handleRemoveImage, handleEditBackground, handleContextMenuImage,
     handleResetImage, handleContextMenuBackground, handleResetBackground, handleImport, handleUndo, handleRedo} from '../../utils/Handlers';

@@ -1,8 +1,8 @@
 import styles from './TitleAndMenu.module.css'
 import { useContext, useEffect, useRef } from "react"
-import { useAppSelector } from "../hooks/useAppSelector"
-import { useAppActions } from "../hooks/useAppActions"
-import { HistoryContext } from "../hooks/HistoryContext";
+import { useAppSelector } from "../../hooks/useAppSelector"
+import { useAppActions } from "../../hooks/useAppActions"
+import { HistoryContext } from "../../hooks/HistoryContext";
 import { exportPresentationToPDF } from "../../store/functions/exportPDF";
 import { DropdownMenu } from "../../components/DropdownMenu/DropdownMenu";
 import { handleAddImage, handleAddSlide, handleAddText, handleEditBackground, handleExportToPDF, handleImport, handleRedo, handleRemoveImage, handleRemoveSlide, handleRemoveText, handleTitleChange, handleUndo } from "../../utils/Handlers";
