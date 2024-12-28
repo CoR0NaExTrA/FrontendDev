@@ -1,7 +1,8 @@
 import jsPDF from "jspdf";
 import { Presentation } from "../Presentation";
 import { BackgroundType } from "../SlideType";
-import { ObjectType } from "../BaseTypes";
+import { ObjectType } from "../BaseTypes"
+import "../../fonts/Roboto-Black-normal.js"
 
 const SLIDE_WIDTH = 935
 const SLIDE_HEIGHT = 525
@@ -31,13 +32,16 @@ function exportPresentationToPDF(presentation: Presentation) {
                 const x = obj.pos.x
                 const y = obj.pos.y
                 const maxWidth = obj.size.width
+                const maxHeight = obj.size.height
+
+                pdf.setFont("Roboto-Black", "normal");
+                pdf.setFontSize(obj.fontSize); 
+                pdf.setTextColor(obj.fontColor || "#000000");
         
                 pdf.text(obj.value, x, y, {
                     maxWidth,
-                    align: "left",
-                })
-
-                pdf.setFontSize(obj.fontSize)
+                    align: "center",
+                }, maxHeight)
             } else if (obj.objectType === ObjectType.Image) {
                 pdf.addImage(obj.url, "JPEG", obj.pos.x, obj.pos.y, obj.size.width, obj.size.height)
             }

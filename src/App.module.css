@@ -10,9 +10,12 @@
     --titleHeight: 20px;
     --colorPickerWidth: 150px;
     --displayColorPicker: none;
+    --textColor: black;
+    --backgroudColor: #f9fafb;;
 }
   
 .container {
     display: flex;
     height: calc(100vh - var(--topPanelHeight));
+    background: var(--backgroudColor);
 }

@@ -1,7 +1,7 @@
 import { SlideType } from "../SlideType";
 import { ActionType } from "./Actions";
 
-function updateSlides(slides: Array<SlideType>) {
+function updateSlides(slides: SlideType[]) {
     return {
         type: ActionType.Update_Text,
         payload: slides,

@@ -7,23 +7,30 @@ import styles from "./Slide.module.css"
 import { SelectionType } from "../../store/SelectionType"
 import { useAppSelector } from "../../hooks/useAppSelector"
 import { useAppActions } from "../../hooks/useAppActions"
+import { useZoom } from "../../hooks/ZoomContext"
 
 const SLIDE_WIDTH = 935
 const SLIDE_HEIGHT = 525
 
 type SlideProps = {
     slide: SlideType,
-    scale?: number,
     isSlideCollection: boolean,
     className: string,
 }
 
-function Slide({slide, scale = 1, isSlideCollection, className}: SlideProps) {
+function Slide({slide, isSlideCollection, className}: SlideProps) {
     const selectionSlide = useAppSelector((editor => editor.selectionSlide))
-    const isSelected = slide.id == selectionSlide.selectedSlideId
+    const isSelected = (slide.id == selectionSlide.selectedSlideId)
     const {setSelectionObject} = useAppActions()
 
     const containerRef = useRef(null)
+
+    const { zoom } = useZoom();
+    let scale = zoom / 100
+    if (isSlideCollection)
+    {
+        scale = 0.2
+    }
     
     const slideStyles: CSSProperties = {
         width: `${SLIDE_WIDTH * scale}px`,
@@ -65,7 +72,7 @@ function Slide({slide, scale = 1, isSlideCollection, className}: SlideProps) {
                 switch (slideObject.objectType) {
                     case ObjectType.Text:
                         return ( 
-                            <div key={slideObject.id} onClick={(e) => {onObjectClick(slideObject.id, e)}}>
+                            <div key={slideObject.id} onClick={(e) => {!isSlideCollection && onObjectClick(slideObject.id, e)}}>
                                 <TextObject textObject={slideObject} scale={scale} 
                                 containerRef={containerRef} isSlideCollection={isSlideCollection}/> 
                             </div>

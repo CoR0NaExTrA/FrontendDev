@@ -5,17 +5,16 @@ import { useAppActions } from "../../hooks/useAppActions"
 import { HistoryContext } from "../../hooks/HistoryContext";
 import { exportPresentationToPDF } from "../../store/functions/exportPDF";
 import { DropdownMenu } from "../../components/DropdownMenu/DropdownMenu";
-import { handleAddImage, handleAddSlide, handleAddText, handleEditBackground, handleExportToPDF, handleImport, handleRedo, handleRemoveImage, handleRemoveSlide, handleRemoveText, handleTitleChange, handleUndo } from "../../utils/Handlers";
+import { handleAddImage, handleAddSlide, handleAddText, handleExportToPDF, handleImport, handleRedo, handleRemoveImage, handleRemoveSlide, handleRemoveText, handleTitleChange, handleUndo } from "../../utils/Handlers";
 
 type TitleAndMenuProps = {
-    color: string,
     image: string,
 }
 
-function TitleAndMenu({color, image}: TitleAndMenuProps) {
+function TitleAndMenu({image}: TitleAndMenuProps) {
     const presentation = useAppSelector((editor => editor.presentation))
     const title = useAppSelector((editor => editor.presentation.name))
-    const {addSlide, removeSlide, addText, removeText, addImage, removeImage, editBackground, editName, setEditor } = useAppActions()
+    const {addSlide, removeSlide, addText, removeText, addImage, removeImage, editName, setEditor } = useAppActions()
     const history = useContext(HistoryContext)
 
     const topPanelRef = useRef<HTMLDivElement>(null);
@@ -47,7 +46,6 @@ function TitleAndMenu({color, image}: TitleAndMenuProps) {
     const slideItems = [
         { label: 'Создать слайд', onClick: () => handleAddSlide(addSlide) },
         { label: 'Дублировать слайд', onClick: () => alert('Ещё один мипо') },
-        { label: 'Изменить фон', onClick: () => handleEditBackground(editBackground, color) },
         { label: 'Удалить', onClick: () => handleRemoveSlide(removeSlide) },
     ]
 

@@ -1,83 +1,19 @@
 .topPanel {
     width: 100vw;
-    background-color: #f9fafb;
+    background-color: var(--backgroudColor);
     padding: 10px;
     display: flex;
-    flex-direction: column; /* Размещает элементы в колонку */
-    gap: 10px; /* Расстояние между строками */
-}
-
-.logo {
-    width: 2%;
-    height: 2%;
-    margin: 5px;
-}
-
-.container_menu {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.title {
-    background-color: transparent;
-    height: var(--titleHeight);
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    width: 10%; /* Растягивает на всю ширину панели */
-    margin: 0;
-    text-align: left; /* Выравнивание названия по левому краю */
-    max-width: 600px; /* Ограничивает ширину названия */
-    overflow: hidden; /* Обрезает слишком длинное название */
-    text-overflow: ellipsis; /* Добавляет троеточие, если название не помещается */
-    white-space: nowrap; /* Не переносит текст */
-}
-
-.title:focus {
-    outline: none;
-    border: 1px solid #00bcd4;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .container_buttons {
     display: flex;
-    flex-wrap: wrap; /* Позволяет кнопкам переноситься на следующую строку */
-    justify-content: flex-start; /* Выравнивание кнопок по началу строки */
+    flex-wrap: wrap;
+    justify-content: flex-start;
     align-items: center;
-    gap: 8px; /* Отступы между кнопками */
-    width: 100%; /* Контейнер занимает всю ширину панели */
-}
-
-.container_button_dropdown {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.file_upload,
-.color_picker {
-    display: block;
-    position: absolute;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 10px;
-    top: calc(100% + 20px);
-    width: 180px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-}
-
-.file_upload::before,
-.color_picker::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 10px solid transparent;
-    border-bottom-color: #ffffff;
+    gap: 8px;
+    width: 100%;
 }
 
 .button {
@@ -92,7 +28,7 @@
 }
 
 .button:hover {
-    background: #005bb5; /* Более темный оттенок */
+    background: #005bb5;
 }
 
 .button_with_dropdown {

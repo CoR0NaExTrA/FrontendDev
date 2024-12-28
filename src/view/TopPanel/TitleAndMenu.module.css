@@ -18,6 +18,6 @@
     width: 167px;
     margin: 0;
     min-width: 1px;
-    overflow: hidden; /* Обрезает слишком длинное название */
-    text-overflow: ellipsis; /* Добавляет троеточие, если название не помещается */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -6,28 +6,31 @@ import { Workspace } from "./view/Workspace";
 import { HistoryType } from './utils/History';
 import { HistoryContext } from './hooks/HistoryContext';
 import 'font-awesome/css/font-awesome.min.css';
+import { ZoomProvider } from './hooks/ZoomContext';
 
 type AppProps = {
-  history: HistoryType,
+    history: HistoryType,
 }
 
 function App({history}: AppProps) {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-        document.body.style.overflow = "scroll"
-    };
-  }, []);
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "scroll"
+        };
+    }, []);
 
-  return (
-      <HistoryContext.Provider value={history}>
-        <TopPanel/>
-        <div className={styles.container}>
-          <SlideCollection />
-          <Workspace />
-        </div>
-      </HistoryContext.Provider>
-  )
+    return (
+        <HistoryContext.Provider value={history}>
+            <ZoomProvider>
+                <TopPanel/>
+                <div className={styles.container}>
+                    <SlideCollection />
+                    <Workspace />
+                </div>
+            </ZoomProvider>
+        </HistoryContext.Provider>
+    )
 }
 
 export default App

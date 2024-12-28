@@ -97,7 +97,7 @@ type UpdateText = {
 
 type UpdateSlides = {
     type: ActionType.Update_Slides,
-    payload: Array<SlideType>,
+    payload: SlideType[],
 }
 
 export type SetSelectionActionSlide = {

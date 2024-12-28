@@ -1,22 +1,21 @@
 import { v4 as uuid } from "uuid";
 import { FontFormatting, Image, Text, ObjectType } from "../store/BaseTypes";
-import { BackgroundSlide, BackgroundType } from "../store/SlideType";
+import { BackgroundSlide } from "../store/SlideType";
 import { SetStateAction } from "react";
 import { EditorType } from "../store/SelectionType";
 import { HistoryType } from "./History";
 
 export const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>, editName: (name: string) => void) => {
-    editName(event.target.value);
-};
+    editName(event.target.value)
+}
 
-// Функции для добавления/удаления объектов
 export const handleAddSlide = (addSlide: () => void) => {
-    addSlide();
-};
+    addSlide()
+}
 
 export const handleRemoveSlide = (removeSlide: () => void) => {
-    removeSlide();
-};
+    removeSlide()
+}
 
 export const handleAddText = (addText: (text: Text) => void) => {
     addText({
@@ -30,8 +29,8 @@ export const handleAddText = (addText: (text: Text) => void) => {
         fontColor: '#0000ff',
         fontBgColor: '#ffffff',
         value: '',
-    });
-};
+    })
+}
 
 export const handleAddImage = (addImage: (image: Image) => void, image: string) => {
     addImage({
@@ -40,101 +39,94 @@ export const handleAddImage = (addImage: (image: Image) => void, image: string) 
         size: {width: 200, height: 200},
         objectType: ObjectType.Image,
         url: image,
-    });
-};
+    })
+}
 
 export const handleRemoveText = (removeText: () => void) => {
-    removeText();
-};
+    removeText()
+}
 
 export const handleRemoveImage = (removeImage: () => void) => {
-    removeImage();
+    removeImage()
+}
+
+export const handleEditBackground = (editBackground: (background: BackgroundSlide) => void, background: BackgroundSlide) => {
+    editBackground(background);
 };
 
-// Функции для работы с фоном
-export const handleEditBackground = (editBackground: (background: BackgroundSlide) => void, color: string) => {
-    editBackground({
-        type: BackgroundType.Color,
-        color: color,
-    });
-};
-
-// Обработчики для изображений
 export const handleContextMenuImage = (e: React.MouseEvent<HTMLDivElement>, setIsHoveredImage: React.Dispatch<SetStateAction<boolean>>, setIsStuckImage: React.Dispatch<SetStateAction<boolean>>) => {
-    e.preventDefault();
-    setIsHoveredImage(true);
-    setIsStuckImage(true);
-};
+    e.preventDefault()
+    setIsHoveredImage(true)
+    setIsStuckImage(true)
+}
 
 export const handleResetImage = (setIsHoveredImage: React.Dispatch<SetStateAction<boolean>>, setIsStuckImage: React.Dispatch<SetStateAction<boolean>>) => {
     setIsStuckImage(false);
     setIsHoveredImage(false);
 };
 
-// Обработчики для фона
 export const handleContextMenuBackground = (e: React.MouseEvent<HTMLDivElement>, setIsHoveredBackground: React.Dispatch<SetStateAction<boolean>>, setIsStuckBackground: React.Dispatch<SetStateAction<boolean>>) => {
-    e.preventDefault();
-    setIsHoveredBackground(true);
-    setIsStuckBackground(true);
-};
+    e.preventDefault()
+    setIsHoveredBackground(true)
+    setIsStuckBackground(true)
+}
 
 export const handleResetBackground = (setIsHoveredBackground: React.Dispatch<SetStateAction<boolean>>, setIsStuckBackground: React.Dispatch<SetStateAction<boolean>>) => {
-    setIsStuckBackground(false);
-    setIsHoveredBackground(false);
-};
+    setIsStuckBackground(false)
+    setIsHoveredBackground(false)
+}
 
-// Обработчики импорта и экспорта
 export const handleImport = (data: any) => {
-    localStorage.setItem("editorState", JSON.stringify(data));
-    alert("Документ импортирован.");
-};
+    localStorage.setItem("editorState", JSON.stringify(data))
+    alert("Документ импортирован.")
+}
 
 export const handleExportToPDF = (presentation: any, exportPresentationToPDF: (presentation: any) => void) => {
     if (!presentation.name || presentation.name.trim() === "") {
-        alert("Имя презентации не указано. Используется имя по умолчанию: 'presentation'.");
+        alert("Имя презентации не указано. Используется имя по умолчанию: 'presentation'.")
     }
-    exportPresentationToPDF(presentation);
-};
+    exportPresentationToPDF(presentation)
+}
 
 export const handleUndo = (history: HistoryType, setEditor: any) => {
-    const newEditor = history.undo();
+    const newEditor = history.undo()
     if (newEditor) {
-        setEditor(newEditor);
+        setEditor(newEditor)
     }
-};
+}
 
 export const handleRedo = (history: HistoryType, setEditor: any) => {
-    const newEditor = history.redo();
+    const newEditor = history.redo()
     if (newEditor) {
-        setEditor(newEditor);
+        setEditor(newEditor)
     }
-};
+}
 
 export const getSelectedObject = (editor: EditorType) => {
     const slide = editor.presentation.listSlides.find(
         (slide) => slide.id === editor.selectionSlide.selectedSlideId
-    );
-    if (!slide) return null;
+    )
+    if (!slide) return null
 
     return slide.listObjects.find(
         (object) => object.id === editor.selectionObject.selectedObjectId
-    );
+    )
 }
 
 export const handleUploadFromComputer = (addImage: (image: Image) => void) => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
     input.onchange = (e: any) => {
-        const file = e.target.files[0];
+        const file = e.target.files[0]
         if (file) {
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.onload = () => {
                 const base64Image = reader.result as string;
                 handleAddImage(addImage, base64Image);
-            };
-            reader.readAsDataURL(file);
+            }
+            reader.readAsDataURL(file)
         }
-    };
+    }
     input.click();
-};
+}

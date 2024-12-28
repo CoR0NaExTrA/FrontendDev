@@ -1,120 +1,119 @@
 import React, { useState } from "react"
 import AJV from "ajv"
-import styles from "../Button.module.css"
+import styles from "../styles/Button.module.css"
 import { FontFormatting, ObjectType } from "../../../store/BaseTypes"
 import { BackgroundType } from "../../../store/SlideType"
 import { FaFileImport } from "react-icons/fa6";
 
 const schema = {
-  type: "object",
-  properties: {
-    presentation: {
-      type: "object",
-      properties: {
-        name: { type: "string" },
-        listSlides: {
-          type: "array",
-          items: {
+    type: "object",
+    properties: {
+        presentation: {
             type: "object",
             properties: {
-              id: { type: "string" },
-              listObjects: {
-                type: "array",
-                items: [
-                  {
-                    // Схема для текстового объекта
-                    type: "object",
-                    properties: {
-                      id: { type: "string" },
-                      objectType: { enum: [ObjectType.Text] },
-                      pos: {
+                name: { type: "string" },
+                listSlides: {
+                    type: "array",
+                    items: {
                         type: "object",
                         properties: {
-                          x: { type: "number" },
-                          y: { type: "number" },
+                            id: { type: "string" },
+                            listObjects: {
+                                type: "array",
+                                items: [
+                                    {
+                                        type: "object",
+                                        properties: {
+                                            id: { type: "string" },
+                                            objectType: { enum: [ObjectType.Text] },
+                                            pos: {
+                                                type: "object",
+                                                properties: {
+                                                x: { type: "number" },
+                                                y: { type: "number" },
+                                                },
+                                                required: ["x", "y"],
+                                            },
+                                            size: {
+                                                type: "object",
+                                                properties: {
+                                                width: { type: "number" },
+                                                height: { type: "number" },
+                                                },
+                                                required: ["width", "height"],
+                                            },
+                                            value: { type: "string" }, 
+                                            fontSize: { type: "number" }, // Размер шрифта
+                                            fontFamily: { type: "string" }, // Семейство шрифта
+                                            fontFormatting: { enum: [FontFormatting.normal, FontFormatting.bold, FontFormatting.italic, FontFormatting.underline]}, // Форматирование шрифта (например, bold, italic)
+                                            fontColor: { type: "string" }, // Цвет шрифта
+                                            fontBgColor: { type: "string" }, // Цвет фона текста
+                                        },
+                                        required: [
+                                            "id",
+                                            "objectType",
+                                            "pos",
+                                            "size",
+                                            "value", // Для текстового объекта
+                                            "fontSize", // Обязателен для текстовых объектов
+                                            "fontFamily", // Семейство шрифта
+                                            "fontFormatting", // Форматирование шрифта
+                                            "fontColor", // Цвет шрифта
+                                            "fontBgColor", // Цвет фона текста
+                                        ],
+                                    },
+                                    {
+                                        // Схема для объекта изображения
+                                        type: "object",
+                                        properties: {
+                                            id: { type: "string" },
+                                            objectType: { enum: [ObjectType.Image] },
+                                            pos: {
+                                                type: "object",
+                                                properties: {
+                                                x: { type: "number" },
+                                                y: { type: "number" },
+                                                },
+                                                required: ["x", "y"],
+                                            },
+                                            size: {
+                                                type: "object",
+                                                properties: {
+                                                width: { type: "number" },
+                                                height: { type: "number" },
+                                                },
+                                                required: ["width", "height"],
+                                            },
+                                            url: { type: "string" }, // Для изображения
+                                        },
+                                        required: [
+                                            "id",
+                                            "objectType",
+                                            "pos",
+                                            "size",
+                                            "url", // Для изображения
+                                        ],
+                                    },
+                                ],
+                            },
+                            background: {
+                                type: "object",
+                                properties: {
+                                type: { enum: [BackgroundType.Color, BackgroundType.Image] },
+                                color: { type: "string" },
+                                url: { type: "string" },
+                                },
+                                required: ["type"],
+                            },
                         },
-                        required: ["x", "y"],
-                      },
-                      size: {
-                        type: "object",
-                        properties: {
-                          width: { type: "number" },
-                          height: { type: "number" },
-                        },
-                        required: ["width", "height"],
-                      },
-                      value: { type: "string" }, // Для текстового объекта, обязательное поле
-                      fontSize: { type: "number" }, // Размер шрифта
-                      fontFamily: { type: "string" }, // Семейство шрифта
-                      fontFormatting: { enum: [FontFormatting.normal, FontFormatting.bold, FontFormatting.italic, FontFormatting.underline]}, // Форматирование шрифта (например, bold, italic)
-                      fontColor: { type: "string" }, // Цвет шрифта
-                      fontBgColor: { type: "string" }, // Цвет фона текста
+                        required: ["id", "listObjects", "background"],
                     },
-                    required: [
-                      "id",
-                      "objectType",
-                      "pos",
-                      "size",
-                      "value", // Для текстового объекта
-                      "fontSize", // Обязателен для текстовых объектов
-                      "fontFamily", // Семейство шрифта
-                      "fontFormatting", // Форматирование шрифта
-                      "fontColor", // Цвет шрифта
-                      "fontBgColor", // Цвет фона текста
-                    ],
-                  },
-                  {
-                    // Схема для объекта изображения
-                    type: "object",
-                    properties: {
-                      id: { type: "string" },
-                      objectType: { enum: [ObjectType.Image] },
-                      pos: {
-                        type: "object",
-                        properties: {
-                          x: { type: "number" },
-                          y: { type: "number" },
-                        },
-                        required: ["x", "y"],
-                      },
-                      size: {
-                        type: "object",
-                        properties: {
-                          width: { type: "number" },
-                          height: { type: "number" },
-                        },
-                        required: ["width", "height"],
-                      },
-                      url: { type: "string" }, // Для изображения
-                    },
-                    required: [
-                      "id",
-                      "objectType",
-                      "pos",
-                      "size",
-                      "url", // Для изображения
-                    ],
-                  },
-                ],
-              },
-              background: {
-                type: "object",
-                properties: {
-                  type: { enum: [BackgroundType.Color, BackgroundType.Image] },
-                  color: { type: "string" },
-                  url: { type: "string" },
                 },
-                required: ["type"],
-              },
             },
-            required: ["id", "listObjects", "background"],
-          },
+            required: ["name", "listSlides"],
         },
-      },
-      required: ["name", "listSlides"],
     },
-  },
-  required: ["presentation"],
+    required: ["presentation"],
 }
 
 const ajv = new AJV()

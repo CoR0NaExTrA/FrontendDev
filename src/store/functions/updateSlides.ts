@@ -2,7 +2,7 @@ import { EditorType } from "../SelectionType"
 import { SlideType } from "../SlideType"
 
 
-function updateSlides(editor: EditorType, newSlides: Array<SlideType>): EditorType {
+function updateSlides(editor: EditorType, newSlides: SlideType[]): EditorType {
     
     return {
         ...editor,

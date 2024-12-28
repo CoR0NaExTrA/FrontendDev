@@ -1,13 +1,15 @@
 import { FaT, FaArrowUp, FaArrowDown, FaBold, FaN , FaItalic, FaUnderline } from "react-icons/fa6";
 import { useAppActions } from '../../hooks/useAppActions';
 import { FontFormatting } from "../../store/BaseTypes";
+import { ColorButton } from "./ColorButton";
 
 type TextToolbarProps = {
-    currentFontSize: number;
-    currentFontFamily: string;
+    currentFontSize: number,
+    currentFontFamily: string,
+    currentFontColor: string,
 }
 
-function TextButton({currentFontSize, currentFontFamily}: TextToolbarProps) {
+function TextButton({currentFontSize, currentFontFamily, currentFontColor}: TextToolbarProps) {
     const availableFonts: string[] = [
         "Georgia",
         "Comic Sans MS",
@@ -16,7 +18,11 @@ function TextButton({currentFontSize, currentFontFamily}: TextToolbarProps) {
         "Arial",
     ];
 
-    const { updateFontFamily, updateFontSize, updateFontFormatting } = useAppActions()
+    const { updateFontFamily, updateFontSize, updateFontFormatting, updateFontColor } = useAppActions()
+
+    const handleColorChange = (color: string) => {
+        updateFontColor(color)
+    }
 
     function onUpdateFontSizeUp() {
         updateFontSize(currentFontSize + 1)
@@ -53,6 +59,7 @@ function TextButton({currentFontSize, currentFontFamily}: TextToolbarProps) {
             <button onClick={() => onFontFormattingChange(FontFormatting.bold)}>{<FaBold />}</button>
             <button onClick={() => onFontFormattingChange(FontFormatting.italic)}>{<FaItalic />}</button>
             <button onClick={() => onFontFormattingChange(FontFormatting.underline)}>{<FaUnderline />}</button>
+            <ColorButton currentColor={currentFontColor} onChange={handleColorChange} />
         </div>
     )
 }
