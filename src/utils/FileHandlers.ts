@@ -1,9 +1,6 @@
-import React, { useState } from "react"
-import AJV from "ajv"
-import styles from "../styles/Button.module.css"
-import { FontFormatting, ObjectType } from "../../../store/BaseTypes"
-import { BackgroundType } from "../../../store/SlideType"
-import { FaFileImport } from "react-icons/fa6";
+import AJV from "ajv";
+import { BackgroundType } from "../store/SlideType";
+import { FontFormatting, ObjectType } from "../store/BaseTypes";
 
 const schema = {
     type: "object",
@@ -43,27 +40,26 @@ const schema = {
                                                 required: ["width", "height"],
                                             },
                                             value: { type: "string" }, 
-                                            fontSize: { type: "number" }, // Размер шрифта
-                                            fontFamily: { type: "string" }, // Семейство шрифта
+                                            fontSize: { type: "number" },
+                                            fontFamily: { type: "string" },
                                             fontFormatting: { enum: [FontFormatting.normal, FontFormatting.bold, FontFormatting.italic, FontFormatting.underline]}, // Форматирование шрифта (например, bold, italic)
-                                            fontColor: { type: "string" }, // Цвет шрифта
-                                            fontBgColor: { type: "string" }, // Цвет фона текста
+                                            fontColor: { type: "string" },
+                                            fontBgColor: { type: "string" },
                                         },
                                         required: [
                                             "id",
                                             "objectType",
                                             "pos",
                                             "size",
-                                            "value", // Для текстового объекта
-                                            "fontSize", // Обязателен для текстовых объектов
-                                            "fontFamily", // Семейство шрифта
-                                            "fontFormatting", // Форматирование шрифта
-                                            "fontColor", // Цвет шрифта
-                                            "fontBgColor", // Цвет фона текста
+                                            "value",
+                                            "fontSize",
+                                            "fontFamily",
+                                            "fontFormatting",
+                                            "fontColor",
+                                            "fontBgColor",
                                         ],
                                     },
                                     {
-                                        // Схема для объекта изображения
                                         type: "object",
                                         properties: {
                                             id: { type: "string" },
@@ -84,14 +80,14 @@ const schema = {
                                                 },
                                                 required: ["width", "height"],
                                             },
-                                            url: { type: "string" }, // Для изображения
+                                            url: { type: "string" },
                                         },
                                         required: [
                                             "id",
                                             "objectType",
                                             "pos",
                                             "size",
-                                            "url", // Для изображения
+                                            "url",
                                         ],
                                     },
                                 ],
@@ -116,70 +112,42 @@ const schema = {
     required: ["presentation"],
 }
 
+
 const ajv = new AJV()
 const validate = ajv.compile(schema)
 
-type ImportButtonProps = {
-    onImport: (data: any) => void,
-    className: string,
-}
-
-function ImportButton({ onImport, className}: ImportButtonProps) {
-    const [file, setFile] = useState<File | null>(null)
-    const [isClick, setIsClick] = useState(false)
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = event.target.files?.[0] || null
-        setFile(selectedFile);
+export const handleExport = (editorState: string | null, downloadRef: React.RefObject<HTMLAnchorElement>) => {
+    if (!editorState) {
+        alert("Нет данных для экспорта.")
+        return
     }
 
-    const handleImport = () => {
-        if (!file) {
-            alert("Файл не выбран.")
-            return
-        }
+    const blob = new Blob([editorState], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            try {
-                const data = JSON.parse(reader.result as string)
+    if (downloadRef.current) {
+        downloadRef.current.href = url
+        downloadRef.current.download = "presentation.json"
+        downloadRef.current.click()
+        URL.revokeObjectURL(url)
+    }
+}
 
-                const valid = validate(data)
-                if (!valid) {
-                    alert("Неверный формат документа. Ошибки валидации:")
-                    console.log(validate.errors)
-                    return
-                }
-
-                onImport(data);
-            } catch (error) {
-                alert("Ошибка импорта: " + (error as Error).message)
+export const handleImport = ( file: File, setEditor: (data: any) => void ) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+        try {
+            const data = JSON.parse(reader.result as string)
+            const valid = validate(data)
+            if (!valid) {
+                alert("Неверный формат документа. Ошибки валидации:")
+                console.log(validate.errors)
+                return
             }
+            setEditor(data)
+        } catch (error) {
+            alert("Ошибка импорта: " + (error as Error).message)
         }
-
-        setIsClick(false)
-        reader.readAsText(file)
     }
-
-    return (
-        <div>
-            <input
-                type="file"
-                accept="application/json"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                id="file-input"
-            />
-
-            <button className={`${className} ${styles.button}`} onClick={() => document.getElementById("file-input")?.click()}>
-                {<FaFileImport size={20}/>}
-            </button>
-
-            <button className={styles.button} style={{position: "absolute", top: "10%", display: isClick ? "block": "none"}} onClick={handleImport}>Загрузить</button>
-        </div>
-    )
-}
-
-export {
-    ImportButton
+    reader.readAsText(file)
 }

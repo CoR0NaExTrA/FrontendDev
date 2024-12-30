@@ -76,11 +76,6 @@ export const handleResetBackground = (setIsHoveredBackground: React.Dispatch<Set
     setIsHoveredBackground(false)
 }
 
-export const handleImport = (data: any) => {
-    localStorage.setItem("editorState", JSON.stringify(data))
-    alert("Документ импортирован.")
-}
-
 export const handleExportToPDF = (presentation: any, exportPresentationToPDF: (presentation: any) => void) => {
     if (!presentation.name || presentation.name.trim() === "") {
         alert("Имя презентации не указано. Используется имя по умолчанию: 'presentation'.")

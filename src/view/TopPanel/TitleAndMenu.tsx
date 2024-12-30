@@ -5,7 +5,10 @@ import { useAppActions } from "../../hooks/useAppActions"
 import { HistoryContext } from "../../hooks/HistoryContext";
 import { exportPresentationToPDF } from "../../store/functions/exportPDF";
 import { DropdownMenu } from "../../components/DropdownMenu/DropdownMenu";
-import { handleAddImage, handleAddSlide, handleAddText, handleExportToPDF, handleImport, handleRedo, handleRemoveImage, handleRemoveSlide, handleRemoveText, handleTitleChange, handleUndo } from "../../utils/Handlers";
+import { handleAddImage, handleAddSlide, handleAddText, handleExportToPDF, handleRedo, handleRemoveImage, 
+    handleRemoveSlide, handleRemoveText, handleTitleChange, handleUndo 
+} from "../../utils/Handlers";
+import { handleExport, handleImport } from '../../utils/FileHandlers';
 
 type TitleAndMenuProps = {
     image: string,
@@ -17,31 +20,28 @@ function TitleAndMenu({image}: TitleAndMenuProps) {
     const {addSlide, removeSlide, addText, removeText, addImage, removeImage, editName, setEditor } = useAppActions()
     const history = useContext(HistoryContext)
 
-    const topPanelRef = useRef<HTMLDivElement>(null);
+    const downloadRef = useRef<HTMLAnchorElement | null>(null)
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
-    useEffect(() => {
-        if (topPanelRef.current) {
-            topPanelRef.current.focus();
-        }
-    }, []);
+    const openFileDialog = () => fileInputRef.current?.click()
 
     const fileItems = [
-        { label: 'Импорт файла', onClick: () => handleImport },
-        { label: 'Загрузка файла', onClick: () => alert('Банкай') },
+        { label: 'Импорт файла', onClick: openFileDialog },
+        { label: 'Загрузка файла', onClick: () => handleExport(localStorage.getItem("editorState"), downloadRef) },
         { label: 'Экспорт в PDF', onClick: () => handleExportToPDF(presentation, exportPresentationToPDF) }
-    ];
+    ]
 
     const editItems = [
         { label: 'Отменить', onClick: () => handleUndo(history, setEditor) },
         { label: 'Восстановить', onClick: () => handleRedo(history, setEditor) },
-    ];
+    ]
 
     const insertItems = [
         { label: 'Изображение', onClick: () => handleAddImage(addImage, image) },
         { label: 'Текст', onClick: () => handleAddText(addText)},
         { label: 'Удалить текст', onClick: () => handleRemoveText(removeText)},
         { label: 'Удалить изображение', onClick: () => handleRemoveImage(removeImage)},
-    ];
+    ]
 
     const slideItems = [
         { label: 'Создать слайд', onClick: () => handleAddSlide(addSlide) },
@@ -63,6 +63,14 @@ function TitleAndMenu({image}: TitleAndMenuProps) {
                 <DropdownMenu label="Слайд" items={slideItems}/>
                 <DropdownMenu label="Объект" items={objectItems}/>
             </div>
+            <a ref={downloadRef} style={{ display: "none" }}>Скачать</a>
+            <input
+                ref={fileInputRef}
+                type="file"
+                accept="application/json"
+                style={{ display: "none" }}
+                onChange={(e) => e.target.files && handleImport(e.target.files[0], setEditor)}
+            />
         </div>
     )
 }
