@@ -5,11 +5,12 @@ import { useAppSelector } from "./../hooks/useAppSelector"
 import { useAppActions } from "./../hooks/useAppActions"
 import { SlideType } from "../store/SlideType"
 import { useSlideReorder } from "../hooks/useSortableList"
+import { SlidePreview } from "../components/Slide/SlidePreview"
 
 function getSlideWrapperClassName(slideId: string, selectedSlideId: string | undefined): string {
     let className = styles.slideWrapper
     if (slideId === selectedSlideId) {
-        className = `${className} ${styles.selectedSlide}`
+        className = `${styles.selectedSlide}`
     }
     return className
 }
@@ -36,7 +37,7 @@ function SlideCollection() {
                 onDragEnter={() => handleDragEnter(index)}
                 onDragEnd={handleDragEnd}
                 draggable={slide.id == selectionSlide.selectedSlideId} className={getSlideWrapperClassName(slide.id, selectionSlide?.selectedSlideId)}>
-                    <Slide slide={slide} isSlideCollection={true} className={styles.slide}/>
+                    <SlidePreview slide={slide} />
                 </div>
             )}
         </div>

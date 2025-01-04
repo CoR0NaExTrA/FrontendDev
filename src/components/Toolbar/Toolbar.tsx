@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { FaArrowRotateLeft, FaArrowRotateRight, FaDownload, FaPlus, FaT, FaFileImage} from 'react-icons/fa6';
+import { FaArrowRotateLeft, FaArrowRotateRight, FaDownload, FaPlus, FaT, FaImage} from 'react-icons/fa6';
 import styles from './Toolbar.module.css';
 import { TextButton } from '../buttons/TextButton';
 import { Button } from '../buttons/Button';
@@ -17,7 +17,7 @@ import { BackgroundModal } from '../Modals/BackgroundModal';
 import { ZoomButton } from '../buttons/ZoomButton';
 
 interface ToolbarProps {
-    selectedObjectType: 'text' | 'image' | 'shape' | 'slide' | null;
+    selectedObjectType: ObjectType.Text | ObjectType.Image | 'slide' | null;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ selectedObjectType }) => {
@@ -66,14 +66,14 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedObjectType }) => {
             <ZoomButton />
             <Button text={<FaDownload />} onClick={() => handleExportToPDF(editor.presentation, exportPresentationToPDF)} className={styles.button}  />
             <Button text={<FaT />} onClick={() => {handleAddText(addText)}} className={styles.button}  />
-            <DropdownMenu label={<FaFileImage size={20}/>} items={imageItems}/>
-            {selectedObjectType === 'text' && (
+            <DropdownMenu label={<FaImage/>} items={imageItems}/>
+            {selectedObjectType === ObjectType.Text && (
                 <TextButton currentFontSize={ selectedObject?.objectType === ObjectType.Text ? selectedObject.fontSize : 16}
                     currentFontFamily={ selectedObject?.objectType === ObjectType.Text ? selectedObject.fontFamily : "Arial"}
                     currentFontColor={selectedObject?.objectType === ObjectType.Text ? selectedObject.fontFamily : "#000000"}
                 />
             )}
-            {selectedObjectType === 'image' && (
+            {selectedObjectType === ObjectType.Image && (
                 <TextButton currentFontSize={ selectedObject?.objectType === ObjectType.Text ? selectedObject.fontSize : 16}
                     currentFontFamily={ selectedObject?.objectType === ObjectType.Text ? selectedObject.fontFamily : "Arial"}
                     currentFontColor={selectedObject?.objectType === ObjectType.Text ? selectedObject.fontFamily : "#000000"}

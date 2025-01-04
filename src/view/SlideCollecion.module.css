@@ -8,21 +8,19 @@
     border-radius: 8px; /* Сглаженные углы */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
     gap: 10px; /* Расстояние между слайдами */
+    width: auto;
 }
 
 .selectedSlide {
+    margin: 10px;
+    border-radius: 10px;
+    display: flex; /* Для центрирования слайда */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    padding: 2px;
     outline: 3px solid #0b57d0;
     background: rgba(11, 87, 208, 0.1); /* Подсветка выбранного слайда */
-    border-radius: 8px;
-}
-
-.slide {
-    border-radius: inherit;
-    transition: transform 0.2s ease-in-out; /* Анимация при наведении */
-}
-
-.slide:hover {
-    transform: scale(1.05); /* Увеличение при наведении */
 }
 
 .slideWrapper {
@@ -31,11 +29,9 @@
     display: flex; /* Для центрирования слайда */
     align-items: center;
     justify-content: center;
-    background: #ffffff; /* Белый фон */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
-    transition: box-shadow 0.2s ease-in-out;
 }
 
 .slideWrapper:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Более глубокая тень при наведении */
+    border: 3px solid #a0a0a0;
 }

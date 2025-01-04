@@ -16,7 +16,7 @@ function ImageObject({imageObject, scale = 1, isSlideCollection, containerRef}: 
     const {updatePosition, updateSize, updateText} = useAppActions()
     const isSelected = imageObject.id == selectionObject.selectedObjectId
     
-    const { position, size, isDragging, handleMouseDownMove, handleMouseDownResize } = useDragAndResize({
+    const { position, size, handleMouseDownMove, handleMouseDownResize } = useDragAndResize({
         initialPosition: imageObject.pos,
         initialSize: imageObject.size,
         scale,
@@ -31,7 +31,7 @@ function ImageObject({imageObject, scale = 1, isSlideCollection, containerRef}: 
         left: `${position.x * scale}px`,
         width: `${size.width * scale}px`,
         height: `${size.height * scale}px`,
-        cursor: isDragging ? "grabbing" : "grab",
+        cursor: 'move',
         border: isSelected ? "1px solid #0b57d0" : "none",
         boxSizing: "border-box",
         overflow: "hidden",

@@ -15,8 +15,6 @@ export function useDragAndResize({initialPosition, initialSize, scale, container
     const sizeRef = useRef(initialSize);
     const [position, setPosition] = useState(initialPosition);
     const [size, setSize] = useState(initialSize);
-    const [flipX, setFlipX] = useState(1);
-    const [flipY, setFlipY] = useState(1);
     const [isDragging, setIsDragging] = useState(false);
     const [isResizing, setIsResizing] = useState(false);
 
@@ -38,8 +36,8 @@ export function useDragAndResize({initialPosition, initialSize, scale, container
                 const deltaX = (event.clientX - startX) / scale;
                 const deltaY = (event.clientY - startY) / scale;
 
-                const newX = Math.max(0, Math.min(containerRect.width - sizeRef.current.width, initialX + deltaX));
-                const newY = Math.max(0, Math.min(containerRect.height - sizeRef.current.height, initialY + deltaY));
+                const newX = initialX + deltaX;
+            const newY = initialY + deltaY;
 
                 positionRef.current = { x: newX, y: newY };
                 setPosition(positionRef.current);
@@ -83,8 +81,6 @@ export function useDragAndResize({initialPosition, initialSize, scale, container
                 let newHeight = initialHeight;
                 let newX = initialX;
                 let newY = initialY;
-                let newFlipX = flipX;
-                let newFlipY = flipY;
             
                 if (resizeDirection.current?.includes("right")) {
                     newWidth = Math.max(10, initialWidth + deltaX);
@@ -120,8 +116,6 @@ export function useDragAndResize({initialPosition, initialSize, scale, container
 
                 setSize(sizeRef.current);
                 setPosition(positionRef.current);
-                setFlipX(newFlipX);
-                setFlipY(newFlipY);
 
                 onUpdateSize(sizeRef.current);
                 onUpdatePosition(positionRef.current);
@@ -144,8 +138,6 @@ export function useDragAndResize({initialPosition, initialSize, scale, container
     return {
         position,
         size,
-        isDragging,
-        isResizing,
         handleMouseDownMove,
         handleMouseDownResize,
     };

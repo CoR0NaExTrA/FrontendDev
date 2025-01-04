@@ -1,5 +1,5 @@
 import { FontFormatting, Text } from "../../store/BaseTypes"
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useRef, useState } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppActions } from "../../hooks/useAppActions";
 import { useDragAndResize } from "../../hooks/useDragAndDrop";
@@ -16,63 +16,55 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
     const {updatePosition, updateSize, updateText} = useAppActions()
     const isSelected = (textObject.id == selectionObject.selectedObjectId)
 
-    const { position, size, isDragging, handleMouseDownMove, handleMouseDownResize } = useDragAndResize({
-        initialPosition: textObject.pos,
-        initialSize: textObject.size,
-        scale,
-        containerRef,
-        onUpdatePosition: updatePosition,
-        onUpdateSize: updateSize,
-    });
+    const { position, size, handleMouseDownMove, handleMouseDownResize } = useDragAndResize({
+        initialPosition: textObject.pos, initialSize: textObject.size, scale,
+        containerRef, onUpdatePosition: updatePosition, onUpdateSize: updateSize,
+    })
 
-    const [isEditing, setIsEditing] = useState(false)
-    
-    let currentText = textObject.value
-
-    function onUpdateText(text: string) {
-        updateText(text)
-    }
-
-    const handleDoubleClick = () => setIsEditing(true)
+    const [currentText, setCurrentText] = useState(textObject.value)
+    const textRef = useRef<HTMLDivElement>(null);
 
     const handleBlur = () => {
-        setIsEditing(false)
-        onUpdateText(currentText)
+        updateText(currentText)
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter") {
             e.preventDefault()
-            setIsEditing(false)
-            onUpdateText(currentText)
+            updateText(currentText)
+        }
+    }
+
+    const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+        setCurrentText(e.currentTarget.textContent || "")
+    }
+
+    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (textRef.current?.contains(e.target as Node)) {
+            e.stopPropagation()
+        } else {
+            handleMouseDownMove(e)
         }
     };
 
-    const textObjectStyles: CSSProperties = {
+    const containerStyles: CSSProperties = {
         position: 'absolute',
         margin: 0,
         transform: `translate(${position.x * scale}px, ${position.y * scale}px)`,
         width: `${size.width * scale}px`,
         height: `${size.height * scale}px`,
+        minWidth: `${100 * scale}px`,
+        minHeight: `${100 * scale}px`,
         border: isSelected ? "1px solid #0b57d0" : "none",
         boxSizing: "border-box",
         overflow: "clip",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        cursor: 'move',
     }
 
-    if (isDragging && !isSlideCollection) {
-        textObjectStyles.cursor = 'grabbing'
-    }
-    else if (!isSlideCollection && isSelected) {
-        textObjectStyles.cursor = 'grab'
-    }
-    if (isEditing) {
-        textObjectStyles.cursor = 'text'
-    }
-
-    const contentStyles: CSSProperties = {
+    const textStyles: CSSProperties = {
         margin: 0,
         fontSize: `${textObject.fontSize * scale}px`,
         fontFamily: textObject.fontFamily,
@@ -81,9 +73,13 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
         textDecoration: (textObject.fontFormatting === FontFormatting.underline) ? textObject.fontFormatting : 'none',
         color: textObject.fontColor,
         textAlign: "center",
-        lineHeight: 1,
         whiteSpace: "wrap",
         overflow: "hidden",
+        minWidth: `${10*scale}px`,
+        minHeight: `${10*scale}px`,
+        width: 'auto', 
+        height: 'auto',
+        cursor: 'text',
     }
 
     const handleStyles: CSSProperties = {
@@ -106,27 +102,27 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
     ];
 
     return (
-        <div style={textObjectStyles} onMouseDown={(e) => handleMouseDownMove(e)} onDoubleClick={handleDoubleClick}>
-            {(isEditing && !isSlideCollection) ? (
-                <div contentEditable suppressContentEditableWarning
-                    style={{
-                        ...contentStyles,
-                        outline: "none",
-                        cursor: "text",
-                        background: "none",
-                        fontFamily: textObject.fontFamily,
-                        color: textObject.fontColor,
-                    }} onBlur={handleBlur} onKeyDown={handleKeyDown} onInput={(e) => currentText = e.currentTarget.textContent || ""}
-                >
-                    {currentText}
-                </div>
-            ) : (
-                <p style={contentStyles}>{currentText}</p>
-            )}
+        <div style={containerStyles} onMouseDown={handleMouseDown}>
             {(isSelected && !isSlideCollection) &&
                 handles.map((handle) => (
-                    <div key={handle.direction} style={{ ...handleStyles, ...handle.style }} onMouseDown={(e) => handleMouseDownResize(e, handle.direction)}></div>
+                    <div
+                        key={handle.direction}
+                        style={{ ...handleStyles, ...handle.style }}
+                        onMouseDown={(e) => handleMouseDownResize(e, handle.direction)}
+                    ></div>
                 ))}
+            <div
+                ref={textRef}
+                contentEditable={!isSlideCollection}
+                suppressContentEditableWarning
+                style={textStyles}
+                onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
+                onInput={handleInput}
+                onClick={(e) => {e.stopPropagation(), e.preventDefault()}}
+            >
+                {currentText}
+            </div>
         </div>
     )
 }

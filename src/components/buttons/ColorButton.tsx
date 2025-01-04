@@ -1,6 +1,6 @@
 import { useState } from "react"
 import styles from './styles/ColorButton.module.css'
-import { FaPencil } from "react-icons/fa6";
+import { FaA } from "react-icons/fa6";
 
 interface ColorPickerButtonProps {
     currentColor: string;
@@ -27,7 +27,7 @@ const ColorButton: React.FC<ColorPickerButtonProps> = ({ currentColor, onChange 
                 onClick={() => setIsOpen(!isOpen)}
                 style={{display: "flex", flexDirection: "column"}}
             >
-                <FaPencil />
+                <FaA />
                 <div className={styles.colorIndicator} style={{ backgroundColor: currentColor }} />
             </button>
             {isOpen && (

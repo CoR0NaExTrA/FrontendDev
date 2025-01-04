@@ -5,20 +5,40 @@ import { useAppActions } from "../../hooks/useAppActions"
 import { HistoryContext } from "../../hooks/HistoryContext";
 import { handleUndo, handleRedo} from '../../utils/Handlers';
 import { TitleAndMenu } from './TitleAndMenu'
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { EditorType } from '../../store/SelectionType';
+import { ObjectType } from '../../store/BaseTypes';
+
+export function getSelectedObject(editor: EditorType) {
+    const selectedSlide = editor.presentation.listSlides.find((slide) => slide.id === editor.selectionSlide.selectedSlideId);
+    if (!selectedSlide) return null;
+
+    const selectedObject = selectedSlide.listObjects.find((obj) => obj.id === editor.selectionObject.selectedObjectId);
+    return selectedObject || null;
+}
 
 function TopPanel() {
+    const editor = useAppSelector(editor => editor)
     const { setEditor } = useAppActions()
     const history = useContext(HistoryContext)
 
-    const [image, setImage] = useState('')
     const topPanelRef = useRef<HTMLDivElement>(null);
-    const [selectedObjectType, setSelectedObjectType] = useState<'text' | 'image' | 'shape' | 'slide' | null>('text');
+    const [selectedObjectType, setSelectedObjectType] = useState< ObjectType.Text | ObjectType.Image | 'slide' | null>('slide');
 
     useEffect(() => {
         if (topPanelRef.current) {
             topPanelRef.current.focus();
         }
     }, []);
+
+    useEffect(() => {
+        const selectedObject = getSelectedObject(editor);
+        if (selectedObject) {
+            setSelectedObjectType(selectedObject.objectType);
+        } else {
+            setSelectedObjectType('slide');
+        }
+    }, [editor]);
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.ctrlKey && event.code === "KeyZ") {
@@ -33,7 +53,7 @@ function TopPanel() {
 
     return (
         <div ref={topPanelRef} className={styles.topPanel} tabIndex={0} onKeyDown={handleKeyDown}>
-            <TitleAndMenu image={image} />
+            <TitleAndMenu/>
             <Toolbar selectedObjectType={selectedObjectType} />
         </div>
     )

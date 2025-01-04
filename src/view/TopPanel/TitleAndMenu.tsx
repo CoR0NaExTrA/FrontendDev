@@ -8,13 +8,10 @@ import { DropdownMenu } from "../../components/DropdownMenu/DropdownMenu";
 import { handleAddImage, handleAddSlide, handleAddText, handleExportToPDF, handleRedo, handleRemoveImage, 
     handleRemoveSlide, handleRemoveText, handleTitleChange, handleUndo 
 } from "../../utils/Handlers";
-import { handleExport, handleImport } from '../../utils/FileHandlers';
+import { handleExport, handleImport } from '../../utils/FileHandlers'
 
-type TitleAndMenuProps = {
-    image: string,
-}
 
-function TitleAndMenu({image}: TitleAndMenuProps) {
+function TitleAndMenu() {
     const presentation = useAppSelector((editor => editor.presentation))
     const title = useAppSelector((editor => editor.presentation.name))
     const {addSlide, removeSlide, addText, removeText, addImage, removeImage, editName, setEditor } = useAppActions()
@@ -37,7 +34,7 @@ function TitleAndMenu({image}: TitleAndMenuProps) {
     ]
 
     const insertItems = [
-        { label: 'Изображение', onClick: () => handleAddImage(addImage, image) },
+        { label: 'Изображение', onClick: () => handleAddImage(addImage, '') },
         { label: 'Текст', onClick: () => handleAddText(addText)},
         { label: 'Удалить текст', onClick: () => handleRemoveText(removeText)},
         { label: 'Удалить изображение', onClick: () => handleRemoveImage(removeImage)},

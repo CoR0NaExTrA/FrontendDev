@@ -2,6 +2,7 @@ import { FaT, FaArrowUp, FaArrowDown, FaBold, FaN , FaItalic, FaUnderline } from
 import { useAppActions } from '../../hooks/useAppActions';
 import { FontFormatting } from "../../store/BaseTypes";
 import { ColorButton } from "./ColorButton";
+import styles from "./styles/TextButton.module.css"
 
 type TextToolbarProps = {
     currentFontSize: number,
@@ -42,7 +43,7 @@ function TextButton({currentFontSize, currentFontFamily, currentFontColor}: Text
     }
 
     return (
-        <div>
+        <div className={styles.container}>
             <button onClick={onUpdateFontSizeUp}>{<FaT />}{<FaArrowUp size={10}/>}</button>
             <button onClick={onUpdateFontSizeDown}>{<FaT />}{<FaArrowDown size={10}/>}</button>
             <select
