@@ -3,7 +3,7 @@ import { ActionType } from "./Actions";
 
 function updateSlides(slides: SlideType[]) {
     return {
-        type: ActionType.Update_Text,
+        type: ActionType.Update_Slides,
         payload: slides,
     }
 }

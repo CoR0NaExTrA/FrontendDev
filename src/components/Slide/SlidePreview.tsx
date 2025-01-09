@@ -20,12 +20,11 @@ function SlidePreview({ slide, scale = 0.2 }: SlidePreviewProps) {
         position: "relative",
         border: "1px solid #ccc",
         borderRadius: 'inherit',
-        overflow: "hidden",
     }
 
     switch (slide.background.type) {
         case BackgroundType.Color:
-            slideStyles.backgroundColor = slide.background.color
+            slideStyles.backgroundColor = slide.background.color as string
             break;
         case BackgroundType.Image:
             slideStyles.backgroundImage = `url(${slide.background.url})`

@@ -1,11 +1,14 @@
 import { useState, useCallback, useEffect } from "react";
 import { SlideType } from "../store/SlideType";
 
-export function useSlideReorder( initialSlides: SlideType[], updateSlides: (slides: SlideType[]) => void ) {
+export function useSlideReorder(
+    initialSlides: SlideType[],
+    updateSlides: (slides: SlideType[]) => void,
+    selectedSlideIds: string[],
+) {
     const [slideCollection, setSlides] = useState(initialSlides);
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
     const [isDragging, setIsDragging] = useState(false);
-    
 
     useEffect(() => {
         setSlides(initialSlides);
@@ -20,23 +23,28 @@ export function useSlideReorder( initialSlides: SlideType[], updateSlides: (slid
         (targetIndex: number) => {
             if (draggedIndex === null || draggedIndex === targetIndex) return;
 
-            const reorderedSlides = [...slideCollection];
-            const [draggedSlide] = reorderedSlides.splice(draggedIndex, 1);
-            reorderedSlides.splice(targetIndex, 0, draggedSlide);
+            const draggedSlides = slideCollection.filter(slide =>
+                selectedSlideIds.includes(slide.id)
+            );
+            const remainingSlides = slideCollection.filter(
+                slide => !selectedSlideIds.includes(slide.id)
+            );
+
+            const reorderedSlides = [...remainingSlides];
+            reorderedSlides.splice(targetIndex, 0, ...draggedSlides);
 
             setSlides(reorderedSlides);
-            setDraggedIndex(targetIndex);
         },
-        [draggedIndex, slideCollection]
+        [draggedIndex, selectedSlideIds, slideCollection]
     );
 
     const handleDragEnd = useCallback(() => {
         if (isDragging) {
-            updateSlides(slideCollection); 
+            updateSlides(slideCollection);
         }
         setDraggedIndex(null);
         setIsDragging(false);
-    }, [slideCollection, updateSlides]);
+    }, [isDragging, slideCollection, updateSlides]);
 
     return {
         slideCollection,

@@ -1,5 +1,5 @@
 function ImageButton() {
-    return ()
+    return (<></>)
 }
 
 export {

@@ -1,19 +1,19 @@
-import { CSSProperties, useState } from "react"
-import { Image, Point, Size } from "../../store/BaseTypes"
+import { CSSProperties } from "react"
+import { Image } from "../../store/BaseTypes"
 import { useAppSelector } from "../../hooks/useAppSelector"
 import { useAppActions } from "../../hooks/useAppActions"
 import { useDragAndResize } from "../../hooks/useDragAndDrop"
+import { SelectionType } from "../../store/SelectionType"
 
 type ImageObjectProps = {
     imageObject: Image,
     scale?: number,
     containerRef: any,
-    isSlideCollection: boolean,
 }
 
-function ImageObject({imageObject, scale = 1, isSlideCollection, containerRef}: ImageObjectProps) {
+function ImageObject({imageObject, scale = 1, containerRef}: ImageObjectProps) {
     const selectionObject = useAppSelector((editor => editor.selectionObject))
-    const {updatePosition, updateSize, updateText} = useAppActions()
+    const {updatePosition, updateSize, setSelectionObject} = useAppActions()
     const isSelected = imageObject.id == selectionObject.selectedObjectId
     
     const { position, size, handleMouseDownMove, handleMouseDownResize } = useDragAndResize({
@@ -31,6 +31,8 @@ function ImageObject({imageObject, scale = 1, isSlideCollection, containerRef}: 
         left: `${position.x * scale}px`,
         width: `${size.width * scale}px`,
         height: `${size.height * scale}px`,
+        minWidth: `${100 * scale}px`,
+        minHeight: `${100 * scale}px`,
         cursor: 'move',
         border: isSelected ? "1px solid #0b57d0" : "none",
         boxSizing: "border-box",
@@ -65,9 +67,9 @@ function ImageObject({imageObject, scale = 1, isSlideCollection, containerRef}: 
     ];
 
     return (
-        <div style={imageObjectStyles} onMouseDown={(e) => handleMouseDownMove(e,)}>
+        <div style={imageObjectStyles} onMouseDown={(e) => {setSelectionObject({type: SelectionType.Object, selectedObjectId: imageObject.id}), handleMouseDownMove(e)}}>
             <img style={contentStyles} draggable={isSelected} src={imageObject.url} alt="Slide Object" />
-            {(isSelected && !isSlideCollection) &&
+            {isSelected &&
                 handles.map((handle) => (
                     <div
                         key={handle.direction}

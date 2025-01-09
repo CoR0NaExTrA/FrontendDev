@@ -1,4 +1,4 @@
-import { Id, Image, Point, Size, Text } from "./BaseTypes";
+import { Gradient, Id, Image, Point, Size, Text } from "./BaseTypes";
 import { v4 as uuid } from "uuid";
 
 export enum BackgroundType {
@@ -13,7 +13,7 @@ export type BackgroundImage = {
 
 export type BackgroundColor = {
     type: BackgroundType.Color;
-    color: string;
+    color: string | Gradient;
 };
 
 export type BackgroundSlide = BackgroundImage | BackgroundColor;

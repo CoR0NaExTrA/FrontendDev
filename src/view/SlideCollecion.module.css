@@ -8,7 +8,6 @@
     border-radius: 8px; /* Сглаженные углы */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
     gap: 10px; /* Расстояние между слайдами */
-    width: auto;
 }
 
 .selectedSlide {
@@ -18,6 +17,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    overflow: visible;
     padding: 2px;
     outline: 3px solid #0b57d0;
     background: rgba(11, 87, 208, 0.1); /* Подсветка выбранного слайда */
@@ -30,8 +30,5 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
-}
-
-.slideWrapper:hover {
-    border: 3px solid #a0a0a0;
+    overflow: visible;
 }

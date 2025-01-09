@@ -1,13 +1,13 @@
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 import styles from './styles/ColorButton.module.css'
-import { FaA } from "react-icons/fa6";
 
 interface ColorPickerButtonProps {
+    icon: ReactNode; 
     currentColor: string;
     onChange: (color: string) => void;
 }
 
-const ColorButton: React.FC<ColorPickerButtonProps> = ({ currentColor, onChange }) => {
+const ColorButton: React.FC<ColorPickerButtonProps> = ({ icon, currentColor, onChange }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleColorChange = (color: string) => {
@@ -27,7 +27,7 @@ const ColorButton: React.FC<ColorPickerButtonProps> = ({ currentColor, onChange 
                 onClick={() => setIsOpen(!isOpen)}
                 style={{display: "flex", flexDirection: "column"}}
             >
-                <FaA />
+                {icon}
                 <div className={styles.colorIndicator} style={{ backgroundColor: currentColor }} />
             </button>
             {isOpen && (

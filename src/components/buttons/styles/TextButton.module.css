@@ -1,4 +1,17 @@
 .container {
     display: flex;
+    align-items: center;
     gap: 10px;
+}
+
+.selectFont {
+   border: none;
+   outline: none;
+}
+
+.fontSize {
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding: 2px;
+    font-size: 14px;
 }

@@ -13,6 +13,8 @@ function ImagePreview({imageObject, scale}: ImagePreviewProps) {
         left: `${imageObject.pos.x * scale}px`,
         width: `${imageObject.size.width * scale}px`,
         height: `${imageObject.size.height * scale}px`,
+        minWidth: `${100 * scale}px`,
+        minHeight: `${100 * scale}px`,
         boxSizing: "border-box",
         overflow: "hidden",
         display: "flex",

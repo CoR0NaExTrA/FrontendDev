@@ -1,6 +1,6 @@
-import React, { CSSProperties, useRef } from "react"
+import React, { CSSProperties } from "react"
 import { TextObject } from "./TextObject"
-import { ObjectType } from "../../store/BaseTypes"
+import { Gradient, gradientToCss, ObjectType } from "../../store/BaseTypes"
 import { BackgroundType, SlideType } from "../../store/SlideType"
 import { ImageObject } from "./ImageObject"
 import styles from "./Slide.module.css"
@@ -14,23 +14,17 @@ const SLIDE_HEIGHT = 525
 
 type SlideProps = {
     slide: SlideType,
-    isSlideCollection: boolean,
     className: string,
+    containerRef: any,
 }
 
-function Slide({slide, isSlideCollection, className}: SlideProps) {
+function Slide({slide, className, containerRef}: SlideProps) {
     const selectionSlide = useAppSelector((editor => editor.selectionSlide))
     const isSelected = (slide.id == selectionSlide.selectedSlideId)
     const {setSelectionObject} = useAppActions()
 
-    const containerRef = useRef(null)
-
     const { zoom } = useZoom();
     let scale = zoom / 100
-    if (isSlideCollection)
-    {
-        scale = 0.2
-    }
     
     const slideStyles: CSSProperties = {
         width: `${SLIDE_WIDTH * scale}px`,
@@ -41,7 +35,11 @@ function Slide({slide, isSlideCollection, className}: SlideProps) {
 
     switch (slide.background.type) {
         case BackgroundType.Color:
-            slideStyles.backgroundColor = slide.background.color
+            if ((slide.background.color as Gradient).gradientType !== undefined) {
+                slideStyles.backgroundImage = gradientToCss(slide.background.color as Gradient);
+            } else {
+                slideStyles.backgroundColor = slide.background.color as string;
+            }
             break;
         case BackgroundType.Image:
             slideStyles.backgroundImage = `url(${slide.background.url})`
@@ -67,21 +65,21 @@ function Slide({slide, isSlideCollection, className}: SlideProps) {
     }
 
     return (
-        <div ref={containerRef} style={slideStyles} className={styles.slide + ' ' + className} onClick={onSlideClick}>
+        <div style={slideStyles} className={styles.slide + ' ' + className} onClick={onSlideClick}>
             {slide.listObjects.map((slideObject) => {
                 switch (slideObject.objectType) {
                     case ObjectType.Text:
                         return ( 
-                            <div key={slideObject.id} onClick={(e) => {!isSlideCollection && onObjectClick(slideObject.id, e)}}>
+                            <div key={slideObject.id} onClick={(e) => onObjectClick(slideObject.id, e)}>
                                 <TextObject textObject={slideObject} scale={scale} 
-                                containerRef={containerRef} isSlideCollection={isSlideCollection}/> 
+                                containerRef={containerRef}/> 
                             </div>
                         )
                     case ObjectType.Image:
                         return ( 
                             <div key={slideObject.id} onClick={(e) => {onObjectClick(slideObject.id, e)}}>
                                 <ImageObject imageObject={slideObject} scale={scale} 
-                                containerRef={containerRef} isSlideCollection={isSlideCollection}/> 
+                                containerRef={containerRef}/> 
                             </div> 
                         )
                     default:

@@ -37,7 +37,7 @@ export function useDragAndResize({initialPosition, initialSize, scale, container
                 const deltaY = (event.clientY - startY) / scale;
 
                 const newX = initialX + deltaX;
-            const newY = initialY + deltaY;
+                const newY = initialY + deltaY;
 
                 positionRef.current = { x: newX, y: newY };
                 setPosition(positionRef.current);
@@ -142,4 +142,4 @@ export function useDragAndResize({initialPosition, initialSize, scale, container
         handleMouseDownResize,
     };
 }
-
+ 

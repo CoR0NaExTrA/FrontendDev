@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { BackgroundColor, BackgroundImage, BackgroundType } from "../../store/SlideType";
 import styles from './BackgroundModal.module.css';
+import { handleEditBackground } from "../../utils/Handlers";
+import { useAppActions } from "../../hooks/useAppActions";
+import { FaLink } from "react-icons/fa6";
 
 interface BackgroundModalProps {
     onClose: () => void;
@@ -11,6 +14,7 @@ interface BackgroundModalProps {
 const BackgroundModal: React.FC<BackgroundModalProps> = ({ onClose, onApplyColor, onApplyImage }) => {
     const [selectedColor, setSelectedColor] = useState<string>('#ffffff')
     const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+    const {editBackground} = useAppActions()
 
     const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedColor(e.target.value);
@@ -25,15 +29,23 @@ const BackgroundModal: React.FC<BackgroundModalProps> = ({ onClose, onApplyColor
             };
             reader.readAsDataURL(file);
         }
-    };
+    }
+
+    const handleInsertURL = () => {
+        const url = prompt('Введите URL изображения:');
+        if (url) {
+            onApplyImage({ type: BackgroundType.Image, url: url })
+        }
+        onClose()
+    }
 
     const handleApply = () => {
         if (uploadedImage) {
-            onApplyImage({ type: BackgroundType.Image, url: uploadedImage });
+            onApplyImage({ type: BackgroundType.Image, url: uploadedImage })
         } else {
-            onApplyColor({ type: BackgroundType.Color, color: selectedColor });
+            onApplyColor({ type: BackgroundType.Color, color: selectedColor })
         }
-        onClose();
+        onClose()
     };
 
     return (
@@ -60,6 +72,7 @@ const BackgroundModal: React.FC<BackgroundModalProps> = ({ onClose, onApplyColor
                         accept="image/*"
                         onChange={handleImageUpload}
                     />
+                    <button className={styles.optionUrl} onClick={handleInsertURL}>{<FaLink/>}</button>
                 </div>
                 {uploadedImage && (
                     <div className={styles.preview}>

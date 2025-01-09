@@ -17,6 +17,7 @@ button {
     border-color: transparent !important;
     border-radius: 4px;
     height: 100%;
+    color: var(--textColor);
 }
 
 button:hover {

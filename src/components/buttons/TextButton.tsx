@@ -1,4 +1,4 @@
-import { FaT, FaArrowUp, FaArrowDown, FaBold, FaN , FaItalic, FaUnderline } from "react-icons/fa6";
+import { FaArrowDown, FaBold, FaN , FaItalic, FaUnderline, FaA, FaPlus, FaMinus } from "react-icons/fa6";
 import { useAppActions } from '../../hooks/useAppActions';
 import { FontFormatting } from "../../store/BaseTypes";
 import { ColorButton } from "./ColorButton";
@@ -44,11 +44,10 @@ function TextButton({currentFontSize, currentFontFamily, currentFontColor}: Text
 
     return (
         <div className={styles.container}>
-            <button onClick={onUpdateFontSizeUp}>{<FaT />}{<FaArrowUp size={10}/>}</button>
-            <button onClick={onUpdateFontSizeDown}>{<FaT />}{<FaArrowDown size={10}/>}</button>
             <select
                 value={currentFontFamily}
                 onChange={(e) => onFontFamilyChange(e.target.value)}
+                className={styles.selectFont}
             >
                 {availableFonts.map((font) => (
                     <option key={font} value={font}>
@@ -56,11 +55,14 @@ function TextButton({currentFontSize, currentFontFamily, currentFontColor}: Text
                     </option>
                 ))}
             </select>
+            <button onClick={onUpdateFontSizeDown}>{<FaMinus/>}</button>
+            <div className={styles.fontSize}>{currentFontSize}</div>
+            <button onClick={onUpdateFontSizeUp}>{<FaPlus/>}</button>
             <button onClick={() => onFontFormattingChange(FontFormatting.normal)}>{<FaN />}</button>
             <button onClick={() => onFontFormattingChange(FontFormatting.bold)}>{<FaBold />}</button>
             <button onClick={() => onFontFormattingChange(FontFormatting.italic)}>{<FaItalic />}</button>
             <button onClick={() => onFontFormattingChange(FontFormatting.underline)}>{<FaUnderline />}</button>
-            <ColorButton currentColor={currentFontColor} onChange={handleColorChange} />
+            <ColorButton icon={<FaA />} currentColor={currentFontColor} onChange={handleColorChange} />
         </div>
     )
 }

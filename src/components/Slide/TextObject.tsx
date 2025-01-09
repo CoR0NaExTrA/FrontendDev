@@ -3,17 +3,17 @@ import { CSSProperties, useRef, useState } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppActions } from "../../hooks/useAppActions";
 import { useDragAndResize } from "../../hooks/useDragAndDrop";
+import { SelectionType } from "../../store/SelectionType";
 
 type TextObjectProps = {
     textObject: Text,
     scale?: number,
-    isSlideCollection: boolean,
     containerRef: any,
 }
 
-function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: TextObjectProps) {
+function TextObject({textObject, scale = 1, containerRef}: TextObjectProps) {
     const selectionObject = useAppSelector((editor => editor.selectionObject))
-    const {updatePosition, updateSize, updateText} = useAppActions()
+    const {updatePosition, updateSize, updateText, setSelectionObject} = useAppActions()
     const isSelected = (textObject.id == selectionObject.selectedObjectId)
 
     const { position, size, handleMouseDownMove, handleMouseDownResize } = useDragAndResize({
@@ -40,12 +40,16 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
     }
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (textRef.current?.contains(e.target as Node)) {
-            e.stopPropagation()
-        } else {
+        e.stopPropagation();
+        setSelectionObject({ type: SelectionType.Object, selectedObjectId: textObject.id })
+    }
+
+    const handleContainerMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!textRef.current?.contains(e.target as Node)) {
+            setSelectionObject({ type: SelectionType.Object, selectedObjectId: textObject.id })
             handleMouseDownMove(e)
         }
-    };
+    }
 
     const containerStyles: CSSProperties = {
         position: 'absolute',
@@ -65,6 +69,9 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
     }
 
     const textStyles: CSSProperties = {
+        position: 'fixed',
+        top: '10px',
+        left: '10px',
         margin: 0,
         fontSize: `${textObject.fontSize * scale}px`,
         fontFamily: textObject.fontFamily,
@@ -77,9 +84,8 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
         overflow: "hidden",
         minWidth: `${10*scale}px`,
         minHeight: `${10*scale}px`,
-        width: 'auto', 
-        height: 'auto',
         cursor: 'text',
+        outline: 'none',
     }
 
     const handleStyles: CSSProperties = {
@@ -102,8 +108,8 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
     ];
 
     return (
-        <div style={containerStyles} onMouseDown={handleMouseDown}>
-            {(isSelected && !isSlideCollection) &&
+        <div style={containerStyles} onMouseDown={handleContainerMouseDown}>
+            {isSelected &&
                 handles.map((handle) => (
                     <div
                         key={handle.direction}
@@ -113,15 +119,16 @@ function TextObject({textObject, scale = 1, isSlideCollection, containerRef}: Te
                 ))}
             <div
                 ref={textRef}
-                contentEditable={!isSlideCollection}
+                contentEditable
                 suppressContentEditableWarning
                 style={textStyles}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 onInput={handleInput}
                 onClick={(e) => {e.stopPropagation(), e.preventDefault()}}
+                onMouseDown={handleMouseDown}
             >
-                {currentText}
+                {currentText || 'Текст'}
             </div>
         </div>
     )

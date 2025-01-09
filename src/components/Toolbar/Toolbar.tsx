@@ -15,6 +15,7 @@ import { UnsplashModal } from '../Modals/UnsplashModal';
 import { BackgroundColor, BackgroundImage } from '../../store/SlideType';
 import { BackgroundModal } from '../Modals/BackgroundModal';
 import { ZoomButton } from '../buttons/ZoomButton';
+import { ImageButton } from '../buttons/ImageButton';
 
 interface ToolbarProps {
     selectedObjectType: ObjectType.Text | ObjectType.Image | 'slide' | null;
@@ -74,10 +75,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedObjectType }) => {
                 />
             )}
             {selectedObjectType === ObjectType.Image && (
-                <TextButton currentFontSize={ selectedObject?.objectType === ObjectType.Text ? selectedObject.fontSize : 16}
-                    currentFontFamily={ selectedObject?.objectType === ObjectType.Text ? selectedObject.fontFamily : "Arial"}
-                    currentFontColor={selectedObject?.objectType === ObjectType.Text ? selectedObject.fontFamily : "#000000"}
-                />
+                <ImageButton/>
             )}
             {selectedObjectType === 'slide' && (
                 <Button text="Фон" className='' onClick={() => setIsBackgroundModalOpen(true)}/>
