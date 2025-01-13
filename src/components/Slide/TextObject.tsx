@@ -54,7 +54,8 @@ function TextObject({textObject, scale = 1, containerRef}: TextObjectProps) {
     const containerStyles: CSSProperties = {
         position: 'absolute',
         margin: 0,
-        transform: `translate(${position.x * scale}px, ${position.y * scale}px)`,
+        top: `${position.y * scale}px`,
+        left: `${position.x * scale}px`,
         width: `${size.width * scale}px`,
         height: `${size.height * scale}px`,
         minWidth: `${100 * scale}px`,
@@ -69,9 +70,9 @@ function TextObject({textObject, scale = 1, containerRef}: TextObjectProps) {
     }
 
     const textStyles: CSSProperties = {
-        position: 'fixed',
-        top: '10px',
-        left: '10px',
+        position: 'absolute',
+        top: '0',
+        left: '0',
         margin: 0,
         fontSize: `${textObject.fontSize * scale}px`,
         fontFamily: textObject.fontFamily,

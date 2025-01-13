@@ -4,8 +4,8 @@ import { BackgroundType } from "../SlideType";
 import { ObjectType } from "../BaseTypes"
 import "../../fonts/Roboto-Black-normal.js"
 
-const SLIDE_WIDTH = 935
-const SLIDE_HEIGHT = 525
+const SLIDE_WIDTH = 937
+const SLIDE_HEIGHT = 527
 
 function exportPresentationToPDF(presentation: Presentation) {
     if (!presentation?.listSlides?.length) {
@@ -29,21 +29,27 @@ function exportPresentationToPDF(presentation: Presentation) {
 
         slide.listObjects.forEach((obj) => {
             if (obj.objectType === ObjectType.Text) {
-                const x = obj.pos.x
-                const y = obj.pos.y
-                const maxWidth = obj.size.width
-                const maxHeight = obj.size.height
-
+                const margin = 10;
+                const x = obj.pos.x + margin;
+                let y = obj.pos.y + margin;
+                const maxWidth = obj.size.width - margin * 2;
+        
                 pdf.setFont("Roboto-Black", "normal");
-                pdf.setFontSize(obj.fontSize); 
+                pdf.setFontSize(obj.fontSize);
                 pdf.setTextColor(obj.fontColor || "#000000");
         
-                pdf.text(obj.value, x, y, {
-                    maxWidth,
-                    align: "center",
-                }, maxHeight)
+                const wrappedText = pdf.splitTextToSize(obj.value, maxWidth);
+        
+                wrappedText.forEach((line) => {
+                    if (y + obj.fontSize > SLIDE_HEIGHT) {
+                        pdf.addPage();
+                        y = margin; // Сбрасываем Y для новой страницы
+                    }
+                    pdf.text(line, x, y);
+                    y += obj.fontSize;
+                });
             } else if (obj.objectType === ObjectType.Image) {
-                pdf.addImage(obj.url, "JPEG", obj.pos.x, obj.pos.y, obj.size.width, obj.size.height)
+                pdf.addImage(obj.url, "JPEG", obj.pos.x, obj.pos.y, obj.size.width, obj.size.height);
             }
         })
 
