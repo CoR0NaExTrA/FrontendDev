@@ -6,8 +6,7 @@
     align-items: center; /* Центрируем содержимое по вертикали */
     box-sizing: border-box; /* Учитываем padding в размере элемента */
     position: relative;
-    width: 100%; /* или фиксированный размер */
+    width: 83%; /* или фиксированный размер */
     height: 100%; /* или фиксированный размер */
-    overflow: hidden; /* Обрезка содержимого */
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    overflow: visible;
 }

@@ -3,7 +3,8 @@ import { v4 as uuid } from "uuid";
 
 export enum BackgroundType {
     Image,
-    Color
+    Color,
+    Gradient,
 }
 
 export type BackgroundImage = {
@@ -13,10 +14,15 @@ export type BackgroundImage = {
 
 export type BackgroundColor = {
     type: BackgroundType.Color;
-    color: string | Gradient;
+    color: string ;
 };
 
-export type BackgroundSlide = BackgroundImage | BackgroundColor;
+export type BackgroundGradient = {
+    type: BackgroundType.Gradient;
+    color: Gradient;
+};
+
+export type BackgroundSlide = BackgroundImage | BackgroundColor | BackgroundGradient
 export type ElementSlide = Text | Image;
 
 export type SlideType = {

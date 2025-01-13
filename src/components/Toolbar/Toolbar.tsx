@@ -12,7 +12,7 @@ import { ObjectType } from '../../store/BaseTypes';
 import { HistoryContext } from '../../hooks/HistoryContext';
 import { DropdownMenu } from '../DropdownMenu/DropdownMenu';
 import { UnsplashModal } from '../Modals/UnsplashModal';
-import { BackgroundColor, BackgroundImage } from '../../store/SlideType';
+import { BackgroundColor, BackgroundGradient, BackgroundImage } from '../../store/SlideType';
 import { BackgroundModal } from '../Modals/BackgroundModal';
 import { ZoomButton } from '../buttons/ZoomButton';
 import { ImageButton } from '../buttons/ImageButton';
@@ -49,6 +49,10 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedObjectType }) => {
         handleEditBackground(editBackground, background)
     }
 
+    const handleApplyGradient = (background: BackgroundGradient) => {
+        handleEditBackground(editBackground, background)
+    }
+
     const handleApplyImage = (background: BackgroundImage) => {
         handleEditBackground(editBackground, background)
     }
@@ -81,7 +85,10 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedObjectType }) => {
                 <Button text="Фон" className='' onClick={() => setIsBackgroundModalOpen(true)}/>
             )}
             {isUnsplashModalOpen && <UnsplashModal onClose={() => setIsUnsplashModalOpen(false)} onSelectImage={handleSelectImage} />}
-            {isBackgroundModalOpen && <BackgroundModal onClose={() => setIsBackgroundModalOpen(false)} onApplyColor={handleApplyColor} onApplyImage={handleApplyImage} />}
+            {isBackgroundModalOpen && 
+                <BackgroundModal onClose={() => setIsBackgroundModalOpen(false)} onApplyColor={handleApplyColor} 
+                    onApplyImage={handleApplyImage} onApplyGradient={handleApplyGradient}/>
+            }
         </div>
     );
 };

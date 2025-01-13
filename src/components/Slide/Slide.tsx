@@ -24,7 +24,7 @@ function Slide({slide, className, containerRef}: SlideProps) {
     const {setSelectionObject} = useAppActions()
 
     const { zoom } = useZoom();
-    let scale = zoom / 100
+    const scale = zoom / 100
     
     const slideStyles: CSSProperties = {
         width: `${SLIDE_WIDTH * scale}px`,
@@ -35,18 +35,17 @@ function Slide({slide, className, containerRef}: SlideProps) {
 
     switch (slide.background.type) {
         case BackgroundType.Color:
-            if ((slide.background.color as Gradient).gradientType !== undefined) {
-                slideStyles.backgroundImage = gradientToCss(slide.background.color as Gradient);
-            } else {
-                slideStyles.backgroundColor = slide.background.color as string;
-            }
-            break;
+            slideStyles.backgroundColor = slide.background.color
+            break
         case BackgroundType.Image:
             slideStyles.backgroundImage = `url(${slide.background.url})`
             slideStyles.backgroundRepeat = 'no-repeat'
             slideStyles.backgroundSize = 'cover'
             slideStyles.backgroundPosition = 'center'
-            break;
+            break
+        case BackgroundType.Gradient:
+            slideStyles.backgroundImage = gradientToCss(slide.background.color as Gradient)
+            break
     }
 
     function onObjectClick(objectId: string, e: React.MouseEvent) {

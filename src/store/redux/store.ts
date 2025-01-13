@@ -99,13 +99,56 @@ const schema = {
               },
               background: {
                 type: "object",
-                properties: {
-                  type: { enum: [BackgroundType.Color, BackgroundType.Image] },
-                  color: { type: "string" },
-                  url: { type: "string" },
-                },
-                required: ["type"],
-              },
+                oneOf: [
+                  {
+                    // Схема для однотонного цвета
+                    properties: {
+                      type: { enum: [BackgroundType.Color] },
+                      color: { type: "string" }, // Обычный цвет (например, #ffffff)
+                    },
+                    required: ["type", "color"],
+                  },
+                  {
+                    // Схема для изображения
+                    properties: {
+                      type: { enum: [BackgroundType.Image] },
+                      url: { type: "string" }, // URL изображения
+                    },
+                    required: ["type", "url"],
+                  },
+                  {
+                    // Схема для градиента
+                    properties: {
+                      type: { enum: [BackgroundType.Gradient] },
+                      color: {
+                        type: "object",
+                        properties: {
+                          gradientType: { enum: [0, 1] }, // GradientType.linear или GradientType.radial
+                          colors: {
+                            type: "array",
+                            items: { type: "string" }, // Массив цветов
+                            minItems: 2, // Градиент должен содержать как минимум два цвета
+                          },
+                          linearDegrees: { type: "number" }, // Только для линейного градиента
+                          radialCenter: { enum: [0, 1, 2, 3, 4] }, // Только для радиального градиента
+                        },
+                        required: ["gradientType", "colors"], // Общие обязательные поля
+                        additionalProperties: false, // Запрещаем лишние поля
+                        if: {
+                          properties: { gradientType: { const: 0 } }, // Если тип - линейный
+                        },
+                        then: {
+                          required: ["linearDegrees"], // Обязательно указывать угол
+                        },
+                        else: {
+                          required: ["radialCenter"], // Для радиального градиента нужен центр
+                        },
+                      },
+                    },
+                    required: ["type", "color"],
+                  },
+                ],
+              },              
             },
             required: ["id", "listObjects", "background"],
           },

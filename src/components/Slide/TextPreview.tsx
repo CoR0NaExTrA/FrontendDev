@@ -23,6 +23,9 @@ function TextPreview({textObject, scale}: TextPreviewProps) {
     }
 
     const textStyles: CSSProperties = {
+        position: 'fixed',
+        top: '10px',
+        left: '10px',
         margin: 0,
         fontSize: `${textObject.fontSize * scale}px`,
         fontFamily: textObject.fontFamily,
@@ -31,13 +34,12 @@ function TextPreview({textObject, scale}: TextPreviewProps) {
         textDecoration: (textObject.fontFormatting === FontFormatting.underline) ? textObject.fontFormatting : 'none',
         color: textObject.fontColor,
         textAlign: "center",
-        lineHeight: 1,
         whiteSpace: "wrap",
         overflow: "hidden",
         minWidth: `${10*scale}px`,
         minHeight: `${10*scale}px`,
-        width: 'auto', 
-        height: 'auto',
+        cursor: 'text',
+        outline: 'none',
     }
 
     return (

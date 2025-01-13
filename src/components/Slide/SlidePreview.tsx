@@ -1,7 +1,7 @@
 import React from "react";
 import { BackgroundType, SlideType } from "../../store/SlideType";
 import styles from "./SlidePreview.module.css";
-import { ObjectType } from "../../store/BaseTypes";
+import { Gradient, gradientToCss, ObjectType } from "../../store/BaseTypes";
 import { TextPreview } from "./TextPreview";
 import { ImagePreview } from "./ImagePreview";
 
@@ -24,13 +24,16 @@ function SlidePreview({ slide, scale = 0.2 }: SlidePreviewProps) {
 
     switch (slide.background.type) {
         case BackgroundType.Color:
-            slideStyles.backgroundColor = slide.background.color as string
-            break;
+            slideStyles.backgroundColor = slide.background.color
+            break
         case BackgroundType.Image:
             slideStyles.backgroundImage = `url(${slide.background.url})`
             slideStyles.backgroundRepeat = 'no-repeat'
             slideStyles.backgroundSize = 'cover'
             slideStyles.backgroundPosition = 'center'
+            break
+        case BackgroundType.Gradient:
+            slideStyles.backgroundImage = gradientToCss(slide.background.color as Gradient)
             break
     }
 

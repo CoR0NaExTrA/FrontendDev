@@ -17,10 +17,10 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
-    overflow: visible;
     padding: 2px;
     outline: 3px solid #0b57d0;
     background: rgba(11, 87, 208, 0.1); /* Подсветка выбранного слайда */
+    overflow: hidden;
 }
 
 .slideWrapper {
@@ -30,5 +30,5 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
-    overflow: visible;
+    overflow: hidden;
 }
