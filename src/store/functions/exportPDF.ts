@@ -29,10 +29,12 @@ function exportPresentationToPDF(presentation: Presentation) {
 
         slide.listObjects.forEach((obj) => {
             if (obj.objectType === ObjectType.Text) {
-                const margin = 10;
-                const x = obj.pos.x + margin;
-                let y = obj.pos.y + margin;
-                const maxWidth = obj.size.width - margin * 2;
+                const margin = 10; // Минимальный отступ
+                const x = Math.max(obj.pos.x + margin, margin); // Координата X с учетом границы
+                let y = Math.max(obj.pos.y + margin + obj.fontSize, margin + obj.fontSize); // Координата Y
+        
+                const maxWidth = Math.min(obj.size.width - margin * 2, SLIDE_WIDTH - margin * 2); // Максимальная ширина
+                const availableHeight = SLIDE_HEIGHT - margin; // Доступная высота текста на слайде
         
                 pdf.setFont("Roboto-Black", "normal");
                 pdf.setFontSize(obj.fontSize);
@@ -40,11 +42,17 @@ function exportPresentationToPDF(presentation: Presentation) {
         
                 const wrappedText = pdf.splitTextToSize(obj.value, maxWidth);
         
-                wrappedText.forEach((line) => {
-                    if (y + obj.fontSize > SLIDE_HEIGHT) {
-                        pdf.addPage();
-                        y = margin; // Сбрасываем Y для новой страницы
-                    }
+                // Вычисляем реальную высоту текста
+                const textHeight = wrappedText.length * obj.fontSize;
+        
+                // Если текущий текст полностью выходит за пределы, создаем новый слайд
+                if (y + textHeight > availableHeight) {
+                    pdf.addPage();
+                    y = margin + obj.fontSize; // Начинаем с новой страницы
+                }
+        
+                // Рисуем текст
+                wrappedText.forEach((line: string) => {
                     pdf.text(line, x, y);
                     y += obj.fontSize;
                 });

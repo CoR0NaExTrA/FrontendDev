@@ -1,5 +1,5 @@
 import styles from './TitleAndMenu.module.css'
-import { useContext, useEffect, useRef } from "react"
+import { useContext, useRef } from "react"
 import { useAppSelector } from "../../hooks/useAppSelector"
 import { useAppActions } from "../../hooks/useAppActions"
 import { HistoryContext } from "../../hooks/HistoryContext";
@@ -9,6 +9,7 @@ import { handleAddImage, handleAddSlide, handleAddText, handleExportToPDF, handl
     handleRemoveSlide, handleRemoveText, handleTitleChange, handleUndo 
 } from "../../utils/Handlers";
 import { handleExport, handleImport } from '../../utils/FileHandlers'
+import { Link } from 'react-router';
 
 
 function TitleAndMenu() {
@@ -52,13 +53,15 @@ function TitleAndMenu() {
 
     return (
         <div className={styles.container_main}>
-            <input aria-label="name" type="text" defaultValue={title} className={styles.title} onChange={(e) => handleTitleChange(e, editName)}/>
-            <div className={styles.container_menus}>
-                <DropdownMenu label="Файл" items={fileItems}/>
-                <DropdownMenu label="Правка" items={editItems}/>
-                <DropdownMenu label="Вставка" items={insertItems}/>
-                <DropdownMenu label="Слайд" items={slideItems}/>
-                <DropdownMenu label="Объект" items={objectItems}/>
+            <div className={styles.titleAndMenu}>
+                <input aria-label="name" type="text" defaultValue={title} className={styles.title} onChange={(e) => handleTitleChange(e, editName)}/>
+                <div className={styles.container_menus}>
+                    <DropdownMenu label="Файл" items={fileItems}/>
+                    <DropdownMenu label="Правка" items={editItems}/>
+                    <DropdownMenu label="Вставка" items={insertItems}/>
+                    <DropdownMenu label="Слайд" items={slideItems}/>
+                    <DropdownMenu label="Объект" items={objectItems}/>
+                </div>
             </div>
             <a ref={downloadRef} style={{ display: "none" }}>Скачать</a>
             <input
@@ -68,8 +71,10 @@ function TitleAndMenu() {
                 style={{ display: "none" }}
                 onChange={(e) => e.target.files && handleImport(e.target.files[0], setEditor)}
             />
+            <Link to="/player">
+                <button className={styles.slideShow}>Слайд-шоу</button>
+            </Link>
         </div>
-        
     )
 }
 

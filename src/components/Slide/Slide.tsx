@@ -29,7 +29,6 @@ function Slide({slide, className, containerRef}: SlideProps) {
     const slideStyles: CSSProperties = {
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
-        border: "1px solid #E5E4E2",
         boxShadow: !isSelected ? '3px 3px #E5E4E2': 'none'
     }
 

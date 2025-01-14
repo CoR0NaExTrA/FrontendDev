@@ -114,9 +114,9 @@ const BackgroundModal: React.FC<BackgroundModalProps> = ({
             ? onApplyImage({ type: BackgroundType.Image, url: uploadedImage })
             : onApplyColor({ type: BackgroundType.Color, color: selectedColor });
         } else {
-        onApplyGradient(selectedGradient);
+            onApplyGradient(selectedGradient)
         }
-        onClose();
+        onClose()
     };
 
     return (

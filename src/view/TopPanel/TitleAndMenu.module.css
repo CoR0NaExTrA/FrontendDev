@@ -1,11 +1,16 @@
 .container_main {
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
+    gap: 60%
 }
 
 .container_menus {
     display: inline-block;
     margin-right: 5px;
+}
+
+.titleAndMenu {
+    display: flex;
+    flex-direction: column;
 }
 
 .title {
@@ -21,4 +26,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     color: var(--textColor);
+}
+
+.slideShow {
+    position: relative;
+    border: 1px solid #000000;
+    border-radius: 10px;
 }

@@ -52,7 +52,7 @@ function TopPanel() {
     };
 
     return (
-        <div ref={topPanelRef} className={styles.topPanel} tabIndex={0} onKeyDown={handleKeyDown}>
+        <div ref={topPanelRef} className={styles.topPanel} onKeyDown={handleKeyDown}>
             <TitleAndMenu/>
             <Toolbar selectedObjectType={selectedObjectType} />
         </div>

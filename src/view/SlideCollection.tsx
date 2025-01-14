@@ -57,7 +57,7 @@ function SlideCollection() {
     return (
         <div className={styles.slideList}>
             {slideCollection.map((slide: SlideType, index: number) => 
-                <div key={slide.id} onClick={(e) => {onSlideClick(slide.id, e)}}
+                <div key={slide.id} id={slide.id} onClick={(e) => {onSlideClick(slide.id, e)}}
                 onDragStart={() => handleDragStart(index)}
                 onDragEnter={() => handleDragEnter(index)}
                 onDragEnd={handleDragEnd}

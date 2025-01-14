@@ -20,6 +20,7 @@ function SlidePreview({ slide, scale = 0.2 }: SlidePreviewProps) {
         position: "relative",
         border: "1px solid #ccc",
         borderRadius: 'inherit',
+        overflow: 'hidden',
     }
 
     switch (slide.background.type) {

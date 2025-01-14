@@ -10,7 +10,8 @@ function TextPreview({textObject, scale}: TextPreviewProps) {
     const containerStyles: CSSProperties = {
         position: 'absolute',
         margin: 0,
-        transform: `translate(${textObject.pos.x * scale}px, ${textObject.pos.y * scale}px)`,
+        top: `${textObject.pos.y * scale}px`,
+        left: `${textObject.pos.x * scale}px`,
         width: `${textObject.size.width * scale}px`,
         height: `${textObject.size.height * scale}px`,
         minWidth: `${100 * scale}px`,
@@ -23,7 +24,7 @@ function TextPreview({textObject, scale}: TextPreviewProps) {
     }
 
     const textStyles: CSSProperties = {
-        position: 'fixed',
+        position: 'absolute',
         top: '10px',
         left: '10px',
         margin: 0,
